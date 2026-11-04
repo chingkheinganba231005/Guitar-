@@ -1,0 +1,12 @@
+# Install after requirements.txt. On Python >= 3.11 install basic-pitch without
+# its TensorFlow pin and use the bundled ONNX model instead:
+#   pip install -r requirements-audio.txt
+#   pip install --no-deps basic-pitch
+torch>=2.1
+torchaudio>=2.1
+demucs>=4.0
+onnxruntime>=1.16
+pretty_midi>=0.2.10
+resampy>=0.4
+mir_eval>=0.7
+scikit-learn>=1.3
