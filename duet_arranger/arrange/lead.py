@@ -107,9 +107,12 @@ def build_lead_line(song: Song, shift: int | None = None) -> list[Note]:
     lead = list(vocal)
     if not song.bars:
         return lead
-    # Instrumental stretches: two bars or longer without singing get the hook.
-    min_gap = 2 * song.bars[0].length if len(song.bars) > 2 else song.bars[0].length
-    for g0, g1 in gaps(vocal, song.bars[0].start, song.end_tick, min_gap):
+    # Instrumental stretches: two bars or longer without singing get the hook,
+    # unless the band only strikes chords there (Guitar I plays those instead).
+    chord_ticks = {(song.bars[a].start, song.bars[b - 1].end) for a, b in chordal_regions(song, vocal)}
+    for g0, g1 in instrumental_gaps(song, vocal):
+        if any(c0 <= g0 and g1 <= c1 for c0, c1 in chord_ticks):
+            continue
         hook = instrumental_line(song, g0, g1)
         if not hook:
             continue
@@ -122,6 +125,85 @@ def build_lead_line(song: Song, shift: int | None = None) -> list[Note]:
     for n in out:
         n.role = "melody"
         n.priority = 100.0
+    return out
+
+
+def instrumental_gaps(song: Song, vocal: list[Note]) -> list[tuple[int, int]]:
+    if not song.bars:
+        return []
+    min_gap = 2 * song.bars[0].length if len(song.bars) > 2 else song.bars[0].length
+    return gaps(vocal, song.bars[0].start, song.end_tick, min_gap)
+
+
+def harmony_notes(song: Song) -> list[Note]:
+    return [n for name, ns in song.parts.items() if any(name.startswith(p) for p in HARMONY_PARTS) and name not in ("vocals", "bass", "drums") for n in ns]
+
+
+def chordal_regions(song: Song, vocal: list[Note]) -> list[tuple[int, int]]:
+    """Bar ranges without singing where the band strikes chords rather than a line."""
+    from .patterns import chordal
+
+    harm = harmony_notes(song)
+    out = []
+    for g0, g1 in instrumental_gaps(song, vocal):
+        a = song.bar_at(g0)
+        if song.bars[a].start < g0:
+            a += 1
+        b = song.bar_at(max(g0, g1 - 1)) + 1
+        if b - a < 1:
+            continue
+        if g1 < song.bars[b - 1].end:
+            b -= 1
+        if b - a >= 1 and chordal(song, [n for n in harm if song.bars[a].start <= n.start < song.bars[b - 1].end], range(a, b)):
+            # include a pickup bar before the region if it is also instrumental
+            if a == 1 and song.bars[0].length < song.bars[1].length and not any(n.start < song.bars[1].start for n in vocal):
+                a = 0
+            out.append((a, b))
+    return out
+
+
+def lead_chords(song: Song, regions: list[tuple[int, int]], tuning, capo: int) -> list[Note]:
+    """Guitar I strikes the band's chords on the section's pattern and lets them ring."""
+    from .accomp import fit_bass, lowest_pitch, place_in_range, voicing
+    from .patterns import find_pattern
+
+    harm = harmony_notes(song)
+    out: list[Note] = []
+    prev = None
+    lo_string = lowest_pitch(tuning, capo)
+    for a, b in regions:
+        notes = [n for n in harm if song.bars[a].start <= n.start < song.bars[b - 1].end]
+        pat = find_pattern(song, notes, range(a, b))
+        starts = sorted(n.start for n in notes)
+        for bi in range(a, b):
+            bar = song.bars[bi]
+            if pat is not None and bar.length == pat.length:
+                ticks = [bar.start + t for t in pat.ticks() if t < bar.length]
+            else:
+                ticks = [bar.start]
+            last_chord = None
+            for k, t in enumerate(ticks):
+                ch = song.chord_at(t)
+                if ch is None:
+                    continue
+                nxt = ticks[k + 1] if k + 1 < len(ticks) else bar.end
+                tops = [n.pitch for n in notes if abs(n.start - t) <= 6]
+                top = place_in_range(max(tops), 62, 79) if tops else None
+                pcs = chord_pcs(ch.root, ch.quality)
+                v = voicing(pcs, 55, 79, prev, 3, prefer_top=top)
+                if not v:
+                    continue
+                prev = v
+                ring = min(ch.end, bar.end) if ch.end > t else nxt
+                vel = 0.55 + 0.3 * energy_at(song, t)
+                for j, p in enumerate(reversed(v)):
+                    out.append(Note(t, max(nxt, ring), p, velocity=vel, role="chord", priority=7.0 if j == 0 else 3.5, source="chords", tags={"octave_ok"}))
+                if last_chord is None or (ch.root, ch.quality) != last_chord:
+                    root = ch.bass if ch.bass is not None else ch.root
+                    bp = fit_bass(36 + root, lo_string)
+                    if bp < min(v) - 2:
+                        out.append(Note(t, max(nxt, ring), bp, velocity=vel, role="bass", priority=6.0, source="chords"))
+                last_chord = (ch.root, ch.quality)
     return out
 
 
@@ -229,7 +311,7 @@ def harmonic_colour(song: Song, melody: list[Note], tuning, capo: int) -> list[N
     out: list[Note] = []
     if song.percussive or not song.bars:
         return out
-    nh = natural_harmonic_pitches(tuning, capo, (12, 7, 5))
+    nh = natural_harmonic_pitches(tuning, capo, (12, 7))
     mel = LineIndex(melody)
     for bi, bar in enumerate(song.bars):
         label = section_label(song, bar.start)
@@ -272,10 +354,14 @@ def mark_harmonic_melody(song: Song, melody: list[Note]) -> None:
 def lead_part(song: Song, tuning, capo: int, density: float = 1.0, shift: int | None = None) -> list[Note]:
     melody = build_lead_line(song, shift)
     mark_harmonic_melody(song, melody)
+    vocal = [n for n in melody if "instrumental" not in n.tags]
+    regions = chordal_regions(song, vocal)
+    chord_bars = {bi for a, b in regions for bi in range(a, b)}
     notes = list(melody)
     notes += support_notes(song, melody, density)
     notes += fills(song, melody)
-    notes += harmonic_colour(song, melody, tuning, capo)
+    notes += lead_chords(song, regions, tuning, capo)
+    notes += [n for n in harmonic_colour(song, melody, tuning, capo) if song.bar_at(n.start) not in chord_bars]
     return dedupe(notes)
 
 

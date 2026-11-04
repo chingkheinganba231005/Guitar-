@@ -18,11 +18,23 @@ song.mp3 ──► Demucs stems ──► Basic Pitch notes ──► beat / key
 
 **Who plays what.** Guitar I sings: the vocal melody (or the instrumental hook
 where nobody sings), with chord tones a third or sixth beneath important
-notes, and the original instrumental fills in the melody's rests. Guitar II is
-the band: the real bass line, and an accompaniment that copies the original
-comping rhythm — chords where the piano or guitar strikes chords, the same
+notes, and the original instrumental fills in the melody's rests. Where the
+band only strikes chords without singing — a piano intro of chords on every
+beat, say — Guitar I strikes those chords on the same beats and lets them
+ring. Guitar II is the band: the bass line, and an accompaniment on the
+original groove — chords where the piano or guitar strikes chords, an
 arpeggio where they arpeggiate. Only where the source holds long pads (which a
 guitar cannot sustain) does it fall back on an idiomatic fingerstyle pattern.
+
+**Rhythms a guitarist can play.** Transcribed timing wobbles, so notes snap to
+eighths when they are close to one and to sixteenths otherwise (never finer),
+and every section's accompaniment is distilled into the onset pattern the band
+repeats in most of its bars, then played the same way in every bar. The tempo
+stays steady unless the song really changes speed.
+
+**Let ring.** As on a real fingerstyle guitar, every note rings until its
+string is played again; only notes before a real silence (a bar or more) are
+stopped, and Atelier marks those "stop".
 
 **Percussion only when the song needs it.** Drum prominence is measured from
 the separated drum stem. In drum-driven songs, kick hits become heel-of-hand
@@ -40,14 +52,16 @@ belong to the song: free open strings that are chord tones are added to chord
 attacks so the guitar rings on every string it can.
 
 **Harmonics where the song is soft.** Long, exposed melody notes and quiet
-intros/outros try natural harmonics on real nodes of the chosen tuning
-(12th, 7th/19th, 5th, 4th/9th frets), or artificial (harp) harmonics. Guitar
-II's arpeggios turn into harmonic arpeggios in soft passages when the tuning
-has the notes on a node.
+intros/outros use natural harmonics, mostly at the 12th and 7th frets (they
+ring clearly and sustain); the 5th, 4th and 9th-fret nodes are kept for rare
+cases, and artificial (harp) harmonics cover notes off the nodes. Guitar II's
+arpeggios become harmonic arpeggios in soft passages, and it rings a harmonic
+chord tone over Guitar I's chords in soft chordal intros.
 
 **A capo only when it is really necessary.** Every capo position is tried,
 but a capo is only chosen when it removes a large share of the effort (about
-40%); otherwise the arrangement stays open.
+40%) *and* needs less than 60% of the effort of the best tuning without one;
+usually a well-chosen open tuning gives the same easy shapes and more ring.
 
 **Nothing a hand cannot do.** Every onset is solved with a beam search over
 realisations, enforcing:

@@ -19,6 +19,9 @@ from .transcribe import NoteEvent, stem_is_silent, transcribe
 log = logging.getLogger(__name__)
 
 TRANSCRIBE = ("vocals", "bass", "piano", "guitar", "other")
+# Bump when the analysis changes in ways a saved Song should not skip
+# (2: eighth-note grid, steady tempo, vocal-bleed removal).
+ANALYSIS_VERSION = 2
 
 
 def _mono(path: str) -> np.ndarray:
@@ -91,6 +94,8 @@ def analyze_audio(path: str, workdir: str, title: str | None = None, artist: str
         t1 = _tick_seconds(beatmap, b.end)
         seg = mix[int(t0 * SR) : max(int(t0 * SR) + 1, int(t1 * SR))]
         rms.append(float(np.sqrt(np.mean(seg**2))) if len(seg) else 0.0)
+    if "vocals" in sig and song.parts.get("vocals"):
+        drop_vocal_bleed(song, sig["vocals"], beatmap)
     extra = _chroma_frames(harmonic, beatmap, song)
     finish_analysis(song, rms, extra, prom)
     trim_silence(song)
@@ -106,6 +111,29 @@ def analyze_audio(path: str, workdir: str, title: str | None = None, artist: str
     with open(os.path.join(workdir, "analysis.json"), "w", encoding="utf-8") as f:
         json.dump(song_summary(song), f, indent=1)
     return song
+
+
+def drop_vocal_bleed(song: Song, vocals: np.ndarray, beatmap: BeatMap, floor: float = 0.14) -> None:
+    """Forget "vocal" notes in bars where nobody sings.
+
+    Separation leaves faint piano or reverb in the vocal stem; transcribed, it
+    becomes a fake melody (often in an instrumental intro). Bars whose vocal
+    energy is below ``floor`` of the stem's loud bars keep no vocal notes.
+    """
+    levels = []
+    for b in song.bars:
+        t0 = _tick_seconds(beatmap, b.start)
+        t1 = _tick_seconds(beatmap, b.end)
+        seg = vocals[int(t0 * SR) : max(int(t0 * SR) + 1, int(t1 * SR))]
+        levels.append(float(np.sqrt(np.mean(seg**2))) if len(seg) else 0.0)
+    if not levels:
+        return
+    loud = float(np.percentile(levels, 85)) or 1e-9
+    quiet = {i for i, v in enumerate(levels) if v < floor * loud}
+    kept = [n for n in song.parts["vocals"] if song.bar_at(n.start) not in quiet]
+    log.info("Vocal activity: %d of %d bars sung, %d bleed notes dropped", len(levels) - len(quiet), len(levels), len(song.parts["vocals"]) - len(kept))
+    song.parts["vocals"] = kept
+    song.melody = list(kept)
 
 
 def _tick_seconds(bm: BeatMap, tick: float) -> float:

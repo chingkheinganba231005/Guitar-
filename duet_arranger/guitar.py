@@ -60,13 +60,16 @@ MAX_RAISE = (1, 2, 2, 2, 2, 2)
 MAX_DROP = (-4, -4, -4, -5, -5, -6)
 
 # Natural harmonic nodes: fret -> (semitones above open string, difficulty)
+# The 12th and 7th fret nodes ring clearly and sustain; the 5th (like the
+# 24th) is thin and short-lived, and the 4th/9th are hard to sound at all, so
+# those are kept for rare cases.
 NATURAL_HARMONICS: dict[float, tuple[int, float]] = {
-    12: (12, 0.35),
-    7: (19, 0.8),
-    19: (19, 1.0),
-    5: (24, 0.9),
-    4: (28, 2.0),
-    9: (28, 2.0),
+    12: (12, 0.3),
+    7: (19, 0.6),
+    19: (19, 0.9),
+    5: (24, 2.8),
+    4: (28, 4.0),
+    9: (28, 4.0),
 }
 
 
@@ -74,12 +77,14 @@ NATURAL_HARMONICS: dict[float, tuple[int, float]] = {
 class Tuning:
     name: str
     pitches: tuple[int, ...]  # string 1..6
+    flats: bool = False  # spell note names with flats (keys like F, Bb, Eb)
 
     @property
     def label(self) -> str:
         from .theory import pc_name
 
-        return " ".join(pc_name(p) for p in reversed(self.pitches))
+        flats = self.flats or "Eb" in self.name or "Db" in self.name
+        return " ".join(pc_name(p, flats) for p in reversed(self.pitches))
 
     def tension_penalty(self) -> float | None:
         """Cost of retuning from standard; None if unsafe."""
@@ -106,9 +111,12 @@ def key_shifted_tunings(tonic: int, mode: str) -> list[Tuning]:
     """Named tunings plus open tunings re-pitched to the song's tonic."""
     from .theory import pc_name
 
+    from .theory import prefers_flats
+
+    flats = prefers_flats(tonic, mode)
     out: dict[tuple, Tuning] = {}
     for name, pitches in NAMED_TUNINGS.items():
-        t = Tuning(name, pitches)
+        t = Tuning(name, pitches, flats)
         if t.tension_penalty() is not None:
             out[pitches] = t
         if name in TUNING_HOME_KEY:
@@ -120,7 +128,7 @@ def key_shifted_tunings(tonic: int, mode: str) -> list[Tuning]:
                 if shift == 0 or not -5 <= shift <= 2:
                     continue
                 shifted = tuple(p + shift for p in pitches)
-                tt = Tuning(f"{name} to {pc_name(target)} ({'+' if shift > 0 else ''}{shift})", shifted)
+                tt = Tuning(f"{name} to {pc_name(target, flats)} ({'+' if shift > 0 else ''}{shift})", shifted, flats)
                 if tt.tension_penalty() is not None and shifted not in out:
                     out[shifted] = tt
     return list(out.values())

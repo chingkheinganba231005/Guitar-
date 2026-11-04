@@ -126,3 +126,19 @@ def test_cancel_and_delete(tmp_path):
         assert wait(c, first["id"])["state"] == "cancelled"
         assert c.delete(f"/api/jobs/{first['id']}").status_code == 200
         assert c.get(f"/api/jobs/{first['id']}").status_code == 404
+
+
+def test_rearrange_redoes_an_outdated_analysis(client, tmp_path):
+    import os
+
+    path = tmp_path / "song.mid"
+    write_song_midi(demo_song("pop", bars_per_section=2), str(path))
+    with open(path, "rb") as f:
+        job = client.post("/api/jobs", files={"file": ("song.mid", f, "audio/midi")}).json()
+    assert wait(client, job["id"])["state"] == "done"
+    d = client.app.state.manager.job_dir(job["id"])
+    os.remove(os.path.join(d, "analysis.version"))  # as if made by an older version
+    again = client.post(f"/api/jobs/{job['id']}/rearrange", data={"capo": "none"}).json()
+    done = wait(client, again["id"])
+    assert done["state"] == "done", done["error"]
+    assert open(os.path.join(d, "analysis.version")).read().strip() == "2"

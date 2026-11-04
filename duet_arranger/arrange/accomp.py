@@ -1,10 +1,13 @@
 """Guitar II: bass, harmony and groove.
 
-The accompaniment copies what the band actually plays. Where the piano or
-guitar stems strike chords, Guitar II strikes them in the same rhythm; where
-they arpeggiate, it arpeggiates the same notes; only where the source holds
-long pads (which a guitar cannot sustain) does it fall back to an idiomatic
-fingerstyle pattern built from the chord.
+The accompaniment follows what the band plays, but as a groove a guitarist
+can repeat: for every section the recurring onset pattern of the piano and
+guitar stems is found (see ``patterns``). Where they strike chords, Guitar II
+strikes chords on that pattern; where they play single notes, it plays an
+arpeggio on that pattern; where they hold pads (which a guitar cannot
+sustain) it falls back to an idiomatic fingerstyle pattern. Where Guitar I
+carries the chords itself (an instrumental intro, say), Guitar II keeps to
+the bass so the two parts do not pile up.
 """
 
 from __future__ import annotations
@@ -13,6 +16,7 @@ from ..model import TPQ, Bar, Chord, Note, Song
 from ..theory import chord_pcs
 from .lead import HARMONY_PARTS, energy_at, section_label
 from .lines import LineIndex, bassline
+from .patterns import find_pattern, section_ranges
 
 COMP_FLOOR = 50  # D3: lowest comp voice
 COMP_CEIL = 77  # F5
@@ -33,27 +37,46 @@ def fit_bass(p: int, lo: int) -> int:
 
 
 def bass_line(song: Song, tuning, capo: int) -> list[Note]:
+    """The bass on the section's recurring bass rhythm (plus every chord change)."""
     lo = lowest_pitch(tuning, capo)
     src = bassline(song.bass) if song.bass else []
     out: list[Note] = []
-    for n in src:
-        out.append(n.copy(pitch=fit_bass(n.pitch, lo), role="bass", priority=20.0, source="bass"))
-    covered = LineIndex(out)
-    # Chords with no bass note under them get their root (or slash bass).
-    for ch in song.chords:
-        if ch.end - ch.start < TPQ // 2:
-            continue
-        if covered.min_between(ch.start, ch.end) is not None:
-            continue
-        pcb = ch.bass if ch.bass is not None else ch.root
-        p = fit_bass(36 + pcb, lo)
-        out.append(Note(ch.start, ch.end, p, velocity=0.7, role="bass", priority=16.0, source="chords"))
+    chord_starts = sorted(c.start for c in song.chords)
+    for a, b in section_ranges(song):
+        sec = [n for n in src if a <= song.bar_at(n.start) < b]
+        pat = find_pattern(song, sec, range(a, b), min_share=0.4)
+        idx = LineIndex(sec)
+        for bi in range(a, b):
+            bar = song.bars[bi]
+            ticks = {bar.start + t for t in (pat.ticks() if pat else [0]) if t < bar.length}
+            ticks |= {t for t in chord_starts if bar.start <= t < bar.end}
+            for t in sorted(ticks):
+                n = idx.at(t)
+                if n is None or n.start < t - TPQ:
+                    nxt = idx.next_after(t - 1)
+                    n = nxt if nxt is not None and nxt.start - t <= TPQ // 4 else n
+                ch = song.chord_at(t)
+                if n is not None:
+                    pitch = n.pitch
+                elif ch is not None:
+                    pitch = 36 + (ch.bass if ch.bass is not None else ch.root)
+                else:
+                    continue
+                if ch is not None and n is not None and pitch % 12 not in ch.pcs and (ch.start == t):
+                    pitch = 36 + (ch.bass if ch.bass is not None else ch.root)
+                out.append(Note(t, t + TPQ, fit_bass(pitch, lo), velocity=(n.velocity if n else 0.7), role="bass", priority=20.0, source="bass"))
     out.sort(key=lambda n: n.start)
-    # Basses ring until the next bass note (let ring is how fingerstyle bass works)
-    for a, b in zip(out, out[1:]):
-        if b.start > a.end and b.start - a.end <= TPQ:
-            a.end = b.start
-    return out
+    dedup: list[Note] = []
+    for n in out:
+        if dedup and dedup[-1].start == n.start:
+            continue
+        dedup.append(n)
+    # A bass rings until the next bass note (let ring is how fingerstyle bass works).
+    for x, y in zip(dedup, dedup[1:]):
+        x.end = max(x.start + 6, y.start)
+    if dedup:
+        dedup[-1].end = max(dedup[-1].end, min(song.end_tick, dedup[-1].start + song.bars[-1].length))
+    return dedup
 
 
 def comp_sources(song: Song, melody_idx: LineIndex) -> list[Note]:
@@ -154,109 +177,146 @@ def pattern_steps(bar: Bar, tempo: float, percussive: bool, energy: float) -> li
     return [(i * e, per[i % len(per)]) for i in range(L // e)]
 
 
+ARP_ORDER = [0, 1, 2, 1]
+
+
+def harp_voicing(pcs: list[int], tuning, capo: int, lo: int, hi: int, prev: list[int] | None) -> list[int]:
+    """Chord tones that sit on the tuning's 12th/7th-fret harmonics (bell-like arpeggios)."""
+    from .lead import natural_harmonic_pitches
+
+    nh = sorted(p for p in natural_harmonic_pitches(tuning, capo, (12, 7)) if p % 12 in pcs and lo <= p <= hi + 12)
+    if len(nh) < 2:
+        return []
+    best, cost = [], 1e9
+    import itertools
+
+    for k in (3, 2):
+        for combo in itertools.combinations(nh, k):
+            if combo[-1] - combo[0] > 19 or any(b - a < 3 for a, b in zip(combo, combo[1:])):
+                continue
+            c = (3 - len({p % 12 for p in combo})) * 2.0
+            if prev:
+                c += 0.08 * sum(min(abs(p - q) for q in prev) for p in combo)
+            if c < cost:
+                best, cost = list(combo), c
+        if best:
+            break
+    return best
+
+
 def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int) -> list[Note]:
     melody = [n for n in lead_notes if n.role == "melody"]
     mel = LineIndex(melody)
     lead_all = LineIndex(sorted(lead_notes, key=lambda n: n.start))
+    lead_chord_bars = {song.bar_at(n.start) for n in lead_notes if n.role == "chord"}
     bass = bass_line(song, tuning, capo)
     bidx = LineIndex(bass)
     src = comp_sources(song, mel)
-    by_bar: dict[int, list[Note]] = {}
-    for n in src:
-        by_bar.setdefault(song.bar_at(n.start), []).append(n)
     out: list[Note] = list(bass)
     prev_voicing: list[int] | None = None
-    for bi, bar in enumerate(song.bars):
-        notes = by_bar.get(bi, [])
-        texture = classify_bar(notes, bar)
-        energy = energy_at(song, bar.start)
-        tempo = bar.tempo
 
-        def ceiling(t0: int, t1: int) -> int:
-            top = mel.max_between(t0, t1)
-            return min(COMP_CEIL, (top - 2) if top is not None else COMP_CEIL)
+    def ceiling(t0: int, t1: int) -> int:
+        top = mel.max_between(t0, t1)
+        return min(COMP_CEIL, (top - 2) if top is not None else COMP_CEIL)
 
-        def floor(t: int) -> int:
-            b = bidx.at(t)
-            return max(COMP_FLOOR, (b.pitch + 4) if b is not None else COMP_FLOOR)
+    def floor(t: int) -> int:
+        b = bidx.at(t)
+        return max(COMP_FLOOR, (b.pitch + 4) if b is not None else COMP_FLOOR)
 
-        if texture in ("block", "arpeggio"):
-            onsets: dict[int, list[Note]] = {}
-            for n in notes:
-                onsets.setdefault(n.start, []).append(n)
-            times = sorted(onsets)
-            for k, t in enumerate(times):
-                nxt = times[k + 1] if k + 1 < len(times) else bar.end
-                group = sorted(onsets[t], key=lambda n: -n.pitch)
-                ch = song.chord_at(t)
-                lo, hi = floor(t), ceiling(t, max(nxt, t + 1))
-                if hi - lo < 3:
-                    continue
-                if texture == "block":
-                    pcs = []
-                    for n in group:
-                        if n.pitch % 12 not in pcs:
-                            pcs.append(n.pitch % 12)
-                    if ch is not None:
-                        order = chord_pcs(ch.root, ch.quality)
-                        pcs = sorted(pcs, key=lambda p: order.index(p) if p in order else 9)
-                    v = voicing(pcs, lo, hi, prev_voicing, 3 if energy > 0.35 else 2, prefer_top=place_in_range(group[0].pitch, lo, hi))
-                    prev_voicing = v or prev_voicing
-                    end = max(nxt, min(t + 2 * bar.ticks_per_beat, max(n.end for n in group)))
-                    if ch is not None:
-                        end = min(end, ch.end) if ch.end > t else end
-                    for j, p in enumerate(v):
-                        out.append(Note(t, max(t + TPQ // 4, end), p, velocity=max(n.velocity for n in group) * 0.85, role="comp", priority=3.2 - 0.3 * j, source="comp", tags={"octave_ok"}))
-                else:
-                    n = group[0]
-                    p = place_in_range(n.pitch, lo, hi)
-                    if p is None:
-                        continue
-                    end = min(t + 2 * bar.ticks_per_beat, (ch.end if ch is not None and ch.end > t else bar.end))
-                    out.append(Note(t, max(nxt, end), p, velocity=n.velocity * 0.85, role="comp", priority=3.0, source="comp", tags={"octave_ok", "arp"}))
-            continue
-        # Sustained source (pads/strings) or nothing: idiomatic pattern from the chords.
-        steps = pattern_steps(bar, tempo, song.percussive, energy)
-        label = section_label(song, bar.start)
-        harp = (not song.percussive) and (energy < 0.45 or "intro" in label or "outro" in label)
-        for ch in chord_segments(song, bar.start, bar.end):
-            pcs = chord_pcs(ch.root, ch.quality)
-            seg0, seg1 = max(bar.start, ch.start), min(bar.end, ch.end)
-            lo, hi = floor(seg0), ceiling(seg0, seg1)
-            if hi - lo < 5:
+    for a, b in section_ranges(song):
+        sec = [n for n in src if a <= song.bar_at(n.start) < b]
+        pat = find_pattern(song, sec, range(a, b))
+        for bi in range(a, b):
+            bar = song.bars[bi]
+            if bi in lead_chord_bars:
+                # Guitar I strikes the chords here; Guitar II keeps the bass and, in
+                # a soft song, rings a 12th/7th-fret harmonic chord tone over them.
+                ch = song.chord_at(bar.start)
+                if ch is not None and not song.percussive and energy_at(song, bar.start) < 0.55:
+                    from .lead import natural_harmonic_pitches
+
+                    pcs = chord_pcs(ch.root, ch.quality)
+                    lead_here = {n.pitch for n in lead_notes if n.start <= bar.start < n.end}
+                    bells = sorted((p for p in natural_harmonic_pitches(tuning, capo, (12, 7)) if p % 12 in pcs and p >= 64 and p not in lead_here), reverse=True)
+                    for p in bells[:1]:
+                        out.append(Note(bar.start, min(bar.end, ch.end) if ch.end > bar.start else bar.end, p, velocity=0.55, role="harmonic", priority=1.1, source="harmonics", tags={"harmonic_only"}))
                 continue
-            v = voicing(pcs, lo, hi, prev_voicing, 3)
-            if not v:
-                continue
-            prev_voicing = v
-            for off, voice in steps:
-                t = bar.start + off
-                if not seg0 <= t < seg1:
-                    continue
-                if voice in ("B", "A"):
-                    if bidx.at(t) is not None and bidx.at(t).start == t:
-                        continue  # the real bass line already speaks here
-                    b = bidx.at(t)
-                    if b is None:
+            energy = energy_at(song, bar.start)
+            label = section_label(song, bar.start)
+            harp = (not song.percussive) and (energy < 0.45 or "intro" in label or "outro" in label)
+            if pat is not None and len(pat.slots) >= 2 and bar.length == pat.length:
+                ticks = [bar.start + t for t in pat.ticks() if t < bar.length]
+                k_arp = 0
+                for k, t in enumerate(ticks):
+                    ch = song.chord_at(t)
+                    if ch is None:
                         continue
-                    if voice == "A" and song.percussive:
-                        fifth = (ch.root + 7) % 12
-                        p = fit_bass(36 + fifth, lowest_pitch(tuning, capo))
-                        if abs(p - b.pitch) > 9:
-                            p = b.pitch
+                    nxt = ticks[k + 1] if k + 1 < len(ticks) else bar.end
+                    ring = min(ch.end, bar.end) if ch.end > t else bar.end
+                    lo, hi = floor(t), ceiling(t, max(nxt, t + 1))
+                    if hi - lo < 3:
+                        continue
+                    pcs = chord_pcs(ch.root, ch.quality)
+                    bass_here = bidx.at(t) is not None and bidx.at(t).start == t
+                    if pat.block:
+                        v = voicing(pcs, lo, hi, prev_voicing, 3 if energy > 0.35 else 2)
+                        prev_voicing = v or prev_voicing
+                        for j, p in enumerate(v):
+                            out.append(Note(t, max(nxt, ring), p, velocity=0.5 + 0.3 * energy, role="comp", priority=3.2 - 0.3 * j, source="comp", tags={"octave_ok"}))
                     else:
-                        p = b.pitch
-                    out.append(Note(t, min(seg1, t + 2 * bar.ticks_per_beat), p, velocity=0.62, role="bass", priority=8.0, source="pattern"))
+                        if bass_here and k == 0:
+                            continue  # the bass speaks on the first slot of the arpeggio
+                        v = (harp_voicing(pcs, tuning, capo, lo, hi, prev_voicing) if harp else []) or voicing(pcs, lo, hi, prev_voicing, 3)
+                        if not v:
+                            continue
+                        prev_voicing = v
+                        p = v[min(ARP_ORDER[k_arp % len(ARP_ORDER)], len(v) - 1)]
+                        k_arp += 1
+                        tags = {"octave_ok", "arp"} | ({"prefer_harmonic"} if harp else set())
+                        out.append(Note(t, ring, p, velocity=0.5 + 0.25 * energy, role="comp", priority=2.8, source="comp", tags=tags))
+                continue
+            # Sustained source (pads/strings) or nothing: idiomatic pattern from the chords.
+            steps = pattern_steps(bar, bar.tempo, song.percussive, energy)
+            for ch in chord_segments(song, bar.start, bar.end):
+                pcs = chord_pcs(ch.root, ch.quality)
+                seg0, seg1 = max(bar.start, ch.start), min(bar.end, ch.end)
+                lo, hi = floor(seg0), ceiling(seg0, seg1)
+                if hi - lo < 5:
                     continue
-                if voice == "D":
-                    pitches = v[-2:]
-                else:
-                    idx = {"1": 0, "2": 1, "3": 2}[voice]
-                    pitches = [v[min(idx, len(v) - 1)]]
-                ring_end = seg1 if not song.percussive else min(seg1, t + bar.ticks_per_beat)
-                for p in pitches:
-                    tags = {"octave_ok", "arp"} | ({"prefer_harmonic"} if harp else set())
-                    out.append(Note(t, ring_end, p, velocity=0.55 + 0.2 * energy, role="comp", priority=2.6, source="pattern", tags=tags))
+                label = section_label(song, bar.start)
+                harp = (not song.percussive) and (energy < 0.45 or "intro" in label or "outro" in label)
+                v = (harp_voicing(pcs, tuning, capo, lo, hi, prev_voicing) if harp else []) or voicing(pcs, lo, hi, prev_voicing, 3)
+                if not v:
+                    continue
+                prev_voicing = v
+                for off, voice in steps:
+                    t = bar.start + off
+                    if not seg0 <= t < seg1:
+                        continue
+                    if voice in ("B", "A"):
+                        if bidx.at(t) is not None and bidx.at(t).start == t:
+                            continue  # the real bass line already speaks here
+                        bnote = bidx.at(t)
+                        if bnote is None:
+                            continue
+                        if voice == "A" and song.percussive:
+                            fifth = (ch.root + 7) % 12
+                            p = fit_bass(36 + fifth, lowest_pitch(tuning, capo))
+                            if abs(p - bnote.pitch) > 9:
+                                p = bnote.pitch
+                        else:
+                            p = bnote.pitch
+                        out.append(Note(t, min(seg1, t + 2 * bar.ticks_per_beat), p, velocity=0.62, role="bass", priority=8.0, source="pattern"))
+                        continue
+                    if voice == "D":
+                        pitches = v[-2:]
+                    else:
+                        idx = {"1": 0, "2": 1, "3": 2}[voice]
+                        pitches = [v[min(idx, len(v) - 1)]]
+                    ring_end = seg1 if not song.percussive else min(seg1, t + bar.ticks_per_beat)
+                    for p in pitches:
+                        tags = {"octave_ok", "arp"} | ({"prefer_harmonic"} if harp else set())
+                        out.append(Note(t, ring_end, p, velocity=0.55 + 0.2 * energy, role="comp", priority=2.6, source="pattern", tags=tags))
     return resolve_collisions(out, lead_all)
 
 

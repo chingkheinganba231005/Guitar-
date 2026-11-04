@@ -124,8 +124,42 @@ def note_json(n: PlacedNote) -> dict:
     return d
 
 
+def significant_silences(song: Song, notes: list[PlacedNote]) -> list[tuple[int, int]]:
+    """Stretches of at least a bar (and two beats) where this guitar has nothing to play."""
+    spans = sorted((n.start, n.end) for n in notes if n.fret != "x")
+    out = []
+    cur = spans[0][1] if spans else 0
+    for a, b in spans[1:]:
+        if a > cur:
+            bar = song.bars[song.bar_at(cur)]
+            if a - cur >= max(bar.length, 2 * bar.ticks_per_beat):
+                out.append((cur, a))
+        cur = max(cur, b)
+    return out
+
+
+def apply_let_ring(song: Song, notes: list[PlacedNote]) -> list[tuple[int, int]]:
+    """Fingerstyle guitar rings: every note lets ring, except the ones that would
+    ring into a real silence, which stop at their written length."""
+    for n in notes:
+        n.sustain = n.fret != "x"
+    gaps = significant_silences(song, notes)
+    for g0, _ in gaps:
+        last: dict[int, PlacedNote] = {}
+        for n in notes:
+            if n.start < g0 and n.fret != "x":
+                if n.string not in last or n.start >= last[n.string].start:
+                    last[n.string] = n
+        for n in last.values():
+            if not n.harmonic:
+                n.sustain = False
+    return gaps
+
+
 def track_bars(song: Song, g: GuitarArrangement, track_index: int, grid: Grid, flats: bool) -> list[dict]:
     notes = sorted(g.placed, key=lambda n: (n.start, n.string))
+    rests = apply_let_ring(song, notes)
+    rest_starts = {g0 for g0, _ in rests}
     by_bar: dict[int, list[PlacedNote]] = {}
     for n in notes:
         by_bar.setdefault(song.bar_at(n.start), []).append(n)
@@ -144,15 +178,9 @@ def track_bars(song: Song, g: GuitarArrangement, track_index: int, grid: Grid, f
     for bi, bar in enumerate(song.bars):
         bar_notes = by_bar.get(bi, [])
         attacks = {n.start for n in bar_notes}
-        # silence: a note's end after which nothing sounds until the next attack
-        silence = set()
-        all_sounding = [n for n in notes if n.start < bar.end and n.end > bar.start and n.fret != "x"]
-        for n in all_sounding:
-            e = n.end
-            if bar.start < e < bar.end and not any(m.start < e < m.end for m in all_sounding if m is not n) and e not in attacks:
-                silence.add(e)
-        chord_marks = {t for t in chord_ticks if bar.start <= t < bar.end}
-        pieces = bar_pieces(song, bi, attacks | silence | chord_marks, grid)
+        # Events start at attacks, and at the start of a real silence (a rest).
+        silence = {t for t in rest_starts if bar.start < t < bar.end}
+        pieces = bar_pieces(song, bi, attacks | silence, grid)
         events = []
         for pc in pieces:
             eid += 1
@@ -173,7 +201,13 @@ def track_bars(song: Song, g: GuitarArrangement, track_index: int, grid: Grid, f
             for s, (n, j) in list(sounding.items()):
                 if s in used:
                     continue
-                if n.start < pc.start and n.end >= pc.start + max(1, pc.length // 2) and prev_event_id is not None:
+                if n.sustain:
+                    # A ringing note needs no tie once anything new is struck; inside
+                    # its own span the tie keeps split note values from reading as rests.
+                    keep = pc.start not in attacks and pc.start not in silence and prev_event_id is not None
+                else:
+                    keep = n.start < pc.start and n.end >= pc.start + max(1, pc.length // 2) and prev_event_id is not None
+                if keep:
                     t = dict(j)
                     t["tie"] = True
                     t["tieFrom"] = prev_event_id
@@ -233,7 +267,7 @@ def to_atelier(arr: Arrangement, title: str | None = None, artist: str | None = 
             bars[0]["section"] = "Intro" if not song.sections else bars[0]["section"]
         label = "Lead · melody" if g.role == "lead" else ("Accompaniment · bass, harmony & groove" if song.percussive else "Accompaniment · bass & harmony")
         if bars:
-            bars[0]["above"] = f"{g.tuning.name}{' · Capo ' + str(g.capo) if g.capo else ''}"
+            bars[0]["above"] = f"{g.tuning.name}{' · Capo ' + str(g.capo) if g.capo else ''} · let ring throughout"
         tracks.append(
             {
                 "id": f"track{ti + 1}",
@@ -262,7 +296,7 @@ def to_atelier(arr: Arrangement, title: str | None = None, artist: str | None = 
         "composer": (f"{a} · arr. for two guitars" if a else "Arranged for two guitars")[:300],
         "tempo": float(round(first.tempo)) if first else 90,
         "meter": list(first.meter) if first else [4, 4],
-        "defaultLetRing": False,
+        "defaultLetRing": True,
         "activeTrack": 0,
         "view": "score",
         "tracks": tracks,

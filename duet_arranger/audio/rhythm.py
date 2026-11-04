@@ -49,7 +49,33 @@ class BeatMap:
                 out.append(Bar(tick, 3 * m, 8, tempo_of(k, k + m), tpb))
             else:
                 out.append(Bar(tick, m, 4, tempo_of(k, k + m), tpb))
+        smooth_tempos(out)
         return out
+
+
+def smooth_tempos(bars: list[Bar], window: int = 9, steady: float = 0.05) -> None:
+    """One tempo for the song unless it really changes.
+
+    Per-bar tempos from a beat tracker wobble by a few percent; written into
+    the score they make every bar a tempo change. Notes are already placed
+    against the real beats, so the tempo only sets playback speed: use the
+    song's median unless a rolling median drifts more than ``steady`` away
+    for a whole window, and then change in whole BPM steps only.
+    """
+    if not bars:
+        return
+    raw = np.array([b.tempo for b in bars], dtype=float)
+    glob = float(np.median(raw))
+    half = window // 2
+    rolling = np.array([np.median(raw[max(0, i - half) : i + half + 1]) for i in range(len(raw))])
+    cur = round(glob)
+    for b, r in zip(bars, rolling):
+        if abs(r - glob) / glob > steady:
+            if abs(r - cur) / cur > 0.03:
+                cur = round(r)
+        elif abs(cur - glob) / glob > steady:
+            cur = round(glob)
+        b.tempo = float(cur)
 
     def to_ticks(self, t: float) -> float:
         """Map seconds to ticks by linear interpolation between beats (beat i = tick i*tpb)."""

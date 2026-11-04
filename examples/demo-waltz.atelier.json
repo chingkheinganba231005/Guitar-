@@ -1,0 +1,5339 @@
+{
+ "version": 2,
+ "title": "Demo waltz",
+ "subtitle": "Fingerstyle guitar duet · Bb major",
+ "composer": "Duet Arranger · arr. for two guitars",
+ "tempo": 136.0,
+ "meter": [
+  3,
+  4
+ ],
+ "defaultLetRing": true,
+ "activeTrack": 0,
+ "view": "score",
+ "tracks": [
+  {
+   "id": "track1",
+   "name": "Guitar I",
+   "role": "Lead · melody",
+   "tuning": [
+    62,
+    58,
+    53,
+    46,
+    41,
+    34
+   ],
+   "capo": 0,
+   "tone": "steel",
+   "volume": 1.0,
+   "pan": -0.28,
+   "mute": false,
+   "solo": false,
+   "bars": [
+    {
+     "id": "bar1",
+     "section": "Intro",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "Open C to Bb (-2) · let ring throughout",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e1",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        },
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 52,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Bb"
+      },
+      {
+       "id": "g0e2",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e3",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar2",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e4",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 35,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "F"
+      },
+      {
+       "id": "g0e5",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e6",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar3",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e7",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "3",
+         "rh": "i"
+        },
+        {
+         "string": 6,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 23,
+         "tone": "",
+         "lh": "4",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Gm"
+      },
+      {
+       "id": "g0e8",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e9",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar4",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e10",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        },
+        {
+         "string": 6,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 23,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Eb"
+      },
+      {
+       "id": "g0e11",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e12",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar5",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e13",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        },
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 52,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Bb"
+      },
+      {
+       "id": "g0e14",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e15",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar6",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e16",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 35,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "F"
+      },
+      {
+       "id": "g0e17",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e18",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar7",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e19",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "3",
+         "rh": "i"
+        },
+        {
+         "string": 6,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 23,
+         "tone": "",
+         "lh": "4",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Gm"
+      },
+      {
+       "id": "g0e20",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e21",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar8",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e22",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        },
+        {
+         "string": 6,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 23,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Eb"
+      },
+      {
+       "id": "g0e23",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e24",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar9",
+     "section": "Verse",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e25",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 84,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 124,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Bb"
+      },
+      {
+       "id": "g0e26",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 8,
+         "sustain": true,
+         "tech": [
+          "LS"
+         ],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "4",
+         "rh": "a"
+        },
+        {
+         "string": 3,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 55,
+         "tone": "",
+         "lh": "3",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e27",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 10,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "4",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar10",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e28",
+       "den": 2,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 12,
+         "sustain": true,
+         "tech": [
+          "V"
+         ],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 3,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 55,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "F"
+      },
+      {
+       "id": "g0e29",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 10,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "4",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 11,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 71,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar11",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e30",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 8,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "2",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 71,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Gm"
+      },
+      {
+       "id": "g0e31",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [
+          "H"
+         ],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e32",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 8,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "2",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e33",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 71,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar12",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e34",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 10,
+         "sustain": true,
+         "tech": [
+          "V"
+         ],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 3,
+         "fret": 10,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 55,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Eb"
+      }
+     ]
+    },
+    {
+     "id": "bar13",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e35",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 84,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 124,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Bb"
+      },
+      {
+       "id": "g0e36",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 84,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 124,
+         "tone": "",
+         "lh": "4",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e37",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 10,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "4",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar14",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e38",
+       "den": 2,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 12,
+         "sustain": true,
+         "tech": [
+          "V"
+         ],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 3,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 55,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "F"
+      },
+      {
+       "id": "g0e39",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 10,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "4",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 11,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 71,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar15",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e40",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 8,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "2",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 71,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Gm"
+      },
+      {
+       "id": "g0e41",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [
+          "H"
+         ],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e42",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 8,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "2",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e43",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 71,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar16",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e44",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 10,
+         "sustain": true,
+         "tech": [
+          "V"
+         ],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 146,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 3,
+         "fret": 10,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 55,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Eb"
+      }
+     ]
+    },
+    {
+     "id": "bar17",
+     "section": "Outro",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e45",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "4",
+         "rh": "i"
+        },
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 52,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Bb"
+      },
+      {
+       "id": "g0e46",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "4",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e47",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "4",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar18",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e48",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 35,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "F"
+      },
+      {
+       "id": "g0e49",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e50",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar19",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e51",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "3",
+         "rh": "i"
+        },
+        {
+         "string": 6,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 23,
+         "tone": "",
+         "lh": "4",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Gm"
+      },
+      {
+       "id": "g0e52",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e53",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar20",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g0e54",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        },
+        {
+         "string": 6,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 23,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Eb"
+      },
+      {
+       "id": "g0e55",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g0e56",
+       "den": 4,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 116,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "track2",
+   "name": "Guitar II",
+   "role": "Accompaniment · bass & harmony",
+   "tuning": [
+    62,
+    58,
+    53,
+    46,
+    41,
+    34
+   ],
+   "capo": 0,
+   "tone": "steel",
+   "volume": 0.9,
+   "pan": 0.28,
+   "mute": false,
+   "solo": false,
+   "bars": [
+    {
+     "id": "bar1",
+     "section": "Intro",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "Open C to Bb (-2) · let ring throughout",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e1",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 67,
+         "tone": ""
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": ""
+        },
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 30,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 20,
+         "tone": ""
+        },
+        {
+         "string": 6,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "down",
+       "chord": "Bb"
+      }
+     ]
+    },
+    {
+     "id": "bar2",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e2",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "1",
+         "rh": "a"
+        },
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 33,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "F"
+      }
+     ]
+    },
+    {
+     "id": "bar3",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e3",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "artificial",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "harmonicInterval": 12,
+         "rh": "a"
+        },
+        {
+         "string": 5,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 33,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Gm"
+      }
+     ]
+    },
+    {
+     "id": "bar4",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e4",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "artificial",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "harmonicInterval": 12,
+         "rh": "a"
+        },
+        {
+         "string": 6,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "lh": "4",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Eb"
+      }
+     ]
+    },
+    {
+     "id": "bar5",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e5",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 67,
+         "tone": ""
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": ""
+        },
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 30,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 20,
+         "tone": ""
+        },
+        {
+         "string": 6,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "down",
+       "chord": "Bb"
+      }
+     ]
+    },
+    {
+     "id": "bar6",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e6",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "a"
+        },
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 33,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "F"
+      }
+     ]
+    },
+    {
+     "id": "bar7",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e7",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "artificial",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "harmonicInterval": 12,
+         "rh": "a"
+        },
+        {
+         "string": 5,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 33,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Gm"
+      }
+     ]
+    },
+    {
+     "id": "bar8",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e8",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "artificial",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "harmonicInterval": 12,
+         "rh": "a"
+        },
+        {
+         "string": 6,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "lh": "4",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Eb"
+      }
+     ]
+    },
+    {
+     "id": "bar9",
+     "section": "Verse",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e9",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 67,
+         "tone": ""
+        },
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 57,
+         "tone": ""
+        },
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": ""
+        },
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 30,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 20,
+         "tone": ""
+        },
+        {
+         "string": 6,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "down",
+       "chord": "Bb"
+      },
+      {
+       "id": "g1e10",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e11",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e12",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 92,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e13",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e14",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar10",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e15",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 33,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "F"
+      },
+      {
+       "id": "g1e16",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e17",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 4,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "3",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e18",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e19",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 4,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "3",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e20",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar11",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e21",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 67,
+         "tone": ""
+        },
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 57,
+         "tone": ""
+        },
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 30,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 33,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Gm"
+      },
+      {
+       "id": "g1e22",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e23",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e24",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 92,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e25",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e26",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar12",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e27",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 30,
+         "tone": ""
+        },
+        {
+         "string": 6,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "lh": "4",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Eb"
+      },
+      {
+       "id": "g1e28",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e29",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e30",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e31",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e32",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar13",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e33",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 67,
+         "tone": ""
+        },
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 57,
+         "tone": ""
+        },
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": ""
+        },
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 30,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 20,
+         "tone": ""
+        },
+        {
+         "string": 6,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "down",
+       "chord": "Bb"
+      },
+      {
+       "id": "g1e34",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e35",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e36",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 92,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e37",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e38",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar14",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e39",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 33,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "F"
+      },
+      {
+       "id": "g1e40",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e41",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 4,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "3",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e42",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e43",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 4,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "3",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e44",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar15",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e45",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 67,
+         "tone": ""
+        },
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 57,
+         "tone": ""
+        },
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 30,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 33,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Gm"
+      },
+      {
+       "id": "g1e46",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e47",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e48",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 92,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e49",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e50",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar16",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e51",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 30,
+         "tone": ""
+        },
+        {
+         "string": 6,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "lh": "4",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Eb"
+      },
+      {
+       "id": "g1e52",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e53",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e54",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e55",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e56",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar17",
+     "section": "Outro",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e57",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 67,
+         "tone": ""
+        },
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "m"
+        },
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": ""
+        },
+        {
+         "string": 4,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 30,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 20,
+         "tone": ""
+        },
+        {
+         "string": 6,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "down",
+       "chord": "Bb"
+      }
+     ]
+    },
+    {
+     "id": "bar18",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e58",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "a"
+        },
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": ""
+        },
+        {
+         "string": 5,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 33,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "F"
+      }
+     ]
+    },
+    {
+     "id": "bar19",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e59",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "artificial",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "harmonicInterval": 12,
+         "rh": "a"
+        },
+        {
+         "string": 5,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 33,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Gm"
+      }
+     ]
+    },
+    {
+     "id": "bar20",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e60",
+       "den": 2,
+       "dots": 1,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "artificial",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "harmonicInterval": 12,
+         "rh": "a"
+        },
+        {
+         "string": 6,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "lh": "4",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "Eb"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "arranger": {
+  "key": "10 major",
+  "percussive": false,
+  "drum_prominence": 0.0,
+  "guitars": [
+   {
+    "name": "Guitar I",
+    "role": "lead",
+    "tuning": "Open C to Bb (-2)",
+    "tuning_pitches": "Bb F Bb F Bb D",
+    "capo": 0,
+    "score": -0.032,
+    "cost_per_note": 0.476,
+    "notes": 154,
+    "open_strings": 30,
+    "harmonics": 0,
+    "dropped": 0,
+    "melody_dropped": 0,
+    "resonance": 0.69,
+    "open_string_resonance_notes": 0,
+    "melody_octave_shift": 0,
+    "considered": [
+     {
+      "tuning": "Standard",
+      "pitches": "E A D G B E",
+      "capo": 3,
+      "score": -0.071,
+      "cost_per_note": 0.304,
+      "notes": 154,
+      "open_strings": 55,
+      "harmonics": 0,
+      "dropped": 0,
+      "melody_dropped": 0,
+      "resonance": 0.631,
+      "open_string_resonance_notes": 0,
+      "melody_octave_shift": 0
+     },
+     {
+      "tuning": "Open C to Bb (-2)",
+      "pitches": "Bb F Bb F Bb D",
+      "capo": 0,
+      "score": -0.032,
+      "cost_per_note": 0.476,
+      "notes": 154,
+      "open_strings": 30,
+      "harmonics": 0,
+      "dropped": 0,
+      "melody_dropped": 0,
+      "resonance": 0.69,
+      "open_string_resonance_notes": 0,
+      "melody_octave_shift": 0
+     },
+     {
+      "tuning": "Open C6 to Bb (-2)",
+      "pitches": "Bb G Bb F Bb D",
+      "capo": 0,
+      "score": -0.024,
+      "cost_per_note": 0.476,
+      "notes": 154,
+      "open_strings": 30,
+      "harmonics": 0,
+      "dropped": 0,
+      "melody_dropped": 0,
+      "resonance": 0.671,
+      "open_string_resonance_notes": 0,
+      "melody_octave_shift": 0
+     },
+     {
+      "tuning": "Standard",
+      "pitches": "E A D G B E",
+      "capo": 0,
+      "score": 0.397,
+      "cost_per_note": 0.658,
+      "notes": 154,
+      "open_strings": 0,
+      "harmonics": 0,
+      "dropped": 0,
+      "melody_dropped": 0,
+      "resonance": 0.261,
+      "open_string_resonance_notes": 0,
+      "melody_octave_shift": 0
+     }
+    ],
+    "search_seconds": 4.8,
+    "screened": 352
+   },
+   {
+    "name": "Guitar II",
+    "role": "accomp",
+    "tuning": "Open C to Bb (-2)",
+    "tuning_pitches": "Bb F Bb F Bb D",
+    "capo": 0,
+    "score": -0.384,
+    "cost_per_note": 0.427,
+    "notes": 72,
+    "open_strings": 34,
+    "harmonics": 12,
+    "dropped": 0,
+    "melody_dropped": 0,
+    "resonance": 0.993,
+    "open_string_resonance_notes": 35,
+    "considered": [
+     {
+      "tuning": "Open C to Bb (-2)",
+      "pitches": "Bb F Bb F Bb D",
+      "capo": 0,
+      "score": -0.384,
+      "cost_per_note": 0.427,
+      "notes": 72,
+      "open_strings": 34,
+      "harmonics": 12,
+      "dropped": 0,
+      "melody_dropped": 0,
+      "resonance": 0.993,
+      "open_string_resonance_notes": 35
+     },
+     {
+      "tuning": "Open C6 to Bb (-2)",
+      "pitches": "Bb G Bb F Bb D",
+      "capo": 0,
+      "score": -0.364,
+      "cost_per_note": 0.449,
+      "notes": 72,
+      "open_strings": 34,
+      "harmonics": 12,
+      "dropped": 0,
+      "melody_dropped": 0,
+      "resonance": 0.983,
+      "open_string_resonance_notes": 36
+     },
+     {
+      "tuning": "Open G minor",
+      "pitches": "D G D G Bb D",
+      "capo": 0,
+      "score": -0.15,
+      "cost_per_note": 0.563,
+      "notes": 72,
+      "open_strings": 29,
+      "harmonics": 8,
+      "dropped": 4,
+      "melody_dropped": 0,
+      "resonance": 0.798,
+      "open_string_resonance_notes": 31
+     },
+     {
+      "tuning": "Standard",
+      "pitches": "E A D G B E",
+      "capo": 0,
+      "score": 0.501,
+      "cost_per_note": 0.754,
+      "notes": 66,
+      "open_strings": 8,
+      "harmonics": 3,
+      "dropped": 3,
+      "melody_dropped": 0,
+      "resonance": 0.253,
+      "open_string_resonance_notes": 23
+     }
+    ],
+    "search_seconds": 2.1,
+    "screened": 176
+   }
+  ],
+  "playability_issues": []
+ }
+}

@@ -24,24 +24,42 @@ class Grid:
         return i in self.song.triplet_beats
 
     def step(self, i: int) -> int:
+        """Finest subdivision used in beat ``i``: sixteenths, or triplet eighths."""
         L = self.lengths[i]
         if L != TPQ:  # compound beat (dotted quarter) or odd bar remainder
             return 6 if L % 6 == 0 else 3
-        return 4 if self.is_triplet(i) else 3
+        return 8 if self.is_triplet(i) else 6
 
-    def snap(self, t: float) -> int:
+    def coarse(self, i: int) -> int:
+        """Preferred subdivision: eighths (or the triplet eighth / compound eighth)."""
+        L = self.lengths[i]
+        if L != TPQ:
+            return 12 if L % 12 == 0 else self.step(i)
+        return 8 if self.is_triplet(i) else 12
+
+    def snap(self, t: float, tolerance: float = 0.3) -> int:
+        """Snap to the eighth-note grid when close enough, otherwise to sixteenths.
+
+        Transcribed onsets wobble by tens of milliseconds; snapping straight to
+        a fine grid turns that wobble into unplayable 32nd-note rhythms. A note
+        within ``tolerance`` of an eighth (as a fraction of an eighth) goes there.
+        """
         if not self.beats:
-            return int(round(t / 3) * 3)
+            return int(round(t / 6) * 6)
         if t >= self.song.end_tick:
             return self.song.end_tick
         i = self.beat_index(t)
         b = self.beats[i]
+        c = self.coarse(i)
+        off_c = round((t - b) / c) * c
+        if abs((t - b) - off_c) <= tolerance * c:
+            return int(min(b + off_c, b + self.lengths[i]))
         st = self.step(i)
         off = round((t - b) / st) * st
         return int(min(b + off, b + self.lengths[i]))
 
 
-def snap_notes(notes: list[Note], song: Song, min_len: int = 3) -> list[Note]:
+def snap_notes(notes: list[Note], song: Song, min_len: int = 6) -> list[Note]:
     g = Grid(song)
     out = []
     for n in notes:

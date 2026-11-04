@@ -236,11 +236,7 @@ class JobManager:
                     progress=progress,
                 )
             elif job.kind == "rearrange":
-                progress("analyse", 0.3, "Reusing the separated stems and analysis")
-                with open(os.path.join(self.job_dir(job.parent), "song.pkl"), "rb") as f:
-                    song = pickle.load(f)
-                reserve_ids(_max_id(song))
-                progress("analyse", 1.0, "Analysis loaded")
+                song = self._parent_song(job, progress)
             else:
                 raise ValueError(f"Unknown job kind {job.kind}")
             if job.title:
@@ -248,8 +244,7 @@ class JobManager:
             if job.artist:
                 song.artist = job.artist
             if job.kind != "rearrange":
-                with open(os.path.join(d, "song.pkl"), "wb") as f:
-                    pickle.dump(song, f)
+                save_song(d, song)
             opts = ArrangeOptions(
                 tunings=o.get("tuning", "auto") or "auto",
                 capo=str(o.get("capo", "auto") or "auto"),
@@ -283,6 +278,44 @@ class JobManager:
             self.cancelled.discard(job.id)
             self.save(job)
 
+    def _parent_song(self, job: Job, progress):
+        """The analysis a re-arrangement starts from, redone if it is outdated."""
+        from ..audio.pipeline import ANALYSIS_VERSION
+        from ..model import reserve_ids
+
+        pdir = self.job_dir(job.parent)
+        parent = self.jobs.get(job.parent)
+        version = 0
+        try:
+            with open(os.path.join(pdir, "analysis.version"), encoding="utf-8") as f:
+                version = int(f.read().strip() or 0)
+        except (OSError, ValueError):
+            pass
+        if version != ANALYSIS_VERSION and parent is not None and parent.input_name:
+            src = os.path.join(pdir, "input", parent.input_name)
+            if parent.kind == "audio" and os.path.exists(src):
+                from ..audio.pipeline import analyze_audio
+
+                job.stages = [{"id": s, "label": l} for s, _, l in STAGES if s != "separate"]
+                self.save(job)
+                song = analyze_audio(src, pdir, title=parent.title or None, artist=parent.artist, progress=progress)
+                save_song(pdir, song)
+                return song
+            if parent.kind == "midi" and os.path.exists(src):
+                from ..midi_input import read_midi
+
+                progress("analyse", 0.3, "Reading the MIDI file again with the newer analysis")
+                song = read_midi(src, parent.title or None)
+                save_song(pdir, song)
+                progress("analyse", 1.0, "Analysis ready")
+                return song
+        progress("analyse", 0.3, "Reusing the separated stems and analysis")
+        with open(os.path.join(pdir, "song.pkl"), "rb") as f:
+            song = pickle.load(f)
+        reserve_ids(_max_id(song))
+        progress("analyse", 1.0, "Analysis loaded")
+        return song
+
     def _files(self, job: Job, base: str) -> list[dict]:
         out = []
         for name, label, kind in (
@@ -304,6 +337,15 @@ class JobManager:
         if src is not None and src.kind == "audio" and self.file_path(src.id, f"input/{src.input_name}"):
             out.insert(0, {"name": f"input/{src.input_name}", "label": "Original recording", "kind": "original"})
         return out
+
+
+def save_song(d: str, song) -> None:
+    from ..audio.pipeline import ANALYSIS_VERSION
+
+    with open(os.path.join(d, "song.pkl"), "wb") as f:
+        pickle.dump(song, f)
+    with open(os.path.join(d, "analysis.version"), "w", encoding="utf-8") as f:
+        f.write(str(ANALYSIS_VERSION))
 
 
 def _max_id(song) -> int:

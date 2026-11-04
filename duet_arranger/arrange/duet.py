@@ -28,6 +28,7 @@ class ArrangeOptions:
     capo: str = "auto"  # auto | none | <int>
     max_capo: int = 7
     capo_bias: float = 0.4  # a capo must save roughly this share of the effort to be used
+    capo_effort_ratio: float = 0.6  # ...and need under 60% of the best capo-free effort
     max_fret: int = 20
     percussion: str = "auto"  # auto | on | off
     harmonics: bool = True
@@ -289,6 +290,7 @@ def choose_and_solve(song: Song, role: str, name: str, opts: ArrangeOptions, lea
     if std and not any(t.pitches == STANDARD and c == 0 for _, t, c, _ in finalists):
         finalists.append(std[0])
     best = None
+    best_open = None  # best arrangement without a capo
     considered = []
     for k3, (_, t, capo, shift) in enumerate(finalists):
         report(progress, stage, 0.45 + 0.55 * k3 / max(1, len(finalists)), f"{name}: full fingering in {t.name}{' capo ' + str(capo) if capo else ''}")
@@ -302,10 +304,18 @@ def choose_and_solve(song: Song, role: str, name: str, opts: ArrangeOptions, lea
         if shift is not None:
             stats["melody_octave_shift"] = shift
         considered.append({"tuning": t.name, "pitches": t.label, "capo": capo, "score": round(sc, 3), **stats})
+        cand = GuitarArrangement(name, role, t, capo, content, hits, sol, score=sc, stats=stats)
         if best is None or sc < best.score:
-            best = GuitarArrangement(name, role, t, capo, content, hits, sol, score=sc, stats=stats)
+            best = cand
+        if capo == 0 and (best_open is None or sc < best_open.score):
+            best_open = cand
     if best is None:
         raise RuntimeError(f"Could not find a playable arrangement for {name}")
+    # A capo only when it is really necessary: it must need clearly less effort
+    # than the best set-up without one (a good open tuning usually wins).
+    if best.capo and best_open is not None and opts.capo == "auto":
+        if best.stats["cost_per_note"] > opts.capo_effort_ratio * best_open.stats["cost_per_note"]:
+            best = best_open
     best.stats["considered"] = considered
     best.stats["search_seconds"] = round(time.time() - t0, 1)
     best.stats["screened"] = len(screened)
