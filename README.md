@@ -124,6 +124,14 @@ keeps its own storage, so it never overwrites the score you keep in Atelier;
 when a duet opens in the full Atelier your previous score stays one
 **File → Restore previous score** away.
 
+### From an iPad or phone (GitHub Codespaces)
+
+On the repository page choose **Code → Codespaces → Create codespace on main**
+and pick a 4-core machine. The first start installs everything (about ten
+minutes), then the app opens in a browser tab; use the file picker to choose a
+song from your device. Stop the codespace when you are done to save your free
+hours. (The setup file has not been tested on Codespaces yet.)
+
 ### On a server
 
 `duet-arranger serve --host 0.0.0.0 --token SOMESECRET` makes it reachable from

@@ -1,0 +1,9 @@
+{
+  "name": "Duet Arranger",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "hostRequirements": { "cpus": 4, "memory": "8gb", "storage": "32gb" },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postAttachCommand": "nohup duet-arranger serve --host 0.0.0.0 --port 8000 --jobs /workspaces/duet-jobs > /tmp/duet.log 2>&1 &",
+  "forwardPorts": [8000],
+  "portsAttributes": { "8000": { "label": "Duet Arranger", "onAutoForward": "openBrowser" } }
+}
