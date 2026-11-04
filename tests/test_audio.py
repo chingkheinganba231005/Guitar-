@@ -13,9 +13,11 @@ def test_audio_pipeline(tmp_path):
     from duet_arranger.synth import render
 
     wav = tmp_path / "pop.wav"
-    render(demo_song("pop", bars_per_section=2), str(wav))
+    render(demo_song("pop"), str(wav))
     song = analyze_audio(str(wav), str(tmp_path / "work"))
     assert abs(song.bars[1].tempo - 96) < 4
     assert song.bars[1].meter == (4, 4)
     assert (song.key_tonic, song.key_mode) == (7, "major")
     assert song.percussive
+    names = {c.name() for c in song.chords}
+    assert {"G", "D", "Em", "C"} <= {n.split("/")[0] for n in names}
