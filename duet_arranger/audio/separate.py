@@ -37,7 +37,7 @@ def load_audio(path: str, sr: int = 44100, mono: bool = False) -> tuple[np.ndarr
     return data.astype(np.float32), sr
 
 
-def separate(path: str, out_dir: str, model_name: str = "htdemucs_6s", device: str | None = None, shifts: int = 1) -> dict[str, str]:
+def separate(path: str, out_dir: str, model_name: str = "htdemucs_6s", device: str | None = None, shifts: int = 1, progress=None) -> dict[str, str]:
     """Split ``path`` into stems written as WAV files in ``out_dir``. Cached."""
     os.makedirs(out_dir, exist_ok=True)
     paths = {s: os.path.join(out_dir, f"{s}.wav") for s in STEMS}
@@ -59,8 +59,26 @@ def separate(path: str, out_dir: str, model_name: str = "htdemucs_6s", device: s
     ref = wav.mean(0)
     mean, std = ref.mean(), ref.std() + 1e-8
     log.info("Separating %s with %s on %s …", os.path.basename(path), model_name, device)
+    length = wav.shape[-1]
+
+    def on_chunk(d: dict) -> None:
+        if progress is None or d.get("state") != "end":
+            return
+        models = max(1, d.get("models", 1))
+        frac = (d.get("model_idx_in_bag", 0) + min(1.0, (d.get("segment_offset", 0) + model.samplerate * 7.8) / length)) / models
+        progress("separate", min(1.0, frac), "Separating stems")
+
     with torch.no_grad():
-        sources = apply_model(model, ((wav - mean) / std)[None], device=device, shifts=shifts, split=True, overlap=0.25, progress=log.isEnabledFor(logging.INFO))[0]
+        sources = apply_model(
+            model,
+            ((wav - mean) / std)[None],
+            device=device,
+            shifts=shifts,
+            split=True,
+            overlap=0.25,
+            progress=log.isEnabledFor(logging.INFO) and progress is None,
+            callback=on_chunk if progress is not None else None,
+        )[0]
     sources = sources * std + mean
     out = {}
     for name, src in zip(model.sources, sources):

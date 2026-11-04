@@ -1,0 +1,10 @@
+.venv
+.git
+**/__pycache__
+duet-jobs
+output
+out
+examples
+tests
+*.wav
+*.mp3

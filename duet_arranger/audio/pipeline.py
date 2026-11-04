@@ -10,6 +10,7 @@ import numpy as np
 
 from ..analysis import finish_analysis
 from ..model import TPQ, Hit, Note, Song
+from ..progress import report
 from ..quantize import Grid, detect_triplet_beats, snap_notes
 from .rhythm import SR, BeatMap, track_beats
 from .separate import STEMS, load_audio, separate
@@ -25,10 +26,12 @@ def _mono(path: str) -> np.ndarray:
     return data[0]
 
 
-def analyze_audio(path: str, workdir: str, title: str | None = None, artist: str = "", device: str | None = None, stems: dict[str, str] | None = None) -> Song:
+def analyze_audio(path: str, workdir: str, title: str | None = None, artist: str = "", device: str | None = None, stems: dict[str, str] | None = None, progress=None) -> Song:
     os.makedirs(workdir, exist_ok=True)
     stem_dir = os.path.join(workdir, "stems")
-    stems = stems or separate(path, stem_dir, device=device)
+    report(progress, "separate", 0.0, "Loading the separation model")
+    stems = stems or separate(path, stem_dir, device=device, progress=progress)
+    report(progress, "separate", 1.0, "Stems ready")
     mix = _mono(path)
     sig = {s: _mono(stems[s]) for s in STEMS if s in stems and os.path.exists(stems[s])}
     n = len(mix)
@@ -41,8 +44,9 @@ def analyze_audio(path: str, workdir: str, title: str | None = None, artist: str
     harmonic = sum(sig[k] for k in ("piano", "guitar", "other", "bass") if k in sig) if sig else mix
     # transcription per stem (in seconds; independent of the beat grid)
     events: dict[str, list[NoteEvent]] = {}
-    for s in TRANSCRIBE:
+    for k, s in enumerate(TRANSCRIBE):
         p = stems.get(s)
+        report(progress, "transcribe", k / len(TRANSCRIBE), f"Transcribing {s}")
         if not p or not os.path.exists(p):
             continue
         if stem_is_silent(p):
@@ -51,9 +55,13 @@ def analyze_audio(path: str, workdir: str, title: str | None = None, artist: str
         log.info("Transcribing %s …", s)
         events[s] = transcribe(p, s)
     note_list = [(e.start, e.end, e.pitch, s) for s, evs in events.items() for e in evs]
+    report(progress, "transcribe", 1.0, "Notes transcribed")
+    report(progress, "rhythm", 0.1, "Tracking the beat")
     beatmap = track_beats(mix, drums, sig.get("bass"), harmonic, prom, note_list)
     song = Song(title=title or os.path.splitext(os.path.basename(path))[0], artist=artist)
     song.bars = beatmap.bars()
+    report(progress, "rhythm", 1.0, f"{len(song.bars)} bars found")
+    report(progress, "analyse", 0.1, "Placing notes on the bar grid")
     onsets = []
     parts: dict[str, list[Note]] = {}
     for s, evs in events.items():
@@ -86,6 +94,7 @@ def analyze_audio(path: str, workdir: str, title: str | None = None, artist: str
     extra = _chroma_frames(harmonic, beatmap, song)
     finish_analysis(song, rms, extra, prom)
     trim_silence(song)
+    report(progress, "analyse", 1.0, "Key, chords and sections found")
     song.notes_info = {
         "beats": len(beatmap.beats),
         "beats_per_bar": beatmap.beats_per_bar,

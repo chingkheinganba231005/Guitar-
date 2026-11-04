@@ -31,13 +31,17 @@ audio = [
   "mir_eval>=0.7",
   "scikit-learn>=1.3",
 ]
-dev = ["pytest>=8"]
+web = ["fastapi>=0.110", "uvicorn>=0.27", "python-multipart>=0.0.9"]
+dev = ["pytest>=8", "httpx>=0.27"]
 
 [project.scripts]
 duet-arranger = "duet_arranger.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["duet_arranger*"]
+
+[tool.setuptools.package-data]
+"duet_arranger.web" = ["static/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

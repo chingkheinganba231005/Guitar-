@@ -11,3 +11,4 @@ out/
 *.mp3
 *.flac
 !examples/**/*.wav
+duet-jobs/

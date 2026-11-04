@@ -20,6 +20,13 @@ def next_id() -> int:
     return next(_ids)
 
 
+def reserve_ids(above: int) -> None:
+    """Make future ids larger than ``above`` (after unpickling a saved Song)."""
+    global _ids
+    current = next(_ids)
+    _ids = count(max(current, above + 1))
+
+
 @dataclass
 class Note:
     """A pitched note in sounding (concert) pitch."""

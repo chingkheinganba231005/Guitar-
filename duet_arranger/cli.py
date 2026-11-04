@@ -66,14 +66,18 @@ def load_song(path: str, args) -> "Song":
     return song
 
 
-def write_outputs(arr, out_dir: str, base: str, title: str | None, artist: str | None) -> dict:
+def write_outputs(arr, out_dir: str, base: str, title: str | None, artist: str | None, progress=None) -> dict:
     from .export.ascii_tab import project_text
     from .export.atelier import to_atelier
     from .export.midi_out import write_midi
     from .validate import audit_project, bar_fill_errors
 
+    from .progress import report as _report
+
     os.makedirs(out_dir, exist_ok=True)
+    _report(progress, "export", 0.1, "Writing the Atelier duet")
     project = to_atelier(arr, title=title, artist=artist)
+    _report(progress, "export", 0.5, "Checking every hand position")
     issues = audit_project(project)
     fill = bar_fill_errors(project)
     project["arranger"]["playability_issues"] = [str(i) for i in issues]
@@ -93,6 +97,7 @@ def write_outputs(arr, out_dir: str, base: str, title: str | None, artist: str |
     report["incomplete_bars"] = fill
     with open(paths["report"], "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=1)
+    _report(progress, "export", 1.0, "Done")
     return {"paths": paths, "issues": issues, "fill": fill, "project": project}
 
 
@@ -172,6 +177,15 @@ def cmd_audit(args) -> int:
     return 1 if issues else 0
 
 
+def cmd_serve(args) -> int:
+    try:
+        from .web.server import serve
+    except ImportError as err:  # pragma: no cover - depends on the install
+        raise SystemExit(f"The web app needs FastAPI and uvicorn: pip install -e \".[web]\" ({err})")
+    serve(args.host, args.port, args.jobs, args.atelier, args.token, args.open, args.max_upload_mb)
+    return 0
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="duet-arranger", description=__doc__)
     p.add_argument("-v", "--verbose", action="store_true")
@@ -197,6 +211,15 @@ def main(argv=None) -> int:
     d.add_argument("--tuning", default="auto")
     d.add_argument("--capo", default="auto")
     d.set_defaults(func=cmd_demo)
+    w = sub.add_parser("serve", help="run the web app (upload a song in your browser)")
+    w.add_argument("--host", default="127.0.0.1", help="0.0.0.0 to reach it from other devices")
+    w.add_argument("--port", type=int, default=int(os.environ.get("PORT", 8000)))
+    w.add_argument("--jobs", default=os.environ.get("DUET_JOBS_DIR", "duet-jobs"), help="folder for uploads and results")
+    w.add_argument("--atelier", default=None, help="folder of an Atelier checkout to serve, or the URL of a hosted Atelier")
+    w.add_argument("--token", default=None, help="require this access token (for a server others can reach)")
+    w.add_argument("--max-upload-mb", type=int, default=300)
+    w.add_argument("--open", action="store_true", help="open the browser")
+    w.set_defaults(func=cmd_serve)
     t = sub.add_parser("tunings", help="list named tunings")
     t.set_defaults(func=cmd_tunings)
     v = sub.add_parser("audit", help="check an Atelier project for physically impossible passages")

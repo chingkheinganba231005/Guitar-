@@ -211,7 +211,7 @@ def track_bars(song: Song, g: GuitarArrangement, track_index: int, grid: Grid, f
         if last_meter is not None and bar.meter != last_meter:
             b["meter"] = list(bar.meter)
         last_meter = bar.meter
-        tempo = round(bar.tempo, 1)
+        tempo = float(round(bar.tempo))
         if last_tempo is not None and abs(tempo - last_tempo) >= 1.0:
             b["tempo"] = tempo
             last_tempo = tempo
@@ -260,7 +260,7 @@ def to_atelier(arr: Arrangement, title: str | None = None, artist: str | None = 
         "title": t[:300],
         "subtitle": f"Fingerstyle guitar duet · {key}"[:300],
         "composer": (f"{a} · arr. for two guitars" if a else "Arranged for two guitars")[:300],
-        "tempo": round(first.tempo, 1) if first else 90,
+        "tempo": float(round(first.tempo)) if first else 90,
         "meter": list(first.meter) if first else [4, 4],
         "defaultLetRing": False,
         "activeTrack": 0,

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#172e29" />
+    <title>Duet Arranger</title>
+    <meta name="description" content="Turn a song into a playable fingerstyle duet for two guitars and open the tabs in Atelier." />
+    <link rel="stylesheet" href="/static/style.css" />
+    <script defer src="/static/app.js"></script>
+  </head>
+  <body>
+    <header class="top">
+      <a class="brand" href="/" aria-label="Duet Arranger home">
+        <span class="brand-mark" aria-hidden="true">II</span>
+        <span>Duet Arranger<small>ONE SONG · TWO GUITARS</small></span>
+      </a>
+      <div class="top-actions">
+        <span id="audio-status" class="pill" hidden></span>
+        <a id="atelier-link" class="quiet-link" href="#" target="_blank" rel="noopener">Atelier ↗</a>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="side">
+        <form id="new-form" class="card" autocomplete="off">
+          <div class="eyebrow">NEW ARRANGEMENT</div>
+          <label id="drop" class="drop" tabindex="0">
+            <input id="file" name="file" type="file" hidden />
+            <span class="drop-icon" aria-hidden="true">♫</span>
+            <strong id="drop-title">Drop a song here</strong>
+            <small id="drop-sub">or choose a file · MP3, WAV, FLAC, M4A, OGG or MIDI</small>
+          </label>
+          <div class="row">
+            <label class="field"><span>Title</span><input id="title" name="title" maxlength="120" placeholder="From the file name" /></label>
+            <label class="field"><span>Artist</span><input id="artist" name="artist" maxlength="120" placeholder="Optional" /></label>
+          </div>
+          <details id="choices" class="choices">
+            <summary>Arrangement choices <small>all automatic by default</small></summary>
+            <div class="row">
+              <label class="field"><span>Guitar I tuning</span><select id="tuning1" name="tuning1"></select></label>
+              <label class="field"><span>Guitar II tuning</span><select id="tuning2" name="tuning2"></select></label>
+            </div>
+            <div class="row" id="custom-row" hidden>
+              <label class="field"><span>Custom Guitar I · low → high</span><input id="custom1" placeholder="e.g. C G D G B D" /></label>
+              <label class="field"><span>Custom Guitar II · low → high</span><input id="custom2" placeholder="e.g. D A D F# A D" /></label>
+            </div>
+            <div class="row">
+              <label class="field"><span>Capo</span>
+                <select id="capo" name="capo">
+                  <option value="auto">Only if truly needed</option>
+                  <option value="none">Never</option>
+                  <option value="1">Fret 1</option><option value="2">Fret 2</option><option value="3">Fret 3</option><option value="4">Fret 4</option><option value="5">Fret 5</option><option value="7">Fret 7</option>
+                </select>
+              </label>
+              <label class="field"><span>Percussion</span>
+                <select id="percussion" name="percussion">
+                  <option value="auto">From the drums</option>
+                  <option value="on">Always</option>
+                  <option value="off">Never</option>
+                </select>
+              </label>
+            </div>
+            <div class="row">
+              <label class="field"><span>Highest fret you use</span><input id="max_fret" name="max_fret" type="number" min="12" max="24" value="20" /></label>
+              <label class="field"><span>Texture · <b id="difficulty-label">full</b></span><input id="difficulty" name="difficulty" type="range" min="0.6" max="1" step="0.1" value="1" /></label>
+            </div>
+            <label class="check"><input id="harmonics" name="harmonics" type="checkbox" checked /> Harmonics where the song is soft</label>
+            <label class="check"><input id="taps" name="taps" type="checkbox" checked /> Right-hand taps for out-of-reach notes</label>
+          </details>
+          <button id="submit" class="primary" type="submit" disabled>Arrange for two guitars</button>
+          <div class="demo-row">
+            <span>No song at hand?</span>
+            <button type="button" class="link" data-demo="pop">Pop demo</button>
+            <span aria-hidden="true">·</span>
+            <button type="button" class="link" data-demo="ballad">Ballad demo</button>
+          </div>
+          <p id="form-error" class="error" role="alert" hidden></p>
+        </form>
+
+        <section class="card">
+          <div class="eyebrow">YOUR ARRANGEMENTS</div>
+          <ul id="history" class="history"></ul>
+          <p id="history-empty" class="muted">Arrangements you make appear here and stay on this computer.</p>
+        </section>
+      </aside>
+
+      <main id="main" class="main">
+        <section id="welcome" class="welcome">
+          <h1>Your song, for two guitars.</h1>
+          <p class="lead">Duet Arranger listens to a recording, takes it apart and writes a fingerstyle duet that stays close to the original — then hands the tabs to Atelier.</p>
+          <ol class="steps">
+            <li><span>1</span><div><strong>Separate</strong><small>Vocals, drums, bass, guitar, piano and the rest, each on its own track.</small></div></li>
+            <li><span>2</span><div><strong>Transcribe</strong><small>Every stem becomes notes; the beat, bars, key, chords and sections are found.</small></div></li>
+            <li><span>3</span><div><strong>Arrange</strong><small>Guitar I sings the melody, Guitar II carries bass, harmony and — only for drum-driven songs — percussion.</small></div></li>
+            <li><span>4</span><div><strong>Finger</strong><small>Every tuning and capo is tried; each note gets a string, a fret and a finger a real hand can reach.</small></div></li>
+          </ol>
+        </section>
+
+        <section id="job" class="job" hidden>
+          <div class="job-head">
+            <div>
+              <div class="eyebrow" id="job-kind">ARRANGEMENT</div>
+              <h2 id="job-title"></h2>
+              <div id="job-sub" class="muted"></div>
+            </div>
+            <div class="job-actions">
+              <span id="job-state" class="state"></span>
+              <button id="cancel" class="quiet" hidden>Cancel</button>
+              <button id="delete" class="quiet danger" hidden>Delete</button>
+            </div>
+          </div>
+
+          <div id="progress" class="card progress" hidden>
+            <div class="bar"><span id="bar-fill"></span></div>
+            <div class="progress-meta"><span id="progress-message"></span><span id="elapsed"></span></div>
+            <ol id="stages" class="stages"></ol>
+          </div>
+
+          <div id="failure" class="card failure" hidden>
+            <strong>The arrangement stopped.</strong>
+            <p id="failure-text"></p>
+          </div>
+
+          <div id="result" hidden>
+            <div id="facts" class="facts"></div>
+            <div id="audit" class="audit"></div>
+            <div id="guitars" class="guitars"></div>
+            <div class="open-row">
+              <a id="open-atelier" class="primary" href="#" target="_blank" rel="noopener">Open the duet in Atelier ↗</a>
+              <button id="show-here" class="quiet">Show the tabs here</button>
+              <div class="downloads" id="downloads"></div>
+            </div>
+            <nav class="tabs" role="tablist">
+              <button role="tab" data-tab="atelier" aria-selected="true">Score</button>
+              <button role="tab" data-tab="tab">Text tab</button>
+              <button role="tab" data-tab="stems">Stems</button>
+              <button role="tab" data-tab="choices">Tunings tried</button>
+              <button role="tab" data-tab="song">Song</button>
+            </nav>
+            <div class="panel" data-panel="atelier">
+              <div id="atelier-frame-wrap" class="frame-wrap">
+                <p class="muted" id="atelier-hint">Choose “Show the tabs here” to read and play both guitars in Atelier without leaving this page. The embedded copy never touches the score you keep in Atelier.</p>
+              </div>
+            </div>
+            <div class="panel" data-panel="tab" hidden><pre id="text-tab" class="text-tab">Loading…</pre></div>
+            <div class="panel" data-panel="stems" hidden><div id="stems" class="stems"></div></div>
+            <div class="panel" data-panel="choices" hidden><div id="alternatives"></div></div>
+            <div class="panel" data-panel="song" hidden><div id="song-info"></div></div>
+
+            <form id="again" class="card again">
+              <div>
+                <strong>Not quite right?</strong>
+                <span class="muted">Change the choices on the left and arrange again. The separated stems and transcription are reused, so it takes seconds.</span>
+              </div>
+              <button class="quiet" type="submit">Arrange again with these choices</button>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status"></div>
+  </body>
+</html>

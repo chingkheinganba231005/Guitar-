@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 from ..fingering import Solution, Solver, SolverConfig, note_options, Item
 from ..guitar import NATURAL_HARMONICS, STANDARD, Tuning, key_shifted_tunings
 from ..model import TPQ, Hit, Note, Song
+from ..progress import report
 from ..quantize import snap_notes
 from ..theory import chord_pcs, scale_pcs
 from .accomp import comp_part
@@ -241,7 +242,9 @@ def sample_content(content: list[Note], hits: list[Hit], song: Song, max_bars: i
     return c, h
 
 
-def choose_and_solve(song: Song, role: str, name: str, opts: ArrangeOptions, lead_notes: list[Note] | None, index: int) -> GuitarArrangement:
+def choose_and_solve(song: Song, role: str, name: str, opts: ArrangeOptions, lead_notes: list[Note] | None, index: int, progress=None) -> GuitarArrangement:
+    stage = "guitar1" if role == "lead" else "guitar2"
+    report(progress, stage, 0.0, f"{name}: trying every tuning and capo")
     cfg_full = SolverConfig(max_fret=opts.max_fret, beam=opts.beam, per_key=18, allow_taps=opts.taps, allow_harmonics=opts.harmonics, percussive=bool(song.percussive and role == "accomp"))
     cfg_fast = SolverConfig(max_fret=opts.max_fret, beam=6, per_key=6, allow_taps=opts.taps, allow_harmonics=opts.harmonics, percussive=cfg_full.percussive)
     tunings = candidate_tunings(song, opts, index)
@@ -260,6 +263,7 @@ def choose_and_solve(song: Song, role: str, name: str, opts: ArrangeOptions, lea
                 s = per_note - bonus + tuning_penalty(t, capo, opts) + capo_penalty(per_note, capo, opts)
                 screened.append((s, t, capo, shift))
     screened.sort(key=lambda x: x[0])
+    report(progress, stage, 0.15, f"{name}: {len(screened)} set-ups screened, fingering the best")
     stage2 = screened[: max(6, opts.screen_top * 3)]
     for t in tunings:  # standard tuning without capo always gets a real hearing
         if t.pitches == STANDARD and 0 in capos:
@@ -268,7 +272,8 @@ def choose_and_solve(song: Song, role: str, name: str, opts: ArrangeOptions, lea
                     stage2.append((0.0, t, 0, shift))
     # Stage 2: fast search on a sample of bars
     fast = []
-    for s, t, capo, shift in stage2:
+    for k2, (s, t, capo, shift) in enumerate(stage2):
+        report(progress, stage, 0.15 + 0.3 * k2 / max(1, len(stage2)), f"{name}: quick fingering in {t.name}{' capo ' + str(capo) if capo else ''}")
         content, hits = build_content(song, role, t.pitches, capo, lead_notes, opts, shift)
         c, h = sample_content(content, hits, song)
         try:
@@ -285,7 +290,8 @@ def choose_and_solve(song: Song, role: str, name: str, opts: ArrangeOptions, lea
         finalists.append(std[0])
     best = None
     considered = []
-    for _, t, capo, shift in finalists:
+    for k3, (_, t, capo, shift) in enumerate(finalists):
+        report(progress, stage, 0.45 + 0.55 * k3 / max(1, len(finalists)), f"{name}: full fingering in {t.name}{' capo ' + str(capo) if capo else ''}")
         content, hits = build_content(song, role, t.pitches, capo, lead_notes, opts, shift)
         try:
             sol = Solver(t.pitches, capo, cfg_full, song.seconds_at).solve(content, hits)
@@ -304,18 +310,19 @@ def choose_and_solve(song: Song, role: str, name: str, opts: ArrangeOptions, lea
     best.stats["search_seconds"] = round(time.time() - t0, 1)
     best.stats["screened"] = len(screened)
     log.info("%s: %s capo %d (score %.3f) in %.1fs", name, best.tuning.name, best.capo, best.score, time.time() - t0)
+    report(progress, stage, 1.0, f"{name}: {best.tuning.name}{' · capo ' + str(best.capo) if best.capo else ' · no capo'}")
     return best
 
 
-def arrange(song: Song, opts: ArrangeOptions | None = None) -> Arrangement:
+def arrange(song: Song, opts: ArrangeOptions | None = None, progress=None) -> Arrangement:
     opts = opts or ArrangeOptions()
     if opts.percussion == "on":
         song.percussive = True
     elif opts.percussion == "off":
         song.percussive = False
-    lead = choose_and_solve(song, "lead", "Guitar I", opts, None, 0)
+    lead = choose_and_solve(song, "lead", "Guitar I", opts, None, 0, progress)
     lead_notes = [n for n in lead.content]
-    accomp = choose_and_solve(song, "accomp", "Guitar II", opts, lead_notes, 1)
+    accomp = choose_and_solve(song, "accomp", "Guitar II", opts, lead_notes, 1, progress)
     mel_index = LineIndex([n for n in lead_notes if n.role == "melody"])
     for g in (lead, accomp):
         g.placed = placed_notes(g.solution, song, g.tuning.pitches, g.capo)

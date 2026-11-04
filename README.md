@@ -1,6 +1,7 @@
 # Duet Arranger
 
-Give it a song. It separates the recording into vocals, drums, bass, guitar,
+A web app (and command-line tool) that turns a song into a two-guitar
+fingerstyle duet. Give it a song. It separates the recording into vocals, drums, bass, guitar,
 piano and other instruments, transcribes each part, and writes a
 **fingerstyle arrangement for two guitars** that stays as close to the
 original as two pairs of hands allow. The tabs open directly in
@@ -87,9 +88,61 @@ pip install --no-deps basic-pitch                       # Basic Pitch without it
 
 The first audio run downloads the Demucs `htdemucs_6s` model (~80 MB).
 Separation runs on the GPU when PyTorch sees one (`--device cuda` / `mps`),
-otherwise on the CPU (roughly half real time on four cores).
+otherwise on the CPU (on four cores a whole job takes roughly one to one and a half times the length of the song).
 
-## Use
+## Use it in the browser
+
+```bash
+pip install -e ".[web]"
+duet-arranger serve --open
+```
+
+This opens **http://localhost:8000**, where you:
+
+1. drop in a recording (or a MIDI file), optionally set title, artist and the
+   arrangement choices — tunings for each guitar, capo, percussion, harmonics,
+   taps, highest fret, texture;
+2. follow the progress stage by stage (separation, transcription, beat,
+   analysis, Guitar I, Guitar II, tabs) — and cancel if you like;
+3. get the result: key, tempo, meter, whether percussion was written, each
+   guitar's tuning and capo, the playability check, every tuning that was
+   tried, the separated stems to listen to, the text tab and downloads;
+4. **open the duet in Atelier** — embedded in the page, or in its own window —
+   to read, play, edit and print both guitars;
+5. **arrange again** with different choices: the separated stems and the
+   transcription are reused, so it takes seconds instead of minutes.
+
+Arrangements are kept in `duet-jobs/` (change with `--jobs`) and survive a
+restart. The page also offers the built-in pop and ballad demos, and works
+without the audio extras for MIDI files.
+
+Atelier is served by the app itself when a checkout is found next to this
+repository (`../atelier-fingerstyle`), in `ATELIER_DIR`, or with
+`--atelier /path/to/atelier-fingerstyle`; otherwise the hosted Atelier is
+used and the duet is handed over between the windows. The embedded Atelier
+keeps its own storage, so it never overwrites the score you keep in Atelier;
+when a duet opens in the full Atelier your previous score stays one
+**File → Restore previous score** away.
+
+### On a server
+
+`duet-arranger serve --host 0.0.0.0 --token SOMESECRET` makes it reachable from
+other devices and asks visitors for the token. A `Dockerfile` builds the whole
+thing — Python, ffmpeg, PyTorch (CPU), Demucs with its model baked in, Basic
+Pitch and Atelier:
+
+```bash
+docker build -t duet-arranger .
+docker run -p 8000:8000 -v duet-jobs:/data -e DUET_ACCESS_TOKEN=SOMESECRET duet-arranger
+```
+
+Separation is the slow part: on a 4-core CPU a whole job takes roughly one to
+one and a half times the length of the song (a 64-second clip took 84 seconds
+in the container); a GPU cuts separation to seconds (use a CUDA PyTorch build).
+It cannot run as a static site such as GitHub Pages because the models need
+Python.
+
+## Use it from the command line
 
 ```bash
 duet-arranger arrange "My Song.mp3" -o output --title "My Song" --artist "Someone"
@@ -125,6 +178,7 @@ drums are recognised automatically.
 Other commands:
 
 ```bash
+duet-arranger serve                   # the web app (see above)
 duet-arranger demo pop -o output      # arrange the built-in demo song (pop or ballad)
 duet-arranger tunings                 # list named tunings
 duet-arranger audit file.atelier.json # check any Atelier project for unplayable passages
@@ -157,12 +211,14 @@ tunings. Open the `.atelier.json` with **File → Import Atelier project**.
 | `arrange/techniques.py` | legato, slides, vibrato, scoops, accents, taps |
 | `export/atelier.py` | Atelier v2 writer (durations, tuplets, ties) |
 | `validate.py` | independent playability audit |
+| `web/server.py`, `web/jobs.py` | web app: API, job queue, progress, Atelier hosting |
+| `web/static/` | the browser front end |
 
 ## Tests
 
 ```bash
-pip install -e ".[dev]"
-pytest                          # fretboard rules, solver, arrangements, MIDI round trip
+pip install -e ".[dev,web]"
+pytest                          # fretboard rules, solver, arrangements, MIDI round trip, web API
 DUET_AUDIO_TESTS=1 pytest       # also runs Demucs + Basic Pitch on a synthesised song
 ```
 
