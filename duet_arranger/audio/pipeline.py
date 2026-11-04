@@ -103,7 +103,7 @@ def analyze_audio(path: str, workdir: str, title: str | None = None, artist: str
         "hits": len(song.hits),
         "drum_prominence": round(prom, 3),
     }
-    with open(os.path.join(workdir, "analysis.json"), "w") as f:
+    with open(os.path.join(workdir, "analysis.json"), "w", encoding="utf-8") as f:
         json.dump(song_summary(song), f, indent=1)
     return song
 

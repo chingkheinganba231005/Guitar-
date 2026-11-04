@@ -186,7 +186,16 @@ def cmd_serve(args) -> int:
     return 0
 
 
+def _force_utf8() -> None:
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+
+
 def main(argv=None) -> int:
+    _force_utf8()
     p = argparse.ArgumentParser(prog="duet-arranger", description=__doc__)
     p.add_argument("-v", "--verbose", action="store_true")
     sub = p.add_subparsers(dest="cmd", required=True)

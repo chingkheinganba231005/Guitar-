@@ -262,7 +262,7 @@ def harmonic_rhythm_octave(times: np.ndarray, notes: list) -> np.ndarray:
     if spacing >= 7:
         even = np.sum(changes % 2 == 0)
         ph = 0 if even >= len(changes) - even else 1
-        log.info("Harmonic rhythm suggests half time (%.0f → %.0f BPM)", bpm, bpm / 2)
+        log.info("Harmonic rhythm suggests half time (%.0f to %.0f BPM)", bpm, bpm / 2)
         return times[ph::2]
     return times
 

@@ -120,7 +120,7 @@ def key_shifted_tunings(tonic: int, mode: str) -> list[Tuning]:
                 if shift == 0 or not -5 <= shift <= 2:
                     continue
                 shifted = tuple(p + shift for p in pitches)
-                tt = Tuning(f"{name} → {pc_name(target)} ({'+' if shift > 0 else ''}{shift})", shifted)
+                tt = Tuning(f"{name} to {pc_name(target)} ({'+' if shift > 0 else ''}{shift})", shifted)
                 if tt.tension_penalty() is not None and shifted not in out:
                     out[shifted] = tt
     return list(out.values())
