@@ -14,6 +14,44 @@ song.mp3 ──► Demucs stems ──► Basic Pitch notes ──► beat / key
          ──► tuning & capo search ──► physical fingering search ──► Atelier duet
 ```
 
+## Also in this repository: Stem Studio
+
+`stem-studio` is a second app for studying a song instrument by instrument.
+Give it a song **or a video** (MP3, WAV, M4A, FLAC · MP4, MOV, MKV, WEBM …).
+It separates the vocals, piano/keys, guitar, strings/synth, bass and drums,
+works out what each one plays, and then plays the song back while you watch
+every instrument in real time:
+
+* **Original or separated:** hear the original recording, or switch to the
+  separated tracks and give each one its own volume, mute and solo (touching
+  any track's control switches to the separated tracks). Every track also
+  downloads as an MP3.
+* **Live note lanes:** a scrolling lane per instrument with each note drawn
+  where and when it is played, named (D4, Bb3 …). Tap a note for its exact
+  start, end, bar and beat; tap empty space to jump there.
+* **Piano:** the notes plus the piano's own chord names, and a keyboard that
+  lights up the keys being played. Any note lane can show a keyboard (⌨).
+* **Guitar:** chord names only (no note-by-note transcription), current and
+  next.
+* **Strings/synth, vocals, bass:** the notes they play (strings also get
+  chord names); **drums:** kick, snare and hi-hat hits.
+* **The whole band:** the chord now and the next one with a countdown, bar
+  and beat, key, meter and tempo, and an overview strip of the whole song
+  with its chords and bar numbers to jump around.
+
+```bash
+stem-studio serve --open          # http://localhost:8001
+stem-studio analyse song.mp4 -o out   # the same analysis without the web app
+```
+
+In Codespaces it starts next to the Duet Arranger on port **8001** (open the
+Ports tab). Separation needs the same audio extras as the Duet Arranger; a
+four-minute song takes a few minutes on a CPU. Playback is sample-accurate
+(Web Audio): every track starts on the same sample, so the lanes, the
+original and the separated tracks never drift apart. The separated tracks are
+mono MP3s to keep a phone's or tablet's memory in check; the original stays
+stereo.
+
 ## What it decides for you
 
 **Who plays what.** Guitar I is a complete solo fingerstyle part — it would

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#111418" />
+    <title>Stem Studio</title>
+    <meta name="description" content="Separate a song or video into its instruments, play them on their own volumes and watch what every instrument plays in real time." />
+    <link rel="stylesheet" href="/static/style.css" />
+    <script defer src="/static/app.js"></script>
+  </head>
+  <body>
+    <header class="top">
+      <a class="brand" href="/" aria-label="Stem Studio home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span>Stem Studio<small>SEE WHAT EVERY INSTRUMENT PLAYS · <span id="version">…</span></small></span>
+      </a>
+      <span id="audio-status" class="pill warn" hidden></span>
+    </header>
+
+    <div class="layout">
+      <aside class="side">
+        <form id="upload" class="card" autocomplete="off">
+          <div class="eyebrow">NEW SONG</div>
+          <label id="drop" class="drop" tabindex="0">
+            <input id="file" name="file" type="file" hidden />
+            <span class="drop-icon" aria-hidden="true">♪</span>
+            <strong id="drop-title">Drop a song or a video</strong>
+            <small id="drop-sub">MP3, WAV, M4A, FLAC · MP4, MOV, MKV, WEBM</small>
+          </label>
+          <label class="field"><span>Title</span><input id="title" maxlength="120" placeholder="From the file name" /></label>
+          <button id="submit" class="primary" type="submit" disabled>Separate and analyse</button>
+          <div id="upload-bar" class="bar" hidden><span></span></div>
+          <p id="form-error" class="error" role="alert" hidden></p>
+        </form>
+        <section class="card">
+          <div class="eyebrow">YOUR SONGS</div>
+          <ul id="songs" class="songs"></ul>
+          <p id="songs-empty" class="muted">Songs you analyse appear here and stay on this computer.</p>
+        </section>
+      </aside>
+
+      <main class="main">
+        <section id="welcome" class="welcome">
+          <h1>Every instrument, on its own.</h1>
+          <p class="lead">Give it a song or a video. Stem Studio separates the vocals, piano, guitar, strings and synths, bass and drums, works out what each one plays, then plays the song back with every track on its own fader — while you watch the notes and chords go by.</p>
+          <ol class="steps">
+            <li><span>1</span><div><strong>Separate</strong><small>Vocals · piano/keys · guitar · strings/synth · bass · drums.</small></div></li>
+            <li><span>2</span><div><strong>Transcribe</strong><small>The notes of the voice, piano, strings and bass; the guitar's chords; the drum hits; the beat and the bars.</small></div></li>
+            <li><span>3</span><div><strong>Play &amp; watch</strong><small>Hear the original or any mix of tracks and follow each instrument in real time.</small></div></li>
+          </ol>
+        </section>
+
+        <section id="working" class="card working" hidden>
+          <div class="job-head">
+            <div><div class="eyebrow">ANALYSING</div><h2 id="work-title"></h2></div>
+            <button id="cancel" class="quiet">Cancel</button>
+          </div>
+          <div class="bar big"><span id="work-fill"></span></div>
+          <div class="progress-meta"><span id="work-msg"></span><span id="work-time"></span></div>
+          <ol id="work-stages" class="stages"></ol>
+          <p class="muted small">A four-minute song takes a few minutes on a laptop CPU. You can close this page; it keeps going.</p>
+          <p id="work-error" class="error" hidden></p>
+        </section>
+
+        <section id="player" class="player" hidden>
+          <div class="song-head">
+            <div>
+              <h2 id="song-title"></h2>
+              <div id="song-facts" class="facts"></div>
+            </div>
+            <div class="head-actions">
+              <button id="delete" class="quiet danger" title="Delete this song">Delete</button>
+            </div>
+          </div>
+
+          <div id="loading" class="card loading" hidden>
+            <div class="bar"><span id="load-fill"></span></div>
+            <span id="load-msg">Loading the tracks…</span>
+          </div>
+
+          <div class="transport card">
+            <div class="buttons">
+              <button id="back" class="round" title="Back 5 seconds (←)" aria-label="Back 5 seconds">−5</button>
+              <button id="play" class="round play" title="Play / pause (space)" aria-label="Play">▶</button>
+              <button id="fwd" class="round" title="Forward 5 seconds (→)" aria-label="Forward 5 seconds">+5</button>
+            </div>
+            <div class="clock">
+              <strong id="time">0:00.0</strong><span id="dur">/ 0:00</span>
+              <span id="barbeat" class="barbeat">Bar 1 · 1</span>
+            </div>
+            <div class="mode" role="radiogroup" aria-label="What you hear">
+              <button id="mode-original" role="radio" aria-checked="true">Original</button>
+              <button id="mode-stems" role="radio" aria-checked="false">Separated tracks</button>
+            </div>
+            <label class="zoom" title="How many seconds the lanes show">
+              <span>Zoom</span><input id="zoom" type="range" min="3" max="24" step="1" value="8" />
+            </label>
+            <label class="zoom" title="Overall volume">
+              <span>Volume</span><input id="master" type="range" min="0" max="1.5" step="0.01" value="1" />
+            </label>
+          </div>
+
+          <canvas id="overview" class="overview" height="56"></canvas>
+
+          <div class="now card">
+            <div class="now-chord">
+              <small>CHORD</small>
+              <strong id="now-chord">–</strong>
+              <span id="next-chord" class="muted"></span>
+            </div>
+            <div id="now-grid" class="now-grid"></div>
+          </div>
+
+          <div id="lanes" class="lanes"></div>
+          <p class="muted small hint">Tap a note to see exactly what it is and when it is played · tap empty space (or the strip above) to jump there · Space plays and pauses, ← → skip 5 s.</p>
+        </section>
+      </main>
+    </div>
+    <div id="tip" class="tip" hidden></div>
+    <div id="toast" class="toast" role="status"></div>
+  </body>
+</html>

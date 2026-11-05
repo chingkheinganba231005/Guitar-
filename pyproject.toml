@@ -36,12 +36,14 @@ dev = ["pytest>=8", "httpx>=0.27"]
 
 [project.scripts]
 duet-arranger = "duet_arranger.cli:main"
+stem-studio = "stem_studio.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["duet_arranger*"]
+include = ["duet_arranger*", "stem_studio*"]
 
 [tool.setuptools.package-data]
 "duet_arranger.web" = ["static/*"]
+"stem_studio" = ["static/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
