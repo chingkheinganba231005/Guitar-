@@ -175,3 +175,35 @@ def test_forced_tuning_and_capo():
     assert arr.guitars[0].tuning.name == "DADGAD" and arr.guitars[1].tuning.name == "Open G"
     assert all(g.capo == 2 for g in arr.guitars)
     assert audit_project(to_atelier(arr)) == []
+
+
+def test_a_low_sung_ballad_stays_in_its_octave_and_low_on_the_neck():
+    """A Thousand Years-like case: a 6/8 ballad sung around Bb3-Bb4. The tune
+    is played where it is sung (not an octave up at the 15th-20th fret), no
+    fretted note goes above the 14th fret, and nothing Guitar I plays cuts a
+    sustaining melody note short on its string."""
+    song = demo_song("sixeight")
+    for n in song.melody:
+        n.pitch -= 7
+    arr = arrange(song, ArrangeOptions())
+    g1 = arr.guitars[0]
+    assert g1.stats["melody_octave_shift"] == 0
+    assert audit_project(to_atelier(arr)) == []
+    for g in arr.guitars:
+        assert all(n.fret + g.capo <= 14 for n in g.placed if isinstance(n.fret, (int, float)) and not n.harmonic)
+    tune = [n for n in g1.placed if n.role == "melody"]
+    assert len(tune) == len(song.melody)
+    for m in tune:
+        assert not any(n is not m and n.string == m.string and m.start < n.start < m.end for n in g1.placed)
+    assert not any(n.harmonic == "natural" and n.fret == 5 for g in arr.guitars for n in g.placed)
+
+
+def test_fills_guitar_one_cannot_hold_go_to_guitar_two():
+    from duet_arranger.arrange.accomp import comp_part
+    from duet_arranger.model import Note
+
+    song = demo_song("ballad", bars_per_section=2)
+    t = song.bars[3].start + 12
+    fill = Note(t, t + 12, 69, role="handoff", priority=6.0)
+    out = comp_part(song, [fill], (64, 59, 55, 50, 45, 40), 0)
+    assert any(n.role == "fill" and n.start == t and n.pitch == 69 for n in out)

@@ -144,7 +144,7 @@ def register_bonus(content: list[Note], role: str) -> float:
     if not mel:
         return 0.0
     med = mel[len(mel) // 2]
-    return 0.3 * min(1.0, max(0.0, (med - 57) / 10))
+    return 0.3 * min(1.0, max(0.0, (med - 55) / 9))
 
 
 def resonance_bonus(tuning, capo: int, song: Song, role: str) -> float:
@@ -345,12 +345,15 @@ def arrange(song: Song, opts: ArrangeOptions | None = None, progress=None) -> Ar
         song.percussive = False
     lead = choose_and_solve(song, "lead", "Guitar I", opts, None, 0, progress)
     lead_notes = played_notes(lead.solution)
+    # Fills Guitar I had to leave out (they would have cut the sung tune short
+    # on its string) are Guitar II's to play.
+    lead_notes += [it.note.copy(role="handoff") for it in lead.solution.dropped if it.kind == "note" and it.note is not None and it.role == "fill"]
     accomp = choose_and_solve(song, "accomp", "Guitar II", opts, lead_notes, 1, progress)
     mel_index = LineIndex([n for n in lead_notes if n.role == "melody"])
     for g in (lead, accomp):
         g.placed = placed_notes(g.solution, song, g.tuning.pitches, g.capo)
         add_expression(g.placed, song)
-    accomp.placed += resonance_additions(accomp.placed, song, accomp.tuning.pitches, accomp.capo, mel_index, others=lead_notes)
+    accomp.placed += resonance_additions(accomp.placed, song, accomp.tuning.pitches, accomp.capo, mel_index, others=[n for n in lead_notes if n.role != "handoff"])
     # The solver may move a Guitar II voice by an octave onto a note Guitar I
     # strikes at that moment; one guitar playing it is enough.
     lead_attacks = {(n.start, n.pitch) for n in lead.placed if n.pitch is not None and n.fret != "x"}

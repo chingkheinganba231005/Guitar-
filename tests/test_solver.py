@@ -31,3 +31,22 @@ def test_capo_frets_are_relative():
     sol = Solver(STANDARD, 2, SolverConfig(), sec).solve(notes)
     r = sol.notes[0]
     assert sounding_pitch(r.option.place, STANDARD, 2) == 66
+
+
+def test_no_fifth_fret_harmonic_with_fretted_notes():
+    from duet_arranger.fingering import lh_eval
+
+    cfg = SolverConfig()
+    # a 5th-fret harmonic with open strings is fine, with a fretted note it is not
+    assert lh_eval([(3, 5, "touch")], {3: -1, 2: 0}, cfg) is not None
+    assert lh_eval([(3, 5, "touch"), (2, 7, "press")], {3: -1, 2: 7}, cfg) is None
+    # a 12th-fret harmonic next to a fretted note stays possible
+    assert lh_eval([(3, 12, "touch"), (2, 12, "press")], {3: -1, 2: 12}, cfg) is not None
+
+
+def test_tune_avoids_high_frets():
+    """A tune that fits low on the neck is not played up at the 15th fret."""
+    notes = [Note(i * TPQ, (i + 1) * TPQ, p, role="melody", priority=100.0) for i, p in enumerate([76, 74, 72, 71, 69, 67])]
+    sol = Solver(STANDARD, 0, SolverConfig(), lambda t: t / TPQ * 0.6).solve(notes)
+    frets = [r.option.place.fret for r in sol.notes if r.option.place.kind == "fret"]
+    assert frets and max(frets) <= 12

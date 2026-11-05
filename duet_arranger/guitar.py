@@ -67,7 +67,7 @@ NATURAL_HARMONICS: dict[float, tuple[int, float]] = {
     12: (12, 0.3),
     7: (19, 0.6),
     19: (19, 0.9),
-    5: (24, 2.8),
+    5: (24, 4.5),  # hard to hit cleanly and to combine with anything: rarely worth it
     4: (28, 4.0),
     9: (28, 4.0),
 }

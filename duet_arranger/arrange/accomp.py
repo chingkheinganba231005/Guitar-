@@ -264,6 +264,10 @@ def melody_octaves(song: Song, melody: list[Note], tuning, capo: int, bars: set[
 
 
 def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int, octaves: bool = True, max_fret: int = 20) -> list[Note]:
+    # Fills Guitar I could not play without cutting its sustaining tune come
+    # over to Guitar II (role "handoff" in Guitar I's notes).
+    handoff = [n.copy(role="fill", priority=6.0, tags=set(n.tags) - {"octave_ok"}) for n in lead_notes if n.role == "handoff"]
+    lead_notes = [n for n in lead_notes if n.role != "handoff"]
     melody = [n for n in lead_notes if n.role == "melody"]
     mel = LineIndex(melody)
     lead_all = LineIndex(sorted(lead_notes, key=lambda n: n.start))
@@ -439,6 +443,9 @@ def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int, octaves: bo
                         tags = ({"arp"} if above else {"octave_ok", "arp"}) | ({"prefer_harmonic"} if harp or above else set())
                         vel = (0.45 if above else 0.55) + 0.2 * energy
                         out.append(Note(t, ring_end, p, velocity=vel, role="comp", priority=2.6, source="pattern", tags=tags))
+    if handoff:
+        ticks = {n.start for n in handoff}
+        out = [n for n in out if not (n.role == "comp" and n.start in ticks)] + handoff
     if octaves:
         line = melody_octaves(song, melody, tuning, capo, chorus_bars(song) - lead_chord_bars, [bidx, lead_bass], max_fret)
         # On the tune's notes Guitar II's hands are on the octave; its pattern

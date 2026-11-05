@@ -14,7 +14,7 @@ from ..model import TPQ, Note, Song
 from ..theory import chord_pcs
 from .lines import LineIndex, bassline, best_octave_shift, gaps, monophonic, notes_between
 
-MELODY_LO, MELODY_HI, MELODY_TARGET = 57, 86, 70
+MELODY_LO, MELODY_HI, MELODY_TARGET = 57, 79, 68
 HARMONY_PARTS = ("piano", "guitar", "other", "keys", "synth", "strings", "lead")
 
 # Preferred intervals below the melody for a supporting voice (semitones -> cost)
@@ -68,24 +68,27 @@ def instrumental_line(song: Song, start: int, end: int, exclude: tuple = ()) -> 
 
 
 def register_score(pitches: list[int], shift: int) -> float:
-    """How well a melody sits on the guitar after an octave shift (higher is better)."""
+    """How well a melody sits on the guitar after an octave shift (higher is better).
+
+    Up to about E5 the tune sings on the first five frets to the 12th; above
+    that an acoustic thins out, so higher octaves pay for every note up there."""
     if not pitches:
         return 0.0
     total = 0.0
     for p in pitches:
         q = p + shift
-        if 57 <= q <= 79:
+        if 57 <= q <= 76:
             total += 1.0
-        elif 79 < q <= 84:
-            total += 0.7
-        elif q > 84:
-            total -= 1.0
+        elif 76 < q <= 79:
+            total += 0.4
+        elif q > 79:
+            total -= 1.5
         elif 52 <= q < 57:
             total += 0.5
         else:
             total -= 0.6
     med = sorted(pitches)[len(pitches) // 2] + shift
-    return total / len(pitches) - 0.006 * abs(med - 68)
+    return total / len(pitches) - 0.006 * abs(med - 66)
 
 
 def melody_shift_candidates(song: Song, keep: int = 2) -> list[int]:
@@ -217,9 +220,9 @@ def lead_chords(song: Song, regions: list[tuple[int, int]], tuning, capo: int) -
                     continue
                 nxt = ticks[k + 1] if k + 1 < len(ticks) else bar.end
                 tops = [n.pitch for n in notes if abs(n.start - t) <= 6]
-                top = place_in_range(max(tops), 62, 79) if tops else None
+                top = place_in_range(max(tops), 62, 76) if tops else None
                 pcs = chord_pcs(ch.root, ch.quality)
-                v = voicing(pcs, 55, 79, prev, 3, prefer_top=top)
+                v = voicing(pcs, 55, 76, prev, 3, prefer_top=top)
                 if not v:
                     continue
                 prev = v
@@ -511,8 +514,9 @@ def harmonic_colour(song: Song, melody: list[Note], tuning, capo: int) -> list[N
     for bi, bar in enumerate(song.bars):
         label = section_label(song, bar.start)
         quiet = energy_at(song, bar.start) < 0.42
-        if not (quiet or "intro" in label or "outro" in label or "bridge" in label):
-            continue
+        sung = any(bar.start <= n.start < bar.end for n in melody if "instrumental" not in n.tags)
+        if not ((quiet and not sung) or "intro" in label or "outro" in label or "bridge" in label):
+            continue  # under a sung verse harmonic chords only blur the tune
         ch = song.chord_at(bar.start)
         if ch is None:
             continue
@@ -542,7 +546,9 @@ def mark_harmonic_melody(song: Song, melody: list[Note]) -> None:
         phrase_end = nxt is None or nxt.start - m.end >= beat
         long = m.end - m.start >= 2 * beat
         label = section_label(song, m.start)
-        if long and phrase_end and (energy_at(song, m.start) < 0.55 or "outro" in label or "intro" in label):
+        # the sung tune keeps its full fretted voice; harmonics only colour a
+        # long last note of an intro or outro line, or the song's very last note
+        if long and phrase_end and ("outro" in label or "intro" in label or nxt is None):
             m.tags.add("prefer_harmonic")
 
 
@@ -565,7 +571,22 @@ def lead_part(song: Song, tuning, capo: int, density: float = 1.0, shift: int | 
     notes += lead_inner(song, melody, fl, bass, chord_bars, {n.start for n in bells}, density)
     notes += lead_chords(song, regions, tuning, capo)
     notes += bells
+    sustain_melody(song, melody)
     return dedupe(notes)
+
+
+def sustain_melody(song: Song, melody: list[Note]) -> None:
+    """A singer holds each note into the next one; the transcription often
+    ends it early. The tune rings on until the next tune note (at most a beat
+    past its written end), so the fingering keeps that string free: no fill,
+    inner voice or bass may cut a sustaining melody note short (a fill that
+    would is handed to Guitar II)."""
+    for i, m in enumerate(melody):
+        if "instrumental" in m.tags:
+            continue
+        beat = beat_ticks_at(song, m.start)
+        nxt = melody[i + 1].start if i + 1 < len(melody) else song.end_tick
+        m.end = max(m.end, min(nxt, m.end + beat))
 
 
 def dedupe(notes: list[Note]) -> list[Note]:

@@ -71,12 +71,25 @@ Tunings win when they make the part easier *and* when their open strings
 belong to the song: free open strings that are chord tones are added to chord
 attacks so the guitar rings on every string it can.
 
-**Harmonics where the song is soft.** Long, exposed melody notes and quiet
-intros/outros use natural harmonics, mostly at the 12th and 7th frets (they
-ring clearly and sustain); the 5th, 4th and 9th-fret nodes are kept for rare
-cases, and artificial (harp) harmonics cover notes off the nodes. Guitar II's
-arpeggios become harmonic arpeggios in soft passages, and it rings a harmonic
-chord tone over Guitar I's chords in soft chordal intros.
+**Harmonics where the song is soft.** Quiet intros, outros and bridges and
+the long last notes of their lines use natural harmonics, mostly at the 12th
+and 7th frets (they ring clearly and sustain); the 5th, 4th and 9th-fret
+nodes are kept for rare cases and never played together with fretted notes,
+and artificial (harp) harmonics cover notes off the nodes. A sung verse keeps
+the tune in its full fretted voice. Guitar II's arpeggios become harmonic
+arpeggios in soft passages, and it rings a harmonic chord tone over Guitar
+I's chords in soft chordal intros.
+
+**Low on the neck.** Above the 12th fret an acoustic sounds thin, so the tune
+is played in the octave it is sung in whenever that fits the guitar, high
+frets are steeply dearer for every voice (nothing above the 14th in
+practice), and a tune note that could only be reached up there becomes a
+12th or 7th-fret harmonic.
+
+**The tune comes first.** A sung note rings until the next one (the
+transcription usually ends it early), and nothing else Guitar I plays may cut
+it short on its string; a fill that could only be played that way is handed
+to Guitar II.
 
 **A capo only when it is really necessary.** Every capo position is tried,
 but a capo is only chosen when it removes a large share of the effort (about

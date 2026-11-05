@@ -124,7 +124,9 @@ def note_options(item: Item, tuning, capo: int, cfg: SolverConfig, beat_ticks: i
                 kind = "open" if f == 0 else "fret"
                 c = 0.1
                 if kind == "fret":
-                    c += 0.035 * f + 0.12 * max(0, f - 12)
+                    # above the 12th fret an acoustic sounds thin: steeply dearer, so the
+                    # tune moves down an octave or onto a harmonic instead
+                    c += 0.035 * f + (0.5 if _melodic_role(role) else 0.35) * max(0, f + capo - 12) + 0.6 * max(0, f + capo - 14)
                 if _melodic_role(role):
                     c += {6: 1.4, 5: 1.0, 4: 0.35}.get(s, 0.0)
                     if kind == "open":
@@ -160,6 +162,12 @@ def note_options(item: Item, tuning, capo: int, cfg: SolverConfig, beat_ticks: i
                 if 0 <= fa <= 12 and fa + 12 + capo <= 24 and (prefer_h or harmonic_only):
                     c = 1.9 + (0.3 if fa > 0 else 0.0) - (0.6 if prefer_h else 0.0)
                     opts.append(Option((Placement(s, fa, "ah"),), c + shift_cost, p, shift))
+    if _melodic_role(role):
+        # A tune note only reachable high up the neck: a 12th/7th-fret harmonic
+        # rings sweeter there than a thin high fret.
+        low_fret = any(o.shift == 0 and o.places and o.place.kind in ("fret", "open") and o.place.fret + capo <= 14 for o in opts)
+        if not low_fret:
+            opts = [Option(o.places, o.cost - 2.4, o.pitch, o.shift, o.techs, o.attach, o.label) if o.places and o.place.kind == "nh" and o.place.fret in (12, 7, 19) else o for o in opts]
     if role == "melody" and not any(o.shift == 0 for o in opts):
         # Out of range: an octave displacement beats losing a melody note.
         for shift in (12, -12, 24, -24):
@@ -222,6 +230,10 @@ def lh_eval(points, played: dict[int, float], cfg: SolverConfig):
     """
     if not points:
         return 0.0, None, False
+    touches = [f for s, f, mode in points if mode == "touch"]
+    presses = [f for s, f, mode in points if mode == "press"]
+    if touches and presses and any(f in (4, 5, 9) for f in touches):
+        return None  # a 5th-fret (or 4th/9th) harmonic needs the hand free: no fretted notes with it
     frets = [p[1] for p in points]
     lo = min(frets)
     hi = max(frets)
@@ -285,6 +297,8 @@ def lh_eval(points, played: dict[int, float], cfg: SolverConfig):
         else:
             return None
     cost += 0.12 * fingers
+    if touches and presses:
+        cost += 0.8  # touching a node while other fingers fret is delicate
     reach = comf if span <= comf else max_span(lo)
     interval = (max(1, hi - reach), lo)
     return cost, interval, thumb
