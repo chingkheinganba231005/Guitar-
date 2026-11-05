@@ -5677,8 +5677,8 @@
       "melody_octave_shift": 0
      }
     ],
-    "search_seconds": 4.2,
-    "screened": 352
+    "search_seconds": 4.1,
+    "screened": 272
    },
    {
     "name": "Guitar II",
@@ -5753,11 +5753,11 @@
       "open_string_resonance_notes": 19
      }
     ],
-    "search_seconds": 2.0,
-    "screened": 176
+    "search_seconds": 1.8,
+    "screened": 136
    }
   ],
-  "version": "0.4.2",
+  "version": "0.4.3",
   "analysis_version": 4,
   "playability_issues": []
  }

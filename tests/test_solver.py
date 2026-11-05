@@ -50,3 +50,19 @@ def test_tune_avoids_high_frets():
     sol = Solver(STANDARD, 0, SolverConfig(), lambda t: t / TPQ * 0.6).solve(notes)
     frets = [r.option.place.fret for r in sol.notes if r.option.place.kind == "fret"]
     assert frets and max(frets) <= 12
+
+
+def test_a_far_jump_for_a_fill_never_cuts_a_ringing_tune_note():
+    """A tune note held at the 10th fret, then a fill only playable at the 1st:
+    the hand cannot leave the tune note, so the fill moves to an octave the
+    hand reaches from there, or is left out (for Guitar II)."""
+    mel = Note(0, 3 * TPQ, 74, role="melody", priority=100.0)
+    fill = Note(TPQ, 2 * TPQ, 41, role="fill", priority=6.0)
+    sol = Solver(STANDARD, 0, SolverConfig(), lambda t: t / TPQ * 0.8).solve([mel, fill])
+    kept = {r.item.role: r for r in sol.notes}
+    assert "melody" in kept and kept["melody"].end == 3 * TPQ
+    m = kept["melody"].option.place
+    if "fill" in kept:
+        f = kept["fill"].option.place
+        assert f.string != m.string
+        assert f.kind == "open" or abs(f.fret - m.fret) <= 5

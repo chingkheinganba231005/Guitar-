@@ -99,6 +99,11 @@ class Tuning:
                 cost += 0.08 * d * d
         return cost
 
+    def raises_strings(self) -> bool:
+        """Does it tune any string above standard pitch? (Extra tension: the
+        automatic search never asks for that; a tuning you name may.)"""
+        return any(p > s for p, s in zip(self.pitches, STANDARD))
+
     def changed_strings(self) -> int:
         return sum(1 for p, s in zip(self.pitches, STANDARD) if p != s)
 
@@ -117,7 +122,7 @@ def key_shifted_tunings(tonic: int, mode: str) -> list[Tuning]:
     out: dict[tuple, Tuning] = {}
     for name, pitches in NAMED_TUNINGS.items():
         t = Tuning(name, pitches, flats)
-        if t.tension_penalty() is not None:
+        if t.tension_penalty() is not None and not t.raises_strings():
             out[pitches] = t
         if name in TUNING_HOME_KEY:
             home, modes = TUNING_HOME_KEY[name]
@@ -129,7 +134,7 @@ def key_shifted_tunings(tonic: int, mode: str) -> list[Tuning]:
                     continue
                 shifted = tuple(p + shift for p in pitches)
                 tt = Tuning(f"{name} to {pc_name(target, flats)} ({'+' if shift > 0 else ''}{shift})", shifted, flats)
-                if tt.tension_penalty() is not None and shifted not in out:
+                if tt.tension_penalty() is not None and not tt.raises_strings() and shifted not in out:
                     out[shifted] = tt
     return list(out.values())
 

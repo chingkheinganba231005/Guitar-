@@ -13,7 +13,7 @@ from ..progress import report
 from ..quantize import snap_notes
 from ..theory import chord_pcs, scale_pcs
 from .accomp import comp_part
-from .lead import lead_part, melody_shift_candidates
+from .lead import held_spans, in_hold, lead_part, melody_shift_candidates
 from .percussion import percussion_hits
 from .lines import LineIndex
 from .resonance import resonance_additions
@@ -70,7 +70,8 @@ def build_content(song: Song, role: str, tuning, capo: int, lead_notes: list[Not
         hits: list[Hit] = []
     else:
         notes = comp_part(song, lead_notes or [], tuning, capo, opts.octaves, opts.max_fret)
-        hits = percussion_hits(song, opts.difficulty)
+        holds = held_spans(song)
+        hits = [h for h in percussion_hits(song, opts.difficulty) if not in_hold(holds, h.start)]
     notes = clip_repeats(snap_notes(notes, song))
     return notes, hits
 

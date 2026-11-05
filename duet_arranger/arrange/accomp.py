@@ -443,7 +443,27 @@ def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int, octaves: bo
                         tags = ({"arp"} if above else {"octave_ok", "arp"}) | ({"prefer_harmonic"} if harp or above else set())
                         vel = (0.45 if above else 0.55) + 0.2 * energy
                         out.append(Note(t, ring_end, p, velocity=vel, role="comp", priority=2.6, source="pattern", tags=tags))
+    # Where the singer and the band hold a chord, Guitar II strikes it once
+    # with the tune's note and lets it ring: no pattern, no bass walking on.
+    from .lead import held_spans, in_hold
+
+    holds = held_spans(song)
+    if holds:
+        out = [n for n in out if not in_hold(holds, n.start)]
+        for a, b in holds:
+            at = [n for n in out if n.start == a and n.role in ("comp", "bass", "harmonic")]
+            for n in at:
+                n.end = max(n.end, b)
+            ch = song.chord_at(a)
+            if ch is not None and sum(1 for n in at if n.role == "comp") < 2 and song.bar_at(a) not in lead_chord_bars:
+                pcs = chord_pcs(ch.root, ch.quality)
+                lo, hi, _ = register(a, b, pcs)
+                have = {n.pitch for n in at}
+                v = voicing(pcs, lo, hi, prev_voicing, 3, avoid=lead_poly.pitches(a, b) | have)
+                for p in v:
+                    out.append(Note(a, b, p, velocity=0.5 + 0.25 * energy_at(song, a), role="comp", priority=3.0, source="hold", tags={"octave_ok"}))
     if handoff:
+        handoff = [n for n in handoff if not in_hold(holds, n.start)]
         ticks = {n.start for n in handoff}
         out = [n for n in out if not (n.role == "comp" and n.start in ticks)] + handoff
     if octaves:

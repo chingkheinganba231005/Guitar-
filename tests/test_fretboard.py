@@ -70,3 +70,12 @@ def test_parse_tuning():
     assert parse_tuning("D A D G A D").pitches == (62, 57, 55, 50, 45, 38)
     assert parse_tuning("C G C G C E").pitches == (64, 60, 55, 48, 43, 36)
     assert parse_tuning("38 45 50 55 59 64").pitches == (64, 59, 55, 50, 45, 38)
+
+
+def test_automatic_tunings_never_tune_a_string_up():
+    from duet_arranger.guitar import STANDARD, key_shifted_tunings
+
+    for tonic in range(12):
+        for mode in ("major", "minor"):
+            for t in key_shifted_tunings(tonic, mode):
+                assert all(p <= s for p, s in zip(t.pitches, STANDARD)), t.name

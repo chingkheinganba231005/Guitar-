@@ -9,8 +9,8 @@
    "tuning": "Open C to Bb (-2)",
    "tuning_pitches": "Bb F Bb F Bb D",
    "capo": 0,
-   "score": 0.039,
-   "cost_per_note": 0.552,
+   "score": 0.051,
+   "cost_per_note": 0.564,
    "notes": 168,
    "open_strings": 37,
    "harmonics": 2,
@@ -24,14 +24,14 @@
      "tuning": "Standard",
      "pitches": "E A D G B E",
      "capo": 3,
-     "score": -0.018,
-     "cost_per_note": 0.358,
+     "score": -0.014,
+     "cost_per_note": 0.364,
      "notes": 168,
-     "open_strings": 62,
-     "harmonics": 0,
+     "open_strings": 63,
+     "harmonics": 1,
      "dropped": 0,
      "melody_dropped": 0,
-     "resonance": 0.631,
+     "resonance": 0.634,
      "open_string_resonance_notes": 0,
      "melody_octave_shift": 0
     },
@@ -39,8 +39,8 @@
      "tuning": "Open C to Bb (-2)",
      "pitches": "Bb F Bb F Bb D",
      "capo": 0,
-     "score": 0.039,
-     "cost_per_note": 0.552,
+     "score": 0.051,
+     "cost_per_note": 0.564,
      "notes": 168,
      "open_strings": 37,
      "harmonics": 2,
@@ -54,10 +54,10 @@
      "tuning": "Open C6 to Bb (-2)",
      "pitches": "Bb G Bb F Bb D",
      "capo": 0,
-     "score": 0.077,
-     "cost_per_note": 0.58,
+     "score": 0.093,
+     "cost_per_note": 0.595,
      "notes": 168,
-     "open_strings": 37,
+     "open_strings": 34,
      "harmonics": 1,
      "dropped": 0,
      "melody_dropped": 0,
@@ -69,8 +69,8 @@
      "tuning": "Standard",
      "pitches": "E A D G B E",
      "capo": 0,
-     "score": 0.565,
-     "cost_per_note": 0.826,
+     "score": 0.576,
+     "cost_per_note": 0.837,
      "notes": 168,
      "open_strings": 2,
      "harmonics": 0,
@@ -81,8 +81,8 @@
      "melody_octave_shift": 0
     }
    ],
-   "search_seconds": 4.7,
-   "screened": 352
+   "search_seconds": 3.7,
+   "screened": 272
   },
   {
    "name": "Guitar II",
@@ -157,8 +157,8 @@
      "open_string_resonance_notes": 16
     }
    ],
-   "search_seconds": 2.2,
-   "screened": 176
+   "search_seconds": 2.0,
+   "screened": 136
   }
  ],
  "playability_issues": [],

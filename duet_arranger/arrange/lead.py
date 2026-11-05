@@ -239,6 +239,56 @@ def lead_chords(song: Song, regions: list[tuple[int, int]], tuning, capo: int) -
     return out
 
 
+def held_spans(song: Song) -> list[tuple[int, int]]:
+    """Moments where the singer holds a long note and the band holds the chord
+    under it ("one step clo-ser~"): no new piano/guitar/bass notes and no
+    drum hits until the next sung note. Both guitars strike the chord at the
+    start of the note and let it ring; nobody keeps the rhythm going.
+    Returns [start, end) tick spans."""
+    import bisect
+
+    if not song.bars or not song.melody:
+        return []
+    keep = set(main_harmony_parts(song))
+
+    def real(n: Note) -> bool:  # not a short, quiet blip of leakage
+        return n.end - n.start >= TPQ // 4 or n.velocity >= 0.35
+
+    onsets = sorted({n.start for name, ns in song.parts.items() if name in keep or name == "bass" for n in ns if real(n)} | {n.start for n in song.bass if real(n)})
+    drums = sorted(h.start for h in song.hits if h.kind in ("kick", "snare"))
+    vocal = sorted(monophonic(song.melody, "loud"), key=lambda n: n.start)
+    out: list[tuple[int, int]] = []
+    for i, m in enumerate(vocal):
+        beat = beat_ticks_at(song, m.start)
+        if m.end - m.start < 2 * beat:
+            continue  # a held note: at least two beats (a full bar of 6/8)
+        nxt = vocal[i + 1].start if i + 1 < len(vocal) else song.end_tick
+        bar_len = song.bars[song.bar_at(m.start)].length
+        end = min(nxt, max(m.end, m.start + 2 * beat), m.start + 2 * bar_len)
+        lo = m.start + TPQ // 4
+        k = bisect.bisect_left(onsets, lo)
+        inside = [t for t in onsets[k:] if t < m.end - TPQ // 4]
+        if inside:
+            continue  # the band keeps moving under the note
+        j = bisect.bisect_left(drums, lo)
+        if j < len(drums) and drums[j] < m.end - TPQ // 4:
+            continue
+        changes = [c for c in song.chords if m.start < c.start < m.end - TPQ // 4]
+        if changes:
+            continue
+        # the hold lasts until the band (or the singer) moves again
+        k2 = bisect.bisect_left(onsets, m.end - TPQ // 4)
+        if k2 < len(onsets):
+            end = min(end, max(m.end, onsets[k2]))
+        out.append((m.start, end))
+    return out
+
+
+def in_hold(spans: list[tuple[int, int]], t: int) -> bool:
+    """Is ``t`` strictly inside a held moment (after its first strike)?"""
+    return any(a < t < b for a, b in spans)
+
+
 def bass_ticks(song: Song, bar, density: float = 1.0) -> list[tuple[int, float]]:
     """Where a solo fingerstyle bass speaks in a bar, with its priority.
 
@@ -271,6 +321,7 @@ def lead_bass(song: Song, melody: list[Note], tuning, capo: int, skip_bars: set,
     if not song.bars or not song.chords:
         return []
     lo = lowest_pitch(tuning, capo)
+    holds = held_spans(song)
     src = LineIndex(bassline(song.bass)) if song.bass else None
     mel = LineIndex(melody)
     out: list[tuple[Note, int]] = []
@@ -278,6 +329,8 @@ def lead_bass(song: Song, melody: list[Note], tuning, capo: int, skip_bars: set,
         if bi in skip_bars:
             continue
         for t, prio in bass_ticks(song, bar, density):
+            if in_hold(holds, t):
+                continue
             ch = song.chord_at(t)
             if ch is None:
                 continue
@@ -342,6 +395,7 @@ def lead_inner(song: Song, melody: list[Note], fill_notes: list[Note], bass: lis
     mel = LineIndex(melody)
     bidx = LineIndex(bass)
     attacks = sorted({n.start for n in melody} | {n.start for n in fill_notes})
+    holds = held_spans(song)
     import bisect
 
     prev: int | None = None
@@ -354,7 +408,7 @@ def lead_inner(song: Song, melody: list[Note], fill_notes: list[Note], bass: lis
         sub = min((b - a for (a, _), (b, _) in zip(ticks, ticks[1:])), default=tpb)
         last_here: int | None = None
         for t, on_beat in ticks:
-            if t in avoid:
+            if t in avoid or in_hold(holds, t):
                 continue
             ch = song.chord_at(t)
             if ch is None:
@@ -577,16 +631,22 @@ def lead_part(song: Song, tuning, capo: int, density: float = 1.0, shift: int | 
 
 def sustain_melody(song: Song, melody: list[Note]) -> None:
     """A singer holds each note into the next one; the transcription often
-    ends it early. The tune rings on until the next tune note (at most a beat
-    past its written end), so the fingering keeps that string free: no fill,
-    inner voice or bass may cut a sustaining melody note short (a fill that
-    would is handed to Guitar II)."""
+    ends it early. The tune rings on until the next tune note (up to two
+    beats past its written end, and through a held moment), so the fingering
+    keeps that string sounding: no fill, inner voice or bass may cut it short,
+    on its string or by moving the hand to a far position while a fretted
+    tune note still rings (a fill that would is handed to Guitar II)."""
+    holds = held_spans(song)
     for i, m in enumerate(melody):
         if "instrumental" in m.tags:
             continue
         beat = beat_ticks_at(song, m.start)
         nxt = melody[i + 1].start if i + 1 < len(melody) else song.end_tick
-        m.end = max(m.end, min(nxt, m.end + beat))
+        end = max(m.end, min(nxt, m.end + 2 * beat))
+        for a, b in holds:
+            if a == m.start or a < m.start < b:
+                end = max(end, min(nxt, b))
+        m.end = end
 
 
 def dedupe(notes: list[Note]) -> list[Note]:

@@ -4111,32 +4111,20 @@
        ],
        "notes": [
         {
-         "string": 1,
-         "fret": 7,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 113,
-         "tone": "",
-         "lh": "1",
-         "rh": "a"
-        },
-        {
          "string": 2,
-         "fret": 8,
+         "fret": 12,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
          "velocity": 96,
          "tone": "",
-         "lh": "2",
+         "lh": "1",
          "rh": "m"
         },
         {
          "string": 3,
-         "fret": 7,
+         "fret": 12,
          "sustain": true,
          "tech": [],
          "harmonic": "",
@@ -4144,6 +4132,18 @@
          "velocity": 74,
          "tone": "",
          "lh": "1",
+         "rh": "i"
+        },
+        {
+         "string": 4,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 51,
+         "tone": "",
+         "lh": "2",
          "rh": "p"
         }
        ],
@@ -4161,36 +4161,22 @@
        ],
        "notes": [
         {
-         "string": 1,
-         "fret": 7,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 113,
-         "tone": "",
-         "lh": "1",
-         "rh": "a",
-         "tie": true,
-         "tieFrom": "g0e96"
-        },
-        {
          "string": 2,
-         "fret": 8,
+         "fret": 12,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
          "velocity": 96,
          "tone": "",
-         "lh": "2",
+         "lh": "1",
          "rh": "m",
          "tie": true,
          "tieFrom": "g0e96"
         },
         {
          "string": 3,
-         "fret": 7,
+         "fret": 12,
          "sustain": true,
          "tech": [],
          "harmonic": "",
@@ -4198,6 +4184,20 @@
          "velocity": 74,
          "tone": "",
          "lh": "1",
+         "rh": "i",
+         "tie": true,
+         "tieFrom": "g0e96"
+        },
+        {
+         "string": 4,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 51,
+         "tone": "",
+         "lh": "2",
          "rh": "p",
          "tie": true,
          "tieFrom": "g0e96"
@@ -10462,8 +10462,8 @@
     "tuning": "Standard",
     "tuning_pitches": "E A D G B E",
     "capo": 0,
-    "score": -0.011,
-    "cost_per_note": 0.544,
+    "score": -0.003,
+    "cost_per_note": 0.552,
     "notes": 230,
     "open_strings": 62,
     "harmonics": 0,
@@ -10477,8 +10477,8 @@
       "tuning": "Standard",
       "pitches": "E A D G B E",
       "capo": 0,
-      "score": -0.011,
-      "cost_per_note": 0.544,
+      "score": -0.003,
+      "cost_per_note": 0.552,
       "notes": 230,
       "open_strings": 62,
       "harmonics": 0,
@@ -10492,10 +10492,10 @@
       "tuning": "Open G",
       "pitches": "D G D G B D",
       "capo": 0,
-      "score": 0.078,
-      "cost_per_note": 0.613,
+      "score": 0.087,
+      "cost_per_note": 0.621,
       "notes": 230,
-      "open_strings": 70,
+      "open_strings": 72,
       "harmonics": 0,
       "dropped": 0,
       "melody_dropped": 0,
@@ -10504,13 +10504,13 @@
       "melody_octave_shift": 0
      },
      {
-      "tuning": "DGDGCD",
-      "pitches": "D G D G C D",
+      "tuning": "CGDGBD",
+      "pitches": "C G D G B D",
       "capo": 0,
-      "score": 0.102,
-      "cost_per_note": 0.597,
+      "score": 0.124,
+      "cost_per_note": 0.632,
       "notes": 230,
-      "open_strings": 60,
+      "open_strings": 74,
       "harmonics": 0,
       "dropped": 0,
       "melody_dropped": 0,
@@ -10519,8 +10519,8 @@
       "melody_octave_shift": 0
      }
     ],
-    "search_seconds": 3.5,
-    "screened": 152
+    "search_seconds": 3.1,
+    "screened": 112
    },
    {
     "name": "Guitar II",
@@ -10596,10 +10596,10 @@
      }
     ],
     "search_seconds": 2.8,
-    "screened": 152
+    "screened": 112
    }
   ],
-  "version": "0.4.2",
+  "version": "0.4.3",
   "analysis_version": 4,
   "playability_issues": []
  }

@@ -207,3 +207,37 @@ def test_fills_guitar_one_cannot_hold_go_to_guitar_two():
     fill = Note(t, t + 12, 69, role="handoff", priority=6.0)
     out = comp_part(song, [fill], (64, 59, 55, 50, 45, 40), 0)
     assert any(n.role == "fill" and n.start == t and n.pitch == 69 for n in out)
+
+
+def _held_song():
+    """The 6/8 ballad with one bar where the singer holds a note and the band
+    holds the chord under it (like "one step clo-ser~")."""
+    song = demo_song("sixeight")
+    bar = song.bars[12]
+    first = min((n for n in song.melody if bar.start <= n.start < bar.end), key=lambda n: n.start)
+    song.melody = [n for n in song.melody if not (bar.start <= n.start < bar.end) or n is first]
+    first.start, first.end = bar.start, bar.end
+    for name, ns in song.parts.items():
+        kept = []
+        for n in ns:
+            if bar.start < n.start < bar.end:
+                continue
+            if n.start == bar.start:
+                n.end = max(n.end, bar.end)
+            kept.append(n)
+        song.parts[name] = kept
+    song.bass = [n for n in song.bass if not (bar.start < n.start < bar.end)]
+    return song, bar
+
+
+def test_both_guitars_ring_a_held_chord():
+    from duet_arranger.arrange.lead import held_spans
+
+    song, bar = _held_song()
+    assert any(a == bar.start and b >= bar.end for a, b in held_spans(song))
+    arr = arrange(song, ArrangeOptions())
+    assert audit_project(to_atelier(arr)) == []
+    for g in arr.guitars:
+        inside = [n for n in g.placed if bar.start < n.start < bar.end and n.fret != "x"]
+        assert inside == [], (g.name, [(n.start - bar.start, n.role) for n in inside])
+        assert any(n.start == bar.start for n in g.placed), g.name

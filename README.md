@@ -65,8 +65,9 @@ get no percussion at all.
 **Tunings that ring.** Every tuning is considered — standard, drop D, double
 drop D, DADGAD, open D, open D minor, open G, open G minor, DGDGAD, DGDGCD,
 CGDGBD, open C, open C6, open E, open A, drop C, D and E♭ standard — plus
-open tunings re-pitched to the song's key (never more than two semitones above
-standard on any string, one on the high E). Each guitar gets its own tuning.
+open tunings re-pitched to the song's key — only ever tuned down: the
+automatic search never raises a string above standard pitch (a tuning you
+name yourself may go up to two semitones, one on the high E). Each guitar gets its own tuning.
 Tunings win when they make the part easier *and* when their open strings
 belong to the song: free open strings that are chord tones are added to chord
 attacks so the guitar rings on every string it can.
@@ -86,10 +87,16 @@ frets are steeply dearer for every voice (nothing above the 14th in
 practice), and a tune note that could only be reached up there becomes a
 12th or 7th-fret harmonic.
 
+**Held moments are held.** Where the singer holds a long note and the band
+holds the chord under it ("one step clo-ser~"), both guitars strike the chord
+with the note and let it ring until the music moves again: no pattern, no
+walking bass, no percussion in between.
+
 **The tune comes first.** A sung note rings until the next one (the
 transcription usually ends it early), and nothing else Guitar I plays may cut
-it short on its string; a fill that could only be played that way is handed
-to Guitar II.
+it short — not on its string, and not by moving the hand to a far position
+while a fretted tune note still rings; a fill that could only be played that
+way is handed to Guitar II.
 
 **A capo only when it is really necessary.** Every capo position is tried,
 but a capo is only chosen when it removes a large share of the effort (about
