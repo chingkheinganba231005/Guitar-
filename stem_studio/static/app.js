@@ -19,6 +19,8 @@ const state = {
   mode: "original",
   zoom: 8,
   master: 1,
+  speed: 1,
+  loop: { a: 0, b: 0, on: false },
   pollTimer: null,
 };
 
@@ -91,7 +93,7 @@ function upper(arr, x, key = (v) => v) {
 
 // ------------------------------------------------------------------ audio engine
 
-class Engine {
+class LegacyEngine {
   constructor() {
     this.ctx = null;
     this.master = null;
@@ -265,7 +267,180 @@ class Engine {
   }
 }
 
-const engine = new Engine();
+
+// Legacy engine: no time-stretching (plain-HTTP pages have no AudioWorklet)
+LegacyEngine.prototype.setSpeed = function () {};
+LegacyEngine.prototype.setLoop = function (a, b, on) { this.loop = { a, b, on }; };
+LegacyEngine.prototype.stretch = false;
+
+class WorkletEngine {
+  constructor() {
+    this.ctx = null;
+    this.master = null;
+    this.node = null;
+    this.ready = null;
+    this.playing = false;
+    this.offset = 0;
+    this.duration = 0;
+    this.speed = 1;
+    this.anchor = { time: 0, pos: 0 };
+    this.levels = {};
+    this.loop = { on: false, a: 0, b: 0 };
+    this.seq = 0;
+    this.loadId = 0;
+    this.wave = null;
+    this.stretch = true;
+  }
+
+  ensure() {
+    if (!this.ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AC();
+      this.master = this.ctx.createGain();
+      this.master.connect(this.ctx.destination);
+    }
+    return this.ctx;
+  }
+
+  async ensureNode() {
+    const ctx = this.ensure();
+    if (!this.ready) {
+      this.ready = ctx.audioWorklet.addModule("/static/player-worklet.js").then(() => {
+        this.node = new AudioWorkletNode(ctx, "stem-player", { numberOfInputs: 0, numberOfOutputs: 1, outputChannelCount: [2] });
+        this.node.connect(this.master);
+        this.node.port.onmessage = (e) => this.onMsg(e.data);
+      });
+    }
+    await this.ready;
+  }
+
+  send(m, transfer) {
+    if (!this.node) return;
+    m.seq = ++this.seq;
+    this.node.port.postMessage(m, transfer || []);
+  }
+
+  onMsg(m) {
+    if (m.type === "pos") {
+      if (m.seq !== this.seq) return; // a report from before our last command
+      this.anchor = { time: m.frame / this.ctx.sampleRate, pos: m.pos };
+      if (!m.playing && this.playing) { this.playing = false; this.offset = m.pos; }
+      Object.assign(this.levels, m.levels || {});
+    } else if (m.type === "ended") {
+      this.playing = false;
+      this.offset = this.duration;
+    }
+  }
+
+  unload() {
+    this.send({ type: "clear" });
+    this.playing = false;
+    this.offset = 0;
+    this.levels = {};
+    this.duration = 0;
+    this.wave = null;
+    this.loadId++;
+  }
+
+  async load(items, onProgress) {
+    await this.ensureNode();
+    this.unload();
+    const my = this.loadId;
+    const helper = new LegacyEngine();
+    helper.ctx = this.ctx;
+    const sizes = items.map(() => [0, 1]);
+    const report = (msg) => {
+      const got = sizes.reduce((a, s) => a + s[0], 0);
+      const tot = sizes.reduce((a, s) => a + Math.max(s[0], s[1]), 0);
+      onProgress(tot ? 0.9 * (got / tot) : 0, msg);
+    };
+    const bytes = new Array(items.length);
+    let next = 0;
+    const worker = async () => {
+      while (next < items.length) {
+        const i = next++;
+        bytes[i] = await helper.fetchBytes(items[i].url, (g, t) => { sizes[i] = [g, t || g]; report("Downloading the tracks…"); });
+      }
+    };
+    await Promise.all([worker(), worker(), worker()]);
+    for (let i = 0; i < items.length; i++) {
+      if (my !== this.loadId) return false;
+      onProgress(0.9 + 0.1 * (i / items.length), `Decoding ${items[i].label || items[i].id}…`);
+      let buf = await helper.decode(bytes[i]);
+      bytes[i] = null;
+      if (items[i].id === "original") this.wave = wavePeaks(buf, 800);
+      const channels = [];
+      for (let c = 0; c < Math.min(2, buf.numberOfChannels); c++) channels.push(new Float32Array(buf.getChannelData(c)));
+      this.duration = Math.max(this.duration, buf.duration);
+      buf = null;
+      this.send({ type: "track", id: items[i].id, channels, gain: 0 }, channels.map((c) => c.buffer));
+    }
+    return my === this.loadId;
+  }
+
+  position() {
+    if (!this.playing) return this.offset;
+    let p = this.anchor.pos + Math.max(0, this.ctx.currentTime - this.anchor.time) * this.speed;
+    const L = this.loop;
+    if (L.on && L.b > L.a && p >= L.b) p = L.a + ((p - L.b) % (L.b - L.a));
+    return Math.min(this.duration, p);
+  }
+
+  heard() {
+    if (!this.playing) return this.offset;
+    const lat = (this.ctx.outputLatency || 0) + (this.ctx.baseLatency || 0);
+    let p = this.position() - lat * this.speed;
+    const L = this.loop;
+    if (L.on && L.b > L.a && p < L.a && this.anchor.pos >= L.a - 0.05) p = L.b - (L.a - p);
+    return Math.max(0, p);
+  }
+
+  play() {
+    const ctx = this.ensure();
+    if (ctx.state === "suspended") ctx.resume();
+    let pos = this.offset;
+    if (pos >= this.duration - 0.05) pos = 0;
+    const L = this.loop;
+    if (L.on && L.b > L.a && (pos < L.a || pos >= L.b)) pos = L.a;
+    this.send({ type: "play", pos });
+    this.anchor = { time: ctx.currentTime, pos };
+    this.offset = pos;
+    this.playing = true;
+  }
+
+  pause() {
+    if (!this.playing) return;
+    this.offset = this.position();
+    this.playing = false;
+    this.send({ type: "pause" });
+  }
+
+  seek(t) {
+    t = Math.max(0, Math.min(this.duration || t, t));
+    this.offset = t;
+    if (this.ctx) this.anchor = { time: this.ctx.currentTime, pos: t };
+    this.send({ type: "seek", pos: t });
+  }
+
+  setGain(id, v) { this.send({ type: "gain", id, value: v }); }
+
+  setMaster(v) { if (this.master) this.master.gain.setTargetAtTime(v, this.ctx.currentTime, 0.015); }
+
+  setSpeed(s) {
+    if (this.playing) this.anchor = { time: this.ctx.currentTime, pos: this.position() };
+    this.speed = s;
+    this.send({ type: "speed", value: s });
+  }
+
+  setLoop(a, b, on) {
+    this.loop = { a, b, on };
+    this.send({ type: "loop", a, b, on });
+  }
+
+  level(id) { return this.playing ? this.levels[id] || 0 : 0; }
+}
+
+const engine = window.AudioWorkletNode && window.isSecureContext ? new WorkletEngine() : new LegacyEngine();
 
 // ------------------------------------------------------------------ songs list, upload, progress
 
@@ -437,6 +612,13 @@ async function openPlayer(job) {
   if (state.current !== job.id) return;
   state.data = data;
   state.mode = "original";
+  state.loop = { a: 0, b: 0, on: false };
+  picked.clear();
+  renderPicked();
+  $("#loop-toggle").setAttribute("aria-pressed", "false");
+  $("#loop-from").value = 1;
+  $("#loop-to").value = Math.min(4, data.bars.length || 1);
+  $("#loop-info").textContent = "";
   state.tracks = data.tracks.map((t) => Object.assign({}, t, { vol: 1, mute: false, solo: false, maxDur: t.notes.reduce((m, n) => Math.max(m, n[1] - n[0]), 0) }));
   $("#song-facts").innerHTML = [data.key, data.meter, data.tempo_label, `${data.bars.length} bars`, fmt(data.duration)].map((x) => `<span>${esc(x)}</span>`).join("");
   $("#dur").textContent = "/ " + fmt(data.duration);
@@ -462,9 +644,11 @@ async function openPlayer(job) {
   box.hidden = true;
   $("#play").disabled = false;
   engine.duration = data.duration;
-  state.wave = wavePeaks(engine.buffers.original, 800);
+  state.wave = engine.wave || wavePeaks(engine.buffers && engine.buffers.original, 800);
   applyMix();
   engine.setMaster(state.master);
+  engine.setLoop(0, 0, false);
+  setSpeed(state.speed);
 }
 
 function wavePeaks(buf, n) {
@@ -734,12 +918,14 @@ function drawLane(tr, t) {
       const X0 = x(a), X1 = Math.max(X0 + 2, x(b));
       const Y = y(p);
       const on = a <= t && t < b;
+      const sel = picked.has(pickKey(tr, ns[i]));
       ctx.globalAlpha = on ? 1 : a > t ? 0.85 : 0.4;
       ctx.fillStyle = on ? "#ffffff" : color;
       const r = Math.min(3, rh / 2);
       roundRect(ctx, X0, Y + 0.5, X1 - X0, Math.max(2, rh - 1), r);
       ctx.fill();
       if (on) { ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke(); ctx.lineWidth = 1; }
+      if (sel) { ctx.globalAlpha = 1; ctx.strokeStyle = "#7cc4ff"; ctx.lineWidth = 2.5; ctx.stroke(); ctx.lineWidth = 1; }
       if (X1 - X0 > 20 && rh >= 6) {
         ctx.fillStyle = on ? "#111" : "#111c";
         ctx.font = `600 ${Math.min(11, Math.max(7.5, rh))}px system-ui`;
@@ -749,6 +935,16 @@ function drawLane(tr, t) {
     }
     ctx.globalAlpha = 1;
     ctx.textBaseline = "alphabetic";
+  }
+  // loop region: what lies outside is dimmed
+  if (state.loop.on) {
+    const la = x(state.loop.a), lb = x(state.loop.b);
+    ctx.fillStyle = "#0b0d10aa";
+    if (la > 0) ctx.fillRect(0, 0, Math.min(w, la), h);
+    if (lb < w) ctx.fillRect(Math.max(0, lb), 0, w - Math.max(0, lb), h);
+    ctx.fillStyle = "#6fd48b";
+    if (la >= 0 && la <= w) ctx.fillRect(la - 1, 0, 2, h);
+    if (lb >= 0 && lb <= w) ctx.fillRect(lb - 1, 0, 2, h);
   }
   // playhead
   const P = Math.round(x(t)) + 0.5;
@@ -840,6 +1036,13 @@ function drawOverview(t) {
     ctx.fillRect(X, h - 6, 1, 6);
     ctx.fillText(String(i + 1), X + 2, h - 1);
   });
+  if (state.loop.on) {
+    ctx.fillStyle = "#6fd48b33";
+    ctx.fillRect(x(state.loop.a), 16, x(state.loop.b) - x(state.loop.a), h - 16);
+    ctx.fillStyle = "#6fd48b";
+    ctx.fillRect(x(state.loop.a), 16, 2, h - 16);
+    ctx.fillRect(x(state.loop.b) - 2, 16, 2, h - 16);
+  }
   // window shown in the lanes
   const [t0, t1] = laneWindow(t);
   ctx.fillStyle = "#f4b86022";
@@ -897,6 +1100,7 @@ function frame() {
   requestAnimationFrame(frame);
   if (!state.data || $("#player").hidden) return;
   let t = engine.heard();
+  if (!engine.stretch && state.loop.on && engine.playing && engine.position() >= state.loop.b) engine.seek(state.loop.a);
   if (engine.playing && engine.position() >= engine.duration - 0.01) {
     engine.pause();
     engine.offset = engine.duration;
@@ -934,43 +1138,252 @@ function describeTime(s) {
   return `${fmt(s, true)}${bb ? ` · bar ${bb.bar}, beat ${bb.beat}` : ""}`;
 }
 
+// tapped notes: tap to hear one, keep tapping to collect several, then
+// play them together at their own timing
+const picked = new Map(); // key -> { tr, n }
+const pickKey = (tr, n) => `${tr.id}:${n[0]}:${n[2]}`;
+
+const TIMBRE = {
+  piano: { partials: [1, 0.55, 0.3, 0.18, 0.1, 0.06], attack: 0.004, decay: 0.9, sustain: 0.0 },
+  other: { partials: [1, 0.5, 0.33, 0.25, 0.2, 0.15], attack: 0.07, decay: 2.5, sustain: 0.7 },
+  vocals: { partials: [1, 0.35, 0.12, 0.05], attack: 0.03, decay: 2.0, sustain: 0.8 },
+  bass: { partials: [1, 0.75, 0.35, 0.15], attack: 0.004, decay: 1.2, sustain: 0.2 },
+};
+const waves = {};
+
+function sounder() {
+  const ctx = engine.ensure();
+  if (ctx.state === "suspended") ctx.resume();
+  if (!state.previewOut) {
+    state.previewOut = ctx.createGain();
+    state.previewOut.gain.value = 0.32;
+    state.previewOut.connect(ctx.destination);
+  }
+  return ctx;
+}
+
+function playTone(pitch, dur, kind, when) {
+  const ctx = sounder();
+  const tm = TIMBRE[kind] || TIMBRE.piano;
+  if (!waves[kind]) {
+    const real = new Float32Array(tm.partials.length + 1);
+    const imag = new Float32Array(tm.partials.length + 1);
+    tm.partials.forEach((v, i) => (imag[i + 1] = v));
+    waves[kind] = ctx.createPeriodicWave(real, imag);
+  }
+  const t0 = Math.max(ctx.currentTime + 0.01, when || 0);
+  const len = Math.max(0.25, Math.min(3, dur));
+  const osc = ctx.createOscillator();
+  osc.setPeriodicWave(waves[kind]);
+  osc.frequency.value = 440 * Math.pow(2, (pitch - 69) / 12);
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0, t0);
+  g.gain.linearRampToValueAtTime(1, t0 + tm.attack);
+  g.gain.setTargetAtTime(tm.sustain, t0 + tm.attack, tm.decay / 3);
+  g.gain.setTargetAtTime(0, t0 + len, 0.08);
+  osc.connect(g);
+  g.connect(state.previewOut);
+  osc.start(t0);
+  osc.stop(t0 + len + 0.6);
+}
+
+function renderPicked() {
+  const box = $("#picked");
+  box.hidden = picked.size === 0;
+  if (!picked.size) return;
+  const list = [...picked.values()].sort((x, y) => x.n[0] - y.n[0] || x.n[2] - y.n[2]);
+  const names = list.map((p) => noteName(p.n[2])).join(" ");
+  const span = list[list.length - 1].n[0] - list[0].n[0];
+  $("#picked-info").textContent = `${picked.size} tapped note${picked.size > 1 ? "s" : ""}: ${names}` + (span > 0.05 ? ` · over ${span.toFixed(1)} s` : " · together");
+}
+
+function playPicked() {
+  if (!picked.size) return;
+  const ctx = sounder();
+  const list = [...picked.values()].sort((x, y) => x.n[0] - y.n[0]);
+  const first = list[0].n[0];
+  const sp = engine.speed || 1; // the tapped notes follow the practice speed
+  const t0 = ctx.currentTime + 0.05;
+  for (const { tr, n } of list) playTone(n[2], (n[1] - n[0]) / sp, tr.id, t0 + (n[0] - first) / sp);
+}
+
+function noteAt(tr, px, py) {
+  if (!tr.hitBoxes) return null;
+  let best = null;
+  for (const [x0, y0, x1, y1, n] of tr.hitBoxes) {
+    if (px >= x0 - 3 && px <= x1 + 3 && py >= y0 - 3 && py <= y1 + 3) best = n;
+  }
+  return best;
+}
+
+// drag sideways on a lane to scrub; a tap (no drag) hears a note, shows a
+// chord, or jumps to that moment
 function attachPointer(tr) {
   const cv = tr.canvas;
-  cv.addEventListener("click", (e) => {
-    const r = cv.getBoundingClientRect();
-    const px = e.clientX - r.left, py = e.clientY - r.top;
-    if (tr.hitBoxes) {
-      for (const [x0, y0, x1, y1, n] of tr.hitBoxes) {
-        if (px >= x0 - 2 && px <= x1 + 2 && py >= y0 - 2 && py <= y1 + 2) {
-          showTip(`<b>${noteName(n[2])}</b> · ${esc(tr.label)}<br>from ${describeTime(n[0])}<br>to ${describeTime(n[1])} (${(n[1] - n[0]).toFixed(2)} s)`, e.clientX, e.clientY);
-          return;
-        }
-      }
-    }
-    const t = timeAt(cv, e.clientX);
-    if (tr.show === "chords" || (tr.show === "notes+chords" && py < 18)) {
-      const i = segAt(tr.chords, t);
-      if (i >= 0) {
-        const [a, b, name] = tr.chords[i];
-        showTip(`<b>${esc(name)}</b> · ${esc(tr.label)}<br>from ${describeTime(a)}<br>to ${describeTime(b)}`, e.clientX, e.clientY);
+  let drag = null;
+  cv.addEventListener("pointerdown", (e) => {
+    if (e.button > 0) return;
+    drag = { x: e.clientX, y: e.clientY, t: engine.heard(), moved: false, was: engine.playing, id: e.pointerId };
+  });
+  cv.addEventListener("pointermove", (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.moved) {
+      if (Math.abs(dx) < 7 || Math.abs(dx) < Math.abs(dy)) {
+        if (Math.abs(dy) > 10) drag = null; // a vertical swipe scrolls the page
         return;
       }
+      drag.moved = true;
+      try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+      cv.classList.add("scrubbing");
+      if (drag.was) engine.pause();
     }
-    engine.seek(t);
+    const r = cv.getBoundingClientRect();
+    engine.seek(drag.t - (dx / r.width) * state.zoom);
+    e.preventDefault();
   });
+  const end = (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const d = drag;
+    drag = null;
+    cv.classList.remove("scrubbing");
+    if (d.moved) {
+      if (d.was) engine.play();
+      return;
+    }
+    if (e.type === "pointercancel") return;
+    tap(tr, e);
+  };
+  cv.addEventListener("pointerup", end);
+  cv.addEventListener("pointercancel", end);
+}
+
+function tap(tr, e) {
+  const cv = tr.canvas;
+  const r = cv.getBoundingClientRect();
+  const px = e.clientX - r.left, py = e.clientY - r.top;
+  const n = noteAt(tr, px, py);
+  if (n) {
+    const k = pickKey(tr, n);
+    if (picked.has(k)) picked.delete(k);
+    else {
+      picked.set(k, { tr, n });
+      playTone(n[2], n[1] - n[0], tr.id);
+    }
+    renderPicked();
+    showTip(`<b>${noteName(n[2])}</b> · ${esc(tr.label)}<br>from ${describeTime(n[0])}<br>to ${describeTime(n[1])} (${(n[1] - n[0]).toFixed(2)} s)`, e.clientX, e.clientY);
+    return;
+  }
+  const t = timeAt(cv, e.clientX);
+  if (tr.show === "chords" || (tr.show === "notes+chords" && py < 18)) {
+    const i = segAt(tr.chords, t);
+    if (i >= 0) {
+      const [a, b, name] = tr.chords[i];
+      showTip(`<b>${esc(name)}</b> · ${esc(tr.label)}<br>from ${describeTime(a)}<br>to ${describeTime(b)}`, e.clientX, e.clientY);
+      return;
+    }
+  }
+  engine.seek(t);
 }
 
 function setupOverview() {
   const cv = $("#overview");
-  let down = false;
+  let drag = null;
   const go = (e) => {
     if (!state.data) return;
     const r = cv.getBoundingClientRect();
-    engine.seek(((e.clientX - r.left) / r.width) * state.data.duration);
+    engine.seek(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * state.data.duration);
   };
-  cv.addEventListener("pointerdown", (e) => { down = true; cv.setPointerCapture(e.pointerId); go(e); });
-  cv.addEventListener("pointermove", (e) => { if (down) go(e); });
-  cv.addEventListener("pointerup", () => (down = false));
+  cv.addEventListener("pointerdown", (e) => {
+    drag = { was: engine.playing };
+    if (drag.was) engine.pause();
+    cv.setPointerCapture(e.pointerId);
+    go(e);
+  });
+  cv.addEventListener("pointermove", (e) => { if (drag) go(e); });
+  const end = () => {
+    if (drag && drag.was) engine.play();
+    drag = null;
+  };
+  cv.addEventListener("pointerup", end);
+  cv.addEventListener("pointercancel", end);
+}
+
+// ------------------------------------------------------------------ loop & speed
+
+function nearestBeat(t) {
+  const bs = state.data.beats;
+  if (!bs.length) return t;
+  const i = upper(bs, t);
+  const c = [bs[Math.max(0, i - 1)], bs[Math.min(bs.length - 1, i)]];
+  return Math.abs(c[0] - t) <= Math.abs(c[1] - t) ? c[0] : c[1];
+}
+
+function barTime(k) {
+  const d = state.data;
+  if (k <= 0) return 0;
+  return k - 1 < d.bars.length ? d.bars[k - 1] : d.duration;
+}
+
+function setLoop(a, b, on = state.loop.on, fromBars = false) {
+  const d = state.data;
+  a = Math.max(0, Math.min(a, d.duration));
+  b = Math.max(0, Math.min(b, d.duration));
+  if (b - a < 0.25) b = Math.min(d.duration, a + 0.25);
+  state.loop = { a, b, on };
+  engine.setLoop(a, b, on);
+  $("#loop-toggle").setAttribute("aria-pressed", on);
+  if (!fromBars) {
+    const ba = barBeat(a + 0.01), bb = barBeat(b - 0.01);
+    if (ba) $("#loop-from").value = ba.bar;
+    if (bb) $("#loop-to").value = bb.bar;
+  }
+  const A = barBeat(a + 0.001), B = barBeat(b - 0.001);
+  $("#loop-info").textContent = `${fmt(a, true)} – ${fmt(b, true)}` + (A && B ? ` · bar ${A.bar}.${A.beat} to ${B.bar}.${B.beat}` : "");
+}
+
+function loopFromBars() {
+  const d = state.data;
+  let f = Math.max(1, Math.min(d.bars.length, parseInt($("#loop-from").value, 10) || 1));
+  let t = Math.max(f, Math.min(d.bars.length, parseInt($("#loop-to").value, 10) || f));
+  setLoop(barTime(f), t < d.bars.length ? d.bars[t] : d.duration, true, true);
+}
+
+function setSpeed(v) {
+  v = Math.round(v * 100) / 100;
+  state.speed = v;
+  $("#speed").value = v;
+  $("#speed-label").textContent = Math.round(v * 100) + "%";
+  if (!engine.stretch && v !== 1) {
+    toast("Slowing down needs the page on https:// (as in Codespaces) — playing at 100%");
+    v = 1;
+    $("#speed").value = 1;
+    $("#speed-label").textContent = "100%";
+  }
+  engine.setSpeed(v);
+}
+
+function setupPractice() {
+  $("#speed").oninput = (e) => setSpeed(+e.target.value);
+  for (const b of document.querySelectorAll("[data-speed]")) b.onclick = () => setSpeed(+b.dataset.speed);
+  $("#loop-toggle").onclick = () => {
+    if (!state.data) return;
+    if (!state.loop.b) loopFromBars();
+    setLoop(state.loop.a, state.loop.b, !state.loop.on);
+    toast(state.loop.on ? "Looping this section" : "Loop off");
+  };
+  $("#loop-from").onchange = loopFromBars;
+  $("#loop-to").onchange = loopFromBars;
+  $("#loop-a").onclick = () => {
+    const t = nearestBeat(engine.heard());
+    setLoop(t, Math.max(state.loop.b || 0, t + 1), true);
+  };
+  $("#loop-b").onclick = () => {
+    const t = nearestBeat(engine.heard());
+    setLoop(Math.min(state.loop.a || 0, t - 0.25), t, true);
+  };
+  $("#picked-play").onclick = playPicked;
+  $("#picked-clear").onclick = () => { picked.clear(); renderPicked(); };
 }
 
 function setupTransport() {
@@ -982,10 +1395,11 @@ function setupTransport() {
   $("#zoom").oninput = (e) => (state.zoom = +e.target.value);
   $("#master").oninput = (e) => { state.master = +e.target.value; engine.setMaster(state.master); };
   document.addEventListener("keydown", (e) => {
-    if ($("#player").hidden || e.target.closest("input,textarea") && e.target.type !== "range") return;
+    if ($("#player").hidden || (e.target.closest("input,textarea") && e.target.type !== "range")) return;
     if (e.code === "Space") { e.preventDefault(); $("#play").click(); }
     else if (e.code === "ArrowLeft") { e.preventDefault(); $("#back").click(); }
     else if (e.code === "ArrowRight") { e.preventDefault(); $("#fwd").click(); }
+    else if (e.code === "KeyL") { e.preventDefault(); $("#loop-toggle").click(); }
   });
 }
 
@@ -996,6 +1410,7 @@ async function start() {
   setupUpload();
   setupTransport();
   setupOverview();
+  setupPractice();
   try {
     await loadInfo();
   } catch (e) {

@@ -99,6 +99,23 @@
             <label class="zoom" title="Overall volume">
               <span>Volume</span><input id="master" type="range" min="0" max="1.5" step="0.01" value="1" />
             </label>
+            <div class="practice">
+              <div class="speed" title="Slower or faster, same pitch">
+                <span>Speed</span>
+                <input id="speed" type="range" min="0.25" max="1.5" step="0.05" value="1" />
+                <b id="speed-label">100%</b>
+                <button class="chip" data-speed="0.5">50%</button>
+                <button class="chip" data-speed="0.75">75%</button>
+                <button class="chip" data-speed="1">100%</button>
+              </div>
+              <div class="loop">
+                <button id="loop-toggle" class="chip loop-btn" aria-pressed="false" title="Play only this section, over and over">⟲ Loop</button>
+                <label>bars <input id="loop-from" type="number" min="1" value="1" inputmode="numeric" /> – <input id="loop-to" type="number" min="1" value="4" inputmode="numeric" /></label>
+                <button id="loop-a" class="chip" title="Start the loop at the beat you are on">Start here</button>
+                <button id="loop-b" class="chip" title="End the loop at the beat you are on">End here</button>
+                <span id="loop-info" class="muted"></span>
+              </div>
+            </div>
           </div>
 
           <canvas id="overview" class="overview" height="56"></canvas>
@@ -112,8 +129,13 @@
             <div id="now-grid" class="now-grid"></div>
           </div>
 
+          <div id="picked" class="picked card" hidden>
+            <span id="picked-info"></span>
+            <button id="picked-play" class="chip strong">▶ Play the tapped notes</button>
+            <button id="picked-clear" class="chip">Clear</button>
+          </div>
           <div id="lanes" class="lanes"></div>
-          <p class="muted small hint">Tap a note to see exactly what it is and when it is played · tap empty space (or the strip above) to jump there · Space plays and pauses, ← → skip 5 s.</p>
+          <p class="muted small hint">Tap a note to hear it (tap more to collect them, then play them together) · drag a lane sideways to scrub · tap empty space or the strip above to jump · Space plays and pauses, ← → skip 5 s, L loops.</p>
         </section>
       </main>
     </div>

@@ -35,6 +35,11 @@ every instrument in real time:
   next.
 * **Strings/synth, vocals, bass:** the notes they play (strings also get
   chord names); **drums:** kick, snare and hi-hat hits.
+* **Practice:** slow down (25–150%) without changing the pitch, loop any
+  section (by bar numbers, or "start here" / "end here" on the beat you are
+  on) at any speed, drag any note lane sideways to scrub through the song,
+  and tap notes to hear them — tap several (a chord, a phrase) and play just
+  those, at their own timing and the practice speed.
 * **The whole band:** the chord now and the next one with a countdown, bar
   and beat, key, meter and tempo, and an overview strip of the whole song
   with its chords and bar numbers to jump around.
@@ -46,9 +51,13 @@ stem-studio analyse song.mp4 -o out   # the same analysis without the web app
 
 In Codespaces it starts next to the Duet Arranger on port **8001** (open the
 Ports tab). Separation needs the same audio extras as the Duet Arranger; a
-four-minute song takes a few minutes on a CPU. Playback is sample-accurate
-(Web Audio): every track starts on the same sample, so the lanes, the
-original and the separated tracks never drift apart. The separated tracks are
+four-minute song takes a few minutes on a CPU. Playback runs in an
+AudioWorklet that reads every track from one read head, so the lanes, the
+original and the separated tracks never drift apart; slowing down uses WSOLA
+time-stretching whose alignment is found once on the mix you hear and
+applied to every track, so the tracks stay locked together (at 100% the
+recording is reproduced exactly). Slowing down needs the page on https://
+or localhost, as in Codespaces. The separated tracks are
 mono MP3s to keep a phone's or tablet's memory in check; the original stays
 stereo.
 
