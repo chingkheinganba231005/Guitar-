@@ -86,6 +86,9 @@ def create_app(jobs_root: str = "duet-jobs", atelier_dir: Optional[str] = None, 
                 return JSONResponse({"detail": "Access token required"}, status_code=401)
         response = await call_next(request)
         response.headers.setdefault("X-Content-Type-Options", "nosniff")
+        if path == "/" or path.startswith("/static/") or path.startswith("/atelier/"):
+            # always revalidate app files, so an update is picked up on reload
+            response.headers["Cache-Control"] = "no-cache"
         return response
 
     def job_or_404(job_id: str):

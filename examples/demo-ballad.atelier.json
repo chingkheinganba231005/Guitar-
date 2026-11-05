@@ -11358,7 +11358,7 @@
       "melody_octave_shift": 0
      }
     ],
-    "search_seconds": 2.9,
+    "search_seconds": 2.5,
     "screened": 304
    },
    {
@@ -11420,7 +11420,7 @@
       "open_string_resonance_notes": 48
      }
     ],
-    "search_seconds": 9.0,
+    "search_seconds": 8.8,
     "screened": 152
    }
   ],

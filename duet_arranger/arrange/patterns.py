@@ -67,6 +67,8 @@ def find_pattern(song: Song, notes: list[Note], bars: range, min_share: float = 
     nslots = max(1, L // unit)
     by_bar: dict[int, dict[int, set]] = {bi: {} for bi in use}
     for n in notes:
+        if n.end - n.start <= 6 and n.velocity < 0.7:
+            continue  # a short, quiet blip: transcription debris, not the groove
         bi = song.bar_at(n.start)
         if bi not in by_bar:
             continue

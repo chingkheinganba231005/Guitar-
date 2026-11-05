@@ -144,7 +144,17 @@ On the repository page choose **Code → Codespaces → Create codespace on main
 and pick a 4-core machine. The first start installs everything (about ten
 minutes), then the app opens in a browser tab; use the file picker to choose a
 song from your device. Stop the codespace when you are done to save your free
-hours. (The setup file has not been tested on Codespaces yet.)
+hours.
+
+To update an existing codespace to the latest version (both Duet Arranger and
+Atelier) and restart the app, run in its terminal:
+
+```bash
+bash /workspaces/Guitar-/.devcontainer/update.sh
+```
+
+The version is shown under the app's name; an arrangement made by an older
+version says so, and **Arrange again** rebuilds it with the current one.
 
 ### On a server
 

@@ -48,10 +48,11 @@ def instrumental_line(song: Song, start: int, end: int, exclude: tuple = ()) -> 
     """The most melodic top line among the harmony stems inside [start, end)."""
     best: list[Note] = []
     best_score = 0.0
+    keep = set(main_harmony_parts(song))
     for name, notes in song.parts.items():
         if name in exclude or name in ("drums", "bass", "vocals"):
             continue
-        if not any(name.startswith(p) for p in HARMONY_PARTS):
+        if name not in keep:
             continue
         cand = monophonic([n for n in notes if start <= n.start < end], "high")
         if len(cand) < 2:
@@ -135,8 +136,26 @@ def instrumental_gaps(song: Song, vocal: list[Note]) -> list[tuple[int, int]]:
     return gaps(vocal, song.bars[0].start, song.end_tick, min_gap)
 
 
+def main_harmony_parts(song: Song) -> list[str]:
+    """Harmony stems that carry the music.
+
+    Separation leaks a little of every instrument into the other stems (a
+    song with no guitar still has a "guitar" stem); transcribed, that leakage
+    is a scatter of off-beat notes. For rhythm and line decisions only stems
+    at least 60% as loud as the loudest harmony stem count. (MIDI has no
+    leakage: every harmony part counts.)"""
+    names = [n for n in song.parts if any(n.startswith(p) for p in HARMONY_PARTS) and n not in ("vocals", "bass", "drums")]
+    rms = (song.notes_info or {}).get("stem_rms") or {}
+    levels = {n: rms.get(n) for n in names if rms.get(n) is not None}
+    if not levels:
+        return names
+    loud = max(levels.values()) or 1e-9
+    return [n for n in names if levels.get(n, loud) >= 0.6 * loud]
+
+
 def harmony_notes(song: Song) -> list[Note]:
-    return [n for name, ns in song.parts.items() if any(name.startswith(p) for p in HARMONY_PARTS) and name not in ("vocals", "bass", "drums") for n in ns]
+    keep = set(main_harmony_parts(song))
+    return [n for name, ns in song.parts.items() if name in keep for n in ns]
 
 
 def chordal_regions(song: Song, vocal: list[Note]) -> list[tuple[int, int]]:
@@ -171,10 +190,17 @@ def lead_chords(song: Song, regions: list[tuple[int, int]], tuning, capo: int) -
     out: list[Note] = []
     prev = None
     lo_string = lowest_pitch(tuning, capo)
+    from .patterns import section_ranges
+
+    pieces = []  # regions cut at section boundaries: one groove per section
     for a, b in regions:
+        for s0, s1 in section_ranges(song):
+            lo, hi = max(a, s0), min(b, s1)
+            if hi > lo:
+                pieces.append((lo, hi))
+    for a, b in pieces:
         notes = [n for n in harm if song.bars[a].start <= n.start < song.bars[b - 1].end]
         pat = find_pattern(song, notes, range(a, b))
-        starts = sorted(n.start for n in notes)
         for bi in range(a, b):
             bar = song.bars[bi]
             if pat is not None and bar.length == pat.length:

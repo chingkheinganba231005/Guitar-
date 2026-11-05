@@ -20,8 +20,9 @@ log = logging.getLogger(__name__)
 
 TRANSCRIBE = ("vocals", "bass", "piano", "guitar", "other")
 # Bump when the analysis changes in ways a saved Song should not skip
-# (2: eighth-note grid, steady tempo, vocal-bleed removal).
-ANALYSIS_VERSION = 2
+# (2: eighth-note grid, steady tempo, vocal-bleed removal; 3: beat-snapped
+# chord changes, stronger start-on-beat-1 downbeat prior).
+ANALYSIS_VERSION = 3
 
 
 def _mono(path: str) -> np.ndarray:
@@ -78,9 +79,9 @@ def analyze_audio(path: str, workdir: str, title: str | None = None, artist: str
     song.triplet_beats = detect_triplet_beats(song, onsets)
     for s in list(parts):
         parts[s] = snap_notes(parts[s], song)
-    song.parts = parts
-    song.melody = list(parts.get("vocals", []))
-    song.bass = list(parts.get("bass", []))
+    song.parts = clean_leakage(parts)
+    song.melody = list(song.parts.get("vocals", []))
+    song.bass = list(song.parts.get("bass", []))
     grid = Grid(song)
     if drums is not None:
         for t, kind, strength in detect_hits(drums):
@@ -105,12 +106,42 @@ def analyze_audio(path: str, workdir: str, title: str | None = None, artist: str
         "beats_per_bar": beatmap.beats_per_bar,
         "compound": beatmap.compound,
         "stems": {s: len(v) for s, v in parts.items()},
+        "stem_rms": {s: round(float(np.sqrt(np.mean(v**2))), 5) for s, v in sig.items()},
         "hits": len(song.hits),
         "drum_prominence": round(prom, 3),
     }
     with open(os.path.join(workdir, "analysis.json"), "w", encoding="utf-8") as f:
         json.dump(song_summary(song), f, indent=1)
     return song
+
+
+def clean_leakage(parts: dict[str, list[Note]]) -> dict[str, list[Note]]:
+    """Remove transcription debris from the harmony stems.
+
+    * bass leaking into the piano/guitar/other stems: quiet low notes that
+      match the bass note sounding at that moment;
+    * blips: very short, quiet notes standing alone (no chord around them).
+    """
+    from ..arrange.lines import LineIndex, bassline
+
+    bass = LineIndex(bassline(parts.get("bass", [])))
+    out = dict(parts)
+    for name, notes in parts.items():
+        if name in ("vocals", "bass", "drums"):
+            continue
+        onsets: dict[int, int] = {}
+        for n in notes:
+            onsets[n.start] = onsets.get(n.start, 0) + 1
+        kept = []
+        for n in notes:
+            b = bass.at(n.start) or bass.next_after(n.start - 1)
+            if n.pitch < 52 and n.velocity < 0.8 and b is not None and abs(b.start - n.start) <= TPQ * 2 and (n.pitch - b.pitch) % 12 == 0:
+                continue
+            if n.end - n.start <= 6 and n.velocity < 0.7 and onsets.get(n.start, 0) == 1:
+                continue
+            kept.append(n)
+        out[name] = kept
+    return out
 
 
 def drop_vocal_bleed(song: Song, vocals: np.ndarray, beatmap: BeatMap, floor: float = 0.14) -> None:

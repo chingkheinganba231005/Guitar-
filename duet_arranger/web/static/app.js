@@ -280,6 +280,11 @@ const fileUrl = (job, name, download = false) => authed(`/api/jobs/${job.id}/fil
 function renderResult(job) {
   const r = job.result;
   $("#result").hidden = false;
+  const made = job.version || r.version || "0.1";
+  const old = made !== info.version;
+  $("#outdated").hidden = !old;
+  if (old)
+    $("#outdated").innerHTML = `<strong>Made with an older Duet Arranger (${esc(made)}).</strong> This app is v${esc(info.version)}. Choose “Arrange again” below to rebuild it with the current version — the separated stems are reused.`;
   $("#facts").innerHTML = [
     ["Key", r.key],
     ["Tempo", r.tempo ? `${r.tempo} BPM` : "—"],
@@ -425,6 +430,7 @@ async function boot() {
     toast(e.message);
     return;
   }
+  $("#version").textContent = "v" + info.version;
   fillTuningSelects();
   bindForm();
   $$(".tabs [data-tab]").forEach((b) => (b.onclick = () => selectTab(b.dataset.tab)));

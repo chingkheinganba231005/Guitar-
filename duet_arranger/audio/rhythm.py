@@ -52,6 +52,19 @@ class BeatMap:
         smooth_tempos(out)
         return out
 
+    def to_ticks(self, t: float) -> float:
+        """Map seconds to ticks by linear interpolation between beats (beat i = tick i*tpb)."""
+        b = self.beats
+        tpb = self.ticks_per_beat
+        if t <= b[0]:
+            return 0.0
+        if t >= b[-1]:
+            ibi = b[-1] - b[-2]
+            return (len(b) - 1 + (t - b[-1]) / ibi) * tpb
+        j = int(np.searchsorted(b, t) - 1)
+        frac = (t - b[j]) / (b[j + 1] - b[j])
+        return (j + frac) * tpb
+
 
 def smooth_tempos(bars: list[Bar], window: int = 9, steady: float = 0.05) -> None:
     """One tempo for the song unless it really changes.
@@ -76,19 +89,6 @@ def smooth_tempos(bars: list[Bar], window: int = 9, steady: float = 0.05) -> Non
         elif abs(cur - glob) / glob > steady:
             cur = round(glob)
         b.tempo = float(cur)
-
-    def to_ticks(self, t: float) -> float:
-        """Map seconds to ticks by linear interpolation between beats (beat i = tick i*tpb)."""
-        b = self.beats
-        tpb = self.ticks_per_beat
-        if t <= b[0]:
-            return 0.0
-        if t >= b[-1]:
-            ibi = b[-1] - b[-2]
-            return (len(b) - 1 + (t - b[-1]) / ibi) * tpb
-        j = int(np.searchsorted(b, t) - 1)
-        frac = (t - b[j]) / (b[j + 1] - b[j])
-        return (j + frac) * tpb
 
 
 def onset_envelope(y: np.ndarray, sr: int = SR, fmin: float | None = None, fmax: float | None = None, detrend: bool = True) -> np.ndarray:
@@ -239,7 +239,7 @@ def track_beats(mix: np.ndarray, drums: np.ndarray | None, bass: np.ndarray | No
             if m == 2:
                 score -= 0.15
             if first_beat is not None and (first_beat - ph) % m == 0:
-                score += 0.18
+                score += 0.45  # songs start on beat 1 far more often than with a pickup
             if score > best[0]:
                 best = (score, m, ph)
     _, m, ph = best

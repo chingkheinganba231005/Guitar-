@@ -49,6 +49,7 @@ class Job:
     started: float = 0.0
     finished: float = 0.0
     parent: str = ""  # job whose analysis a re-arrangement reuses
+    version: str = ""  # Duet Arranger version that made the arrangement
     stages: list = field(default_factory=list)
     result: dict = field(default_factory=dict)
     files: list = field(default_factory=list)
@@ -108,7 +109,9 @@ class JobManager:
 
     # ------------------------------------------------------------------ api
     def create(self, kind: str, **kw) -> Job:
-        job = Job(id=secrets.token_hex(8), kind=kind, **kw)
+        from .. import __version__
+
+        job = Job(id=secrets.token_hex(8), kind=kind, version=__version__, **kw)
         stages = SYMBOLIC_STAGES if kind in ("midi", "demo", "rearrange") else [s for s, _, _ in STAGES]
         job.stages = [{"id": s, "label": l} for s, _, l in STAGES if s in stages]
         with self.lock:
@@ -396,4 +399,5 @@ def summarise(arr, result: dict) -> dict:
         "guitars": guitars,
         "issues": [str(i) for i in result["issues"]],
         "incomplete_bars": result["fill"],
+        "version": __import__("duet_arranger").__version__,
     }

@@ -13,7 +13,7 @@
     <header class="top">
       <a class="brand" href="/" aria-label="Duet Arranger home">
         <span class="brand-mark" aria-hidden="true">II</span>
-        <span>Duet Arranger<small>ONE SONG · TWO GUITARS</small></span>
+        <span>Duet Arranger<small>ONE SONG · TWO GUITARS · <span id="version">…</span></small></span>
       </a>
       <div class="top-actions">
         <span id="audio-status" class="pill" hidden></span>
@@ -125,6 +125,7 @@
           </div>
 
           <div id="result" hidden>
+            <div id="outdated" class="card outdated" hidden></div>
             <div id="facts" class="facts"></div>
             <div id="audit" class="audit"></div>
             <div id="guitars" class="guitars"></div>

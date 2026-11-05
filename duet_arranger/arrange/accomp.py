@@ -80,9 +80,12 @@ def bass_line(song: Song, tuning, capo: int) -> list[Note]:
 
 
 def comp_sources(song: Song, melody_idx: LineIndex) -> list[Note]:
+    from .lead import main_harmony_parts
+
     src = []
+    keep = set(main_harmony_parts(song))
     for name, notes in song.parts.items():
-        if not any(name.startswith(p) for p in HARMONY_PARTS):
+        if name not in keep:
             continue
         for n in notes:
             m = melody_idx.at(n.start)

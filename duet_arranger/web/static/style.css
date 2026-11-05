@@ -825,3 +825,10 @@ a {
     font-size: 34px;
   }
 }
+
+.outdated {
+  border-color: #e7cf9f;
+  background: #fbf4e5;
+  color: #6f5426;
+  margin-bottom: 12px;
+}

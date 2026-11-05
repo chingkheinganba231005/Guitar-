@@ -141,4 +141,6 @@ def test_rearrange_redoes_an_outdated_analysis(client, tmp_path):
     again = client.post(f"/api/jobs/{job['id']}/rearrange", data={"capo": "none"}).json()
     done = wait(client, again["id"])
     assert done["state"] == "done", done["error"]
-    assert open(os.path.join(d, "analysis.version")).read().strip() == "2"
+    from duet_arranger.audio.pipeline import ANALYSIS_VERSION
+
+    assert open(os.path.join(d, "analysis.version")).read().strip() == str(ANALYSIS_VERSION)

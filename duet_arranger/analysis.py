@@ -85,6 +85,25 @@ def estimate_chords(song: Song, extra_chroma: np.ndarray | None = None) -> None:
             merged[-1].end = c.end
             continue
         merged.append(c)
+    # Chord changes happen on beats, most often on the barline: an estimate a
+    # little early or late (an anticipating melody note, a ringing bass) moves.
+    bar_starts = [b.start for b in song.bars]
+    beat_starts = song.beat_starts()
+    for c in merged[1:]:
+        near_bar = min(bar_starts, key=lambda t: abs(t - c.start))
+        near_beat = min(beat_starts, key=lambda t: abs(t - c.start)) if beat_starts else c.start
+        if abs(near_bar - c.start) <= TPQ // 2:
+            c.start = near_bar
+        elif abs(near_beat - c.start) <= TPQ // 2:
+            c.start = near_beat
+    snapped: list[Chord] = []
+    for c in merged:
+        if snapped and c.start <= snapped[-1].start:
+            continue
+        if snapped and (c.root, c.quality, c.bass) == (snapped[-1].root, snapped[-1].quality, snapped[-1].bass):
+            continue
+        snapped.append(c)
+    merged = snapped
     for a, b in zip(merged, merged[1:]):
         a.end = b.start
     if merged:
