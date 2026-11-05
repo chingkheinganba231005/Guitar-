@@ -5344,7 +5344,7 @@
       "melody_octave_shift": 0
      }
     ],
-    "search_seconds": 3.7,
+    "search_seconds": 4.1,
     "screened": 272
    },
    {
@@ -5420,11 +5420,11 @@
       "open_string_resonance_notes": 16
      }
     ],
-    "search_seconds": 2.0,
+    "search_seconds": 2.1,
     "screened": 136
    }
   ],
-  "version": "0.4.3",
+  "version": "0.4.4",
   "analysis_version": 4,
   "playability_issues": []
  }

@@ -5753,11 +5753,11 @@
       "open_string_resonance_notes": 19
      }
     ],
-    "search_seconds": 1.8,
+    "search_seconds": 1.9,
     "screened": 136
    }
   ],
-  "version": "0.4.3",
+  "version": "0.4.4",
   "analysis_version": 4,
   "playability_issues": []
  }

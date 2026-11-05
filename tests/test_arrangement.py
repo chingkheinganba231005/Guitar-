@@ -241,3 +241,51 @@ def test_both_guitars_ring_a_held_chord():
         inside = [n for n in g.placed if bar.start < n.start < bar.end and n.fret != "x"]
         assert inside == [], (g.name, [(n.start - bar.start, n.role) for n in inside])
         assert any(n.start == bar.start for n in g.placed), g.name
+
+
+def _strings_song(strings_level: float):
+    """The 6/8 ballad with a string section: pads swelling in under the
+    intro's piano chords (off the piano's attacks, as separated strings are
+    transcribed), and a violin tune over the outro's chords. ``strings_level``
+    is the strings stem's loudness relative to the piano."""
+    from duet_arranger.model import Note
+
+    song = demo_song("sixeight")
+    strings = []
+    for bar in song.bars[:8]:
+        ch = song.chord_at(bar.start)
+        for k, p in enumerate((58 + (ch.root - 10) % 12, 65)):
+            st = bar.start + 7 + 5 * k
+            strings.append(Note(st, bar.end + 6, p, velocity=0.5, source="other"))
+    tune = [70, 72, 74, 72, 70, 69, 67, 69, 70, 74, 77, 75, 74, 72, 70, 70]
+    k = 0
+    for bar in song.bars[16:20]:
+        for j, d in enumerate((18, 6, 12, 36)):
+            st = bar.start + sum((18, 6, 12, 36)[:j])
+            strings.append(Note(st, st + d, tune[k % len(tune)], velocity=0.7, source="other"))
+            k += 1
+    song.parts["other"] = strings
+    song.notes_info = {"stem_rms": {"piano": 1.0, "other": strings_level}}
+    return song
+
+
+def test_string_pad_does_not_hide_the_intro_chords():
+    from duet_arranger.arrange.lead import chordal_regions
+
+    song = _strings_song(0.9)
+    regions = chordal_regions(song, song.melody)
+    assert any(a == 0 and b >= 8 for a, b in regions)
+
+
+def test_guitar_one_plays_a_string_tune_between_sections():
+    """Where only the strings sing (between a chorus and the next verse, or
+    here over the outro), Guitar I plays their tune as its melody."""
+    song = _strings_song(0.4)  # softer than the piano, as strings often are
+    arr = arrange(song, ArrangeOptions())
+    assert audit_project(to_atelier(arr)) == []
+    lead = arr.guitars[0].placed
+    outro = (song.bars[16].start, song.bars[19].end)
+    tune = sorted({n.start for n in song.parts["other"] if outro[0] <= n.start < outro[1]})
+    mel = {n.start for n in lead if n.role == "melody" and outro[0] <= n.start < outro[1]}
+    assert len(mel & set(tune)) >= 0.9 * len(tune)
+    assert not any(n.role == "chord" and outro[0] <= n.start < outro[1] for n in lead)

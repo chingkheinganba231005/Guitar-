@@ -87,6 +87,14 @@ frets are steeply dearer for every voice (nothing above the 14th in
 practice), and a tune note that could only be reached up there becomes a
 12th or 7th-fret harmonic.
 
+**Strings are heard for what they do.** A string section holding long notes
+under the piano's chords is a pad: it doesn't stop Guitar I from striking
+the piano's chords in the intro. When the strings (or any instrument) play a
+real tune where nobody sings — between a chorus and the next verse, say —
+Guitar I plays that tune as its melody, even when the strings are softer
+than the piano; a soft stem only counts if it plays its own notes, not the
+quiet copy of the piano that separation leaks into other stems.
+
 **Held moments are held.** Where the singer holds a long note and the band
 holds the chord under it ("one step clo-ser~"), both guitars strike the chord
 with the note and let it ring until the music moves again: no pattern, no

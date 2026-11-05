@@ -45,26 +45,104 @@ def section_label(song: Song, tick: int) -> str:
     return (s.label if s else "").lower()
 
 
+def audible_parts(song: Song, share: float = 0.25) -> list[str]:
+    """Harmony stems loud enough to carry a tune of their own (strings that
+    sing between a chorus and the next verse are often softer than the piano,
+    so this is looser than ``main_harmony_parts``)."""
+    names = [n for n in song.parts if any(n.startswith(p) for p in HARMONY_PARTS) and n not in ("vocals", "bass", "drums")]
+    rms = (song.notes_info or {}).get("stem_rms") or {}
+    levels = {n: rms.get(n) for n in names if rms.get(n) is not None}
+    if not levels:
+        return names
+    loud = max(levels.values()) or 1e-9
+    main = [n for n in names if levels.get(n, loud) >= 0.6 * loud]
+    heard = {(round(x.start / 6), x.pitch % 12) for m in main for x in song.parts.get(m, [])}
+    out = []
+    for n in names:
+        lvl = levels.get(n, loud)
+        if lvl < share * loud:
+            continue
+        if n not in main:
+            # a softer stem counts only if it plays its own notes: separation
+            # leaks a quiet copy of the piano into other stems
+            ns = song.parts.get(n, [])
+            echo = sum(1 for x in ns if any((round(x.start / 6) + d, x.pitch % 12) in heard for d in (-1, 0, 1)))
+            if ns and echo > 0.5 * len(ns):
+                continue
+        out.append(n)
+    return out
+
+
+def is_melodic(song: Song, line: list[Note], start: int, end: int, stem_notes: list[Note] | None = None) -> bool:
+    """A real tune (violins singing a phrase), not the top of repeated chords
+    nor a held string pad: it moves, mostly by step or small leaps, with
+    notes shorter than a bar and at least one per bar, and (given the stem's
+    notes) most of its notes are not the top of three-note chords."""
+    if len(line) < 3 or not song.bars:
+        return False
+    if stem_notes:
+        size: dict[int, int] = {}
+        for n in stem_notes:
+            size[n.start] = size.get(n.start, 0) + 1
+        if sum(1 for n in line if size.get(n.start, 1) >= 3) > 0.4 * len(line):
+            return False  # the top of the piano's chords
+    pitches = [n.pitch for n in line]
+    if len(set(pitches)) < 3:
+        return False
+    bar_len = song.bars[song.bar_at(start)].length
+    bars = max(1.0, (end - start) / bar_len)
+    if len(line) / bars < 1.0:
+        return False
+    durs = sorted(n.end - n.start for n in line)
+    if durs[len(durs) // 2] > bar_len:
+        return False
+    moves = [abs(b - a) for a, b in zip(pitches, pitches[1:])]
+    changed = [d for d in moves if d]
+    if len(changed) < 0.5 * len(moves):
+        return False  # mostly the same note again: a chord's top, not a tune
+    return sum(1 for d in changed if d <= 7) >= 0.6 * len(changed)
+
+
 def instrumental_line(song: Song, start: int, end: int, exclude: tuple = ()) -> list[Note]:
-    """The most melodic top line among the harmony stems inside [start, end)."""
+    """The most melodic top line among the harmony stems inside [start, end)
+    (a tune that really moves beats the busiest chord part)."""
+    return _best_line(song, start, end, exclude)[0]
+
+
+def instrumental_tune(song: Song, start: int, end: int) -> list[Note]:
+    """Like ``instrumental_line``, but only a real tune (else [])."""
+    line, melodic = _best_line(song, start, end, ())
+    return line if melodic else []
+
+
+def _best_line(song: Song, start: int, end: int, exclude: tuple) -> tuple[list[Note], bool]:
     best: list[Note] = []
+    best_melodic = False
     best_score = 0.0
-    keep = set(main_harmony_parts(song))
+    keep = set(audible_parts(song))
     for name, notes in song.parts.items():
         if name in exclude or name in ("drums", "bass", "vocals"):
             continue
         if name not in keep:
             continue
-        cand = monophonic([n for n in notes if start <= n.start < end], "high")
+        here = [n for n in notes if start <= n.start < end]
+        if here and song.bars:
+            durs = sorted(n.end - n.start for n in here)
+            if durs[len(durs) // 2] >= 0.75 * song.bars[song.bar_at(start)].length:
+                continue  # a held pad (strings under chords) is not a tune
+        cand = [n for n in monophonic(here, "high") if n.end - n.start >= TPQ // 4]
         if len(cand) < 2:
             continue
         pitches = [n.pitch for n in cand]
         motion = sum(1 for a, b in zip(pitches, pitches[1:]) if a != b)
         spread = max(pitches) - min(pitches)
         score = motion * (1 + min(spread, 12) / 12) + 0.3 * len(cand)
+        melodic = is_melodic(song, cand, start, end, here)
+        if melodic:
+            score *= 2.0
         if score > best_score:
-            best, best_score = cand, score
-    return best
+            best, best_score, best_melodic = cand, score, melodic
+    return best, best_melodic
 
 
 def register_score(pitches: list[int], shift: int) -> float:
@@ -162,11 +240,30 @@ def harmony_notes(song: Song) -> list[Note]:
     return [n for name, ns in song.parts.items() if name in keep for n in ns]
 
 
+def striking_notes(song: Song, a: int, b: int) -> list[Note]:
+    """Notes of the stems that strike in bars [a, b), leaving out held pads
+    (strings sustaining under piano chords would make the chords look like
+    a line)."""
+    t0, t1 = song.bars[a].start, song.bars[b - 1].end
+    bar_len = song.bars[a].length
+    out = []
+    for name in main_harmony_parts(song):
+        ns = [n for n in song.parts.get(name, []) if t0 <= n.start < t1]
+        if not ns:
+            continue
+        durs = sorted(n.end - n.start for n in ns)
+        if durs[len(durs) // 2] >= 0.75 * bar_len:
+            continue  # a pad
+        out += ns
+    return out
+
+
 def chordal_regions(song: Song, vocal: list[Note]) -> list[tuple[int, int]]:
-    """Bar ranges without singing where the band strikes chords rather than a line."""
+    """Bar ranges without singing where the band strikes chords rather than a
+    line. A real tune there (strings singing a phrase) wins: Guitar I plays
+    that instead."""
     from .patterns import chordal
 
-    harm = harmony_notes(song)
     out = []
     for g0, g1 in instrumental_gaps(song, vocal):
         a = song.bar_at(g0)
@@ -177,7 +274,15 @@ def chordal_regions(song: Song, vocal: list[Note]) -> list[tuple[int, int]]:
             continue
         if g1 < song.bars[b - 1].end:
             b -= 1
-        if b - a >= 1 and chordal(song, [n for n in harm if song.bars[a].start <= n.start < song.bars[b - 1].end], range(a, b)):
+        if b - a < 1:
+            continue
+        if instrumental_tune(song, song.bars[a].start, song.bars[b - 1].end):
+            continue
+        strike = striking_notes(song, a, b)
+        by_stem = {}
+        for n in strike:
+            by_stem.setdefault(n.source, []).append(n)
+        if chordal(song, strike, range(a, b)) or any(chordal(song, ns, range(a, b)) for ns in by_stem.values() if len(ns) >= 4):
             # include a pickup bar before the region if it is also instrumental
             if a == 1 and song.bars[0].length < song.bars[1].length and not any(n.start < song.bars[1].start for n in vocal):
                 a = 0
@@ -190,7 +295,7 @@ def lead_chords(song: Song, regions: list[tuple[int, int]], tuning, capo: int) -
     from .accomp import fit_bass, lowest_pitch, place_in_range, voicing
     from .patterns import find_pattern
 
-    harm = harmony_notes(song)
+    harm = [n for a0, b0 in regions for n in striking_notes(song, a0, b0)] or harmony_notes(song)
     out: list[Note] = []
     prev = None
     lo_string = lowest_pitch(tuning, capo)
@@ -638,8 +743,6 @@ def sustain_melody(song: Song, melody: list[Note]) -> None:
     tune note still rings (a fill that would is handed to Guitar II)."""
     holds = held_spans(song)
     for i, m in enumerate(melody):
-        if "instrumental" in m.tags:
-            continue
         beat = beat_ticks_at(song, m.start)
         nxt = melody[i + 1].start if i + 1 < len(melody) else song.end_tick
         end = max(m.end, min(nxt, m.end + 2 * beat))
