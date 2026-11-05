@@ -5,8 +5,9 @@ covers), produced with `duet-arranger demo pop|ballad|waltz|sixeight -o examples
 
 In every one, Guitar I is a complete fingerstyle part — melody on top, its
 own bass on the strong beats and chord changes, harmony in between — and
-Guitar II adds the groove and more harmony without doubling what Guitar I
-plays.
+Guitar II adds the groove and more harmony: never the very same note as
+Guitar I at once, but chord tones in other octaves, the bass an octave lower
+on chord changes and, in the choruses, the tune itself in octaves.
 
 * `demo-pop.*` — drum-driven version: Guitar I plays the melody over a
   bass on beats 1 and 3; Guitar II plays the bass groove in between, the

@@ -80,6 +80,7 @@ function formOptions() {
   fd.set("difficulty", $("#difficulty").value);
   fd.set("harmonics", $("#harmonics").checked ? "true" : "false");
   fd.set("taps", $("#taps").checked ? "true" : "false");
+  fd.set("octaves", $("#octaves").checked ? "true" : "false");
   return fd;
 }
 

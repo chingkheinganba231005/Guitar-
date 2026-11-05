@@ -81,7 +81,7 @@
      "melody_octave_shift": 0
     }
    ],
-   "search_seconds": 4.3,
+   "search_seconds": 5.0,
    "screened": 352
   },
   {
@@ -157,7 +157,7 @@
      "open_string_resonance_notes": 18
     }
    ],
-   "search_seconds": 2.1,
+   "search_seconds": 1.9,
    "screened": 176
   }
  ],

@@ -30,10 +30,14 @@ strikes those chords on the same beats and lets them ring.
 Guitar II makes the duet bigger than one guitar can: it plays the original
 groove — chords where the piano or guitar strikes chords, an arpeggio where
 they arpeggiate — in the register between Guitar I's inner voice and the tune,
-and the bass groove between Guitar I's bass notes. It never doubles a note
-Guitar I is playing at that moment: it picks other chord tones, and where a
-low tune leaves no room underneath, a soft soaring descant above it (in
-harmonics in soft songs). Only where the source holds long pads (which a
+and the bass groove between Guitar I's bass notes. The two guitars never
+strike or hold the very same note at once — that only sounds like one guitar
+louder — but Guitar II freely doubles a chord tone in another octave (a
+fuller voicing), adds the bass an octave below Guitar I's on chord changes
+when its tuning reaches that low, and in the choruses joins the tune itself
+an octave below (or above, when the tune sits low) between its pattern notes
+(`--no-octaves` turns that off). Where a low tune leaves no room underneath,
+Guitar II rings a soft soaring descant above it (in harmonics in soft songs). Only where the source holds long pads (which a
 guitar cannot sustain) does it fall back on an idiomatic fingerstyle pattern,
 in eighths rather than sixteenths when Guitar I's inner voice is already
 moving.
@@ -220,6 +224,7 @@ drums are recognised automatically.
 | `--percussion` | `auto` | `on` / `off` overrides the drum-prominence decision |
 | `--max-fret` | `20` | highest fret your guitar reaches comfortably |
 | `--no-harmonics`, `--no-taps` | | leave those techniques out |
+| `--no-octaves` | | Guitar II does not double the tune in octaves in the choruses |
 | `--difficulty` | `1.0` | `0.6` gives lighter textures |
 | `--device` | auto | `cpu`, `cuda`, `mps` for separation |
 

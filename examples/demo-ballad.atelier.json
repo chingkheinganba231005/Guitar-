@@ -4403,18 +4403,25 @@
        ],
        "notes": [
         {
-         "string": 2,
-         "fret": 12,
+         "string": 1,
+         "fret": 0,
          "sustain": true,
          "tech": [],
-         "harmonic": "natural",
+         "harmonic": "",
          "grace": null,
-         "velocity": 130,
+         "velocity": 67,
+         "tone": ""
+        },
+        {
+         "string": 6,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
          "tone": "",
-         "lh": "1",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e8"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -4432,8 +4439,8 @@
        ],
        "notes": [
         {
-         "string": 4,
-         "fret": 12,
+         "string": 5,
+         "fret": 7,
          "sustain": true,
          "tech": [],
          "harmonic": "natural",
@@ -4459,17 +4466,15 @@
        "notes": [
         {
          "string": 4,
-         "fret": 12,
+         "fret": 7,
          "sustain": true,
          "tech": [],
-         "harmonic": "natural",
+         "harmonic": "",
          "grace": null,
-         "velocity": 130,
+         "velocity": 40,
          "tone": "",
          "lh": "1",
-         "rh": "p",
-         "tie": true,
-         "tieFrom": "g1e10"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -4512,18 +4517,15 @@
        ],
        "notes": [
         {
-         "string": 2,
-         "fret": 7,
+         "string": 6,
+         "fret": 0,
          "sustain": true,
          "tech": [],
-         "harmonic": "natural",
+         "harmonic": "",
          "grace": null,
-         "velocity": 130,
+         "velocity": 23,
          "tone": "",
-         "lh": "1",
-         "rh": "m",
-         "tie": true,
-         "tieFrom": "g1e12"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -4693,9 +4695,7 @@
          "velocity": 130,
          "tone": "",
          "lh": "4",
-         "rh": "p",
-         "tie": true,
-         "tieFrom": "g1e18"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -4801,9 +4801,7 @@
          "velocity": 130,
          "tone": "",
          "lh": "4",
-         "rh": "p",
-         "tie": true,
-         "tieFrom": "g1e22"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -4904,8 +4902,8 @@
       },
       {
        "id": "g1e27",
-       "den": 4,
-       "dots": 1,
+       "den": 8,
+       "dots": 0,
        "ratio": [
         1,
         1
@@ -4921,9 +4919,7 @@
          "velocity": 130,
          "tone": "",
          "lh": "4",
-         "rh": "p",
-         "tie": true,
-         "tieFrom": "g1e26"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -4966,6 +4962,60 @@
        ],
        "notes": [
         {
+         "string": 5,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 130,
+         "tone": "",
+         "lh": "4",
+         "rh": "p",
+         "tie": true,
+         "tieFrom": "g1e28"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e30",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 5,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 130,
+         "tone": "",
+         "lh": "4",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e31",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
          "string": 3,
          "fret": 12,
          "sustain": true,
@@ -4983,7 +5033,7 @@
        "strum": ""
       },
       {
-       "id": "g1e30",
+       "id": "g1e32",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -5020,7 +5070,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e31",
+       "id": "g1e33",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -5040,65 +5090,13 @@
          "lh": "4",
          "rh": "i",
          "tie": true,
-         "tieFrom": "g1e30"
+         "tieFrom": "g1e32"
         }
        ],
        "above": "",
        "below": "",
        "strum": "",
        "chord": "G"
-      },
-      {
-       "id": "g1e32",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 3,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e33",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
       },
       {
        "id": "g1e34",
@@ -5110,7 +5108,7 @@
        ],
        "notes": [
         {
-         "string": 1,
+         "string": 3,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -5136,7 +5134,7 @@
        ],
        "notes": [
         {
-         "string": 3,
+         "string": 2,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -5162,7 +5160,7 @@
        ],
        "notes": [
         {
-         "string": 2,
+         "string": 1,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -5188,7 +5186,7 @@
        ],
        "notes": [
         {
-         "string": 1,
+         "string": 3,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -5240,7 +5238,7 @@
        ],
        "notes": [
         {
-         "string": 2,
+         "string": 1,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -5249,9 +5247,7 @@
          "velocity": 127,
          "tone": "",
          "lh": "4",
-         "rh": "m",
-         "tie": true,
-         "tieFrom": "g1e38"
+         "rh": "i"
         }
        ],
        "above": "",
@@ -5268,7 +5264,7 @@
        ],
        "notes": [
         {
-         "string": 3,
+         "string": 2,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -5277,7 +5273,7 @@
          "velocity": 127,
          "tone": "",
          "lh": "4",
-         "rh": "i"
+         "rh": "m"
         }
        ],
        "above": "",
@@ -5303,7 +5299,9 @@
          "velocity": 127,
          "tone": "",
          "lh": "4",
-         "rh": "m"
+         "rh": "m",
+         "tie": true,
+         "tieFrom": "g1e40"
         }
        ],
        "above": "",
@@ -5320,7 +5318,7 @@
        ],
        "notes": [
         {
-         "string": 1,
+         "string": 3,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -5346,7 +5344,7 @@
        ],
        "notes": [
         {
-         "string": 3,
+         "string": 2,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -5372,7 +5370,7 @@
        ],
        "notes": [
         {
-         "string": 2,
+         "string": 1,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -5398,7 +5396,7 @@
        ],
        "notes": [
         {
-         "string": 1,
+         "string": 3,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -5439,75 +5437,9 @@
        "above": "",
        "below": "",
        "strum": ""
-      }
-     ]
-    },
-    {
-     "id": "bar6",
-     "section": "",
-     "meter": null,
-     "tempo": null,
-     "tone": "",
-     "above": "",
-     "below": "",
-     "events": [
+      },
       {
        "id": "g1e47",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e46"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": "",
-       "chord": "D"
-      },
-      {
-       "id": "g1e48",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 4,
-         "fret": 7,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "1",
-         "rh": "p"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e49",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -5533,7 +5465,7 @@
        "strum": ""
       },
       {
-       "id": "g1e50",
+       "id": "g1e48",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -5543,6 +5475,69 @@
        "notes": [
         {
          "string": 2,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar6",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e49",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 6,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "D"
+      },
+      {
+       "id": "g1e50",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
          "fret": 7,
          "sustain": true,
          "tech": [],
@@ -5551,7 +5546,7 @@
          "velocity": 127,
          "tone": "",
          "lh": "1",
-         "rh": "i"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -5568,32 +5563,6 @@
        ],
        "notes": [
         {
-         "string": 4,
-         "fret": 7,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "1",
-         "rh": "p"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e52",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
          "string": 1,
          "fret": 12,
          "sustain": true,
@@ -5611,7 +5580,7 @@
        "strum": ""
       },
       {
-       "id": "g1e53",
+       "id": "g1e52",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -5630,6 +5599,32 @@
          "tone": "",
          "lh": "1",
          "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e53",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
         }
        ],
        "above": "",
@@ -5672,18 +5667,16 @@
        ],
        "notes": [
         {
-         "string": 1,
-         "fret": 12,
+         "string": 2,
+         "fret": 7,
          "sustain": true,
          "tech": [],
          "harmonic": "natural",
          "grace": null,
          "velocity": 127,
          "tone": "",
-         "lh": "4",
-         "rh": "m",
-         "tie": true,
-         "tieFrom": "g1e54"
+         "lh": "1",
+         "rh": "i"
         }
        ],
        "above": "",
@@ -5700,16 +5693,16 @@
        ],
        "notes": [
         {
-         "string": 4,
-         "fret": 7,
+         "string": 1,
+         "fret": 12,
          "sustain": true,
          "tech": [],
          "harmonic": "natural",
          "grace": null,
          "velocity": 127,
          "tone": "",
-         "lh": "1",
-         "rh": "p"
+         "lh": "4",
+         "rh": "m"
         }
        ],
        "above": "",
@@ -5726,16 +5719,15 @@
        ],
        "notes": [
         {
-         "string": 1,
-         "fret": 12,
+         "string": 6,
+         "fret": 0,
          "sustain": true,
          "tech": [],
-         "harmonic": "natural",
+         "harmonic": "",
          "grace": null,
-         "velocity": 127,
+         "velocity": 23,
          "tone": "",
-         "lh": "4",
-         "rh": "i"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -5744,32 +5736,6 @@
       },
       {
        "id": "g1e58",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 7,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "1",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e59",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -5795,7 +5761,7 @@
        "strum": ""
       },
       {
-       "id": "g1e60",
+       "id": "g1e59",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -5821,7 +5787,7 @@
        "strum": ""
       },
       {
-       "id": "g1e61",
+       "id": "g1e60",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -5847,7 +5813,85 @@
        "strum": ""
       },
       {
+       "id": "g1e61",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
        "id": "g1e62",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e63",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e64",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -5884,7 +5928,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e63",
+       "id": "g1e65",
        "den": 8,
        "dots": 1,
        "ratio": [
@@ -5904,7 +5948,7 @@
          "lh": "4",
          "rh": "i",
          "tie": true,
-         "tieFrom": "g1e62"
+         "tieFrom": "g1e64"
         }
        ],
        "above": "",
@@ -5913,7 +5957,7 @@
        "chord": "Em"
       },
       {
-       "id": "g1e64",
+       "id": "g1e66",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -5932,59 +5976,6 @@
          "tone": "",
          "lh": "3",
          "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e65",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 3,
-         "fret": 9,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 60,
-         "tone": "",
-         "lh": "3",
-         "rh": "m",
-         "tie": true,
-         "tieFrom": "g1e64"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e66",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 0,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 78,
-         "tone": "",
-         "rh": "i"
         }
        ],
        "above": "",
@@ -6010,7 +6001,9 @@
          "velocity": 60,
          "tone": "",
          "lh": "3",
-         "rh": "m"
+         "rh": "m",
+         "tie": true,
+         "tieFrom": "g1e66"
         }
        ],
        "above": "",
@@ -6044,7 +6037,7 @@
       },
       {
        "id": "g1e69",
-       "den": 8,
+       "den": 16,
        "dots": 0,
        "ratio": [
         1,
@@ -6052,17 +6045,16 @@
        ],
        "notes": [
         {
-         "string": 2,
-         "fret": 0,
+         "string": 3,
+         "fret": 9,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 78,
+         "velocity": 60,
          "tone": "",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e68"
+         "lh": "3",
+         "rh": "m"
         }
        ],
        "above": "",
@@ -6087,7 +6079,7 @@
          "grace": null,
          "velocity": 78,
          "tone": "",
-         "rh": "m"
+         "rh": "i"
         }
        ],
        "above": "",
@@ -6096,6 +6088,58 @@
       },
       {
        "id": "g1e71",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "i",
+         "tie": true,
+         "tieFrom": "g1e70"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e72",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e73",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -6121,7 +6165,7 @@
        "strum": ""
       },
       {
-       "id": "g1e72",
+       "id": "g1e74",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -6141,7 +6185,7 @@
          "lh": "3",
          "rh": "i",
          "tie": true,
-         "tieFrom": "g1e71"
+         "tieFrom": "g1e73"
         }
        ],
        "above": "",
@@ -6149,8 +6193,8 @@
        "strum": ""
       },
       {
-       "id": "g1e73",
-       "den": 8,
+       "id": "g1e75",
+       "den": 16,
        "dots": 0,
        "ratio": [
         1,
@@ -6174,7 +6218,33 @@
        "strum": ""
       },
       {
-       "id": "g1e74",
+       "id": "g1e76",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 5,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 28,
+         "tone": "",
+         "lh": "3",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e77",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -6210,7 +6280,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e75",
+       "id": "g1e78",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -6229,7 +6299,7 @@
          "tone": "",
          "rh": "i",
          "tie": true,
-         "tieFrom": "g1e74"
+         "tieFrom": "g1e77"
         }
        ],
        "above": "",
@@ -6238,113 +6308,7 @@
        "chord": "C"
       },
       {
-       "id": "g1e76",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 13,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 73,
-         "tone": "",
-         "lh": "4",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e77",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 3,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e78",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 1,
-         "fret": 14,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 85,
-         "tone": "",
-         "lh": "3",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
        "id": "g1e79",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 1,
-         "fret": 14,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 85,
-         "tone": "",
-         "lh": "3",
-         "rh": "m",
-         "tie": true,
-         "tieFrom": "g1e78"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e80",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -6361,7 +6325,33 @@
          "grace": null,
          "velocity": 85,
          "tone": "",
-         "lh": "2",
+         "lh": "4",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e80",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "3",
          "rh": "i"
         }
        ],
@@ -6380,15 +6370,16 @@
        "notes": [
         {
          "string": 3,
-         "fret": 12,
+         "fret": 9,
          "sustain": true,
          "tech": [],
-         "harmonic": "natural",
+         "harmonic": "artificial",
          "grace": null,
          "velocity": 127,
          "tone": "",
-         "lh": "4",
-         "rh": "m"
+         "harmonicInterval": 12,
+         "lh": "3",
+         "rh": "a"
         }
        ],
        "above": "",
@@ -6405,8 +6396,37 @@
        ],
        "notes": [
         {
+         "string": 3,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "artificial",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "harmonicInterval": 12,
+         "lh": "3",
+         "rh": "a",
+         "tie": true,
+         "tieFrom": "g1e81"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e83",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
          "string": 1,
-         "fret": 14,
+         "fret": 10,
          "sustain": true,
          "tech": [],
          "harmonic": "",
@@ -6414,7 +6434,60 @@
          "velocity": 85,
          "tone": "",
          "lh": "4",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e84",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "3",
          "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e85",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "artificial",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "harmonicInterval": 12,
+         "lh": "1",
+         "rh": "a"
         }
        ],
        "above": "",
@@ -6433,7 +6506,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e83",
+       "id": "g1e86",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -6443,17 +6516,24 @@
        "notes": [
         {
          "string": 1,
-         "fret": 14,
+         "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 85,
+         "velocity": 67,
+         "tone": ""
+        },
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
          "tone": "",
-         "lh": "4",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e82"
+         "rh": "m"
         }
        ],
        "above": "",
@@ -6462,87 +6542,8 @@
        "chord": "G"
       },
       {
-       "id": "g1e84",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 1,
-         "fret": 0,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 97,
-         "tone": "",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e85",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 8,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 82,
-         "tone": "",
-         "lh": "1",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e86",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 8,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 82,
-         "tone": "",
-         "lh": "1",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e85"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
        "id": "g1e87",
-       "den": 8,
+       "den": 16,
        "dots": 0,
        "ratio": [
         1,
@@ -6550,15 +6551,16 @@
        ],
        "notes": [
         {
-         "string": 1,
-         "fret": 0,
+         "string": 4,
+         "fret": 4,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 97,
+         "velocity": 52,
          "tone": "",
-         "rh": "m"
+         "lh": "1",
+         "rh": "p"
         }
        ],
        "above": "",
@@ -6576,13 +6578,14 @@
        "notes": [
         {
          "string": 1,
-         "fret": 0,
+         "fret": 5,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
          "velocity": 97,
          "tone": "",
+         "lh": "2",
          "rh": "i"
         }
        ],
@@ -6592,7 +6595,7 @@
       },
       {
        "id": "g1e89",
-       "den": 8,
+       "den": 16,
        "dots": 0,
        "ratio": [
         1,
@@ -6600,17 +6603,15 @@
        ],
        "notes": [
         {
-         "string": 1,
+         "string": 3,
          "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 97,
+         "velocity": 75,
          "tone": "",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e88"
+         "rh": "m"
         }
        ],
        "above": "",
@@ -6635,7 +6636,7 @@
          "grace": null,
          "velocity": 97,
          "tone": "",
-         "rh": "m"
+         "rh": "i"
         }
        ],
        "above": "",
@@ -6652,16 +6653,15 @@
        ],
        "notes": [
         {
-         "string": 2,
-         "fret": 8,
+         "string": 3,
+         "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 63,
          "tone": "",
-         "lh": "1",
-         "rh": "i"
+         "rh": "m"
         }
        ],
        "above": "",
@@ -6678,15 +6678,15 @@
        ],
        "notes": [
         {
-         "string": 2,
+         "string": 1,
          "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 97,
          "tone": "",
-         "rh": "m"
+         "rh": "i"
         }
        ],
        "above": "",
@@ -6703,15 +6703,16 @@
        ],
        "notes": [
         {
-         "string": 1,
-         "fret": 0,
+         "string": 4,
+         "fret": 7,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 97,
+         "velocity": 52,
          "tone": "",
-         "rh": "i"
+         "lh": "4",
+         "rh": "p"
         }
        ],
        "above": "",
@@ -6742,6 +6743,132 @@
        "above": "",
        "below": "",
        "strum": ""
+      },
+      {
+       "id": "g1e95",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 97,
+         "tone": "",
+         "lh": "2",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e96",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 98,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e97",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 97,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e98",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 63,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e99",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 97,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
       }
      ]
     },
@@ -6755,7 +6882,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e95",
+       "id": "g1e100",
        "den": 4,
        "dots": 0,
        "ratio": [
@@ -6764,17 +6891,27 @@
        ],
        "notes": [
         {
-         "string": 1,
+         "string": 4,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 52,
+         "tone": "",
+         "lh": "4",
+         "rh": "i"
+        },
+        {
+         "string": 6,
          "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 97,
+         "velocity": 22,
          "tone": "",
-         "rh": "m",
-         "tie": true,
-         "tieFrom": "g1e94"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -6783,9 +6920,9 @@
        "chord": "D"
       },
       {
-       "id": "g1e96",
-       "den": 4,
-       "dots": 1,
+       "id": "g1e101",
+       "den": 8,
+       "dots": 0,
        "ratio": [
         1,
         1
@@ -6800,32 +6937,6 @@
          "grace": null,
          "velocity": 97,
          "tone": "",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e97",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 7,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 82,
-         "tone": "",
-         "lh": "1",
          "rh": "m"
         }
        ],
@@ -6834,7 +6945,7 @@
        "strum": ""
       },
       {
-       "id": "g1e98",
+       "id": "g1e102",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -6843,18 +6954,16 @@
        ],
        "notes": [
         {
-         "string": 2,
-         "fret": 7,
+         "string": 4,
+         "fret": 4,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 52,
          "tone": "",
          "lh": "1",
-         "rh": "m",
-         "tie": true,
-         "tieFrom": "g1e97"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -6862,7 +6971,32 @@
        "strum": ""
       },
       {
-       "id": "g1e99",
+       "id": "g1e103",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 6,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 23,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e104",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -6879,8 +7013,62 @@
          "grace": null,
          "velocity": 82,
          "tone": "",
-         "lh": "1",
+         "lh": "4",
          "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e105",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 82,
+         "tone": "",
+         "lh": "4",
+         "rh": "i",
+         "tie": true,
+         "tieFrom": "g1e104"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e106",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 82,
+         "tone": "",
+         "lh": "4",
+         "rh": "m"
         }
        ],
        "above": "",
@@ -6899,7 +7087,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e100",
+       "id": "g1e107",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -6909,17 +7097,25 @@
        "notes": [
         {
          "string": 2,
-         "fret": 7,
+         "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 57,
+         "tone": ""
+        },
+        {
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 52,
          "tone": "",
          "lh": "1",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e99"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -6928,7 +7124,7 @@
        "chord": "Em"
       },
       {
-       "id": "g1e101",
+       "id": "g1e108",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -6945,32 +7141,6 @@
          "grace": null,
          "velocity": 82,
          "tone": "",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e102",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 3,
-         "fret": 9,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 63,
-         "tone": "",
-         "lh": "3",
          "rh": "i"
         }
        ],
@@ -6979,7 +7149,33 @@
        "strum": ""
       },
       {
-       "id": "g1e103",
+       "id": "g1e109",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 4,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 52,
+         "tone": "",
+         "lh": "3",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e110",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -6996,7 +7192,7 @@
          "grace": null,
          "velocity": 97,
          "tone": "",
-         "lh": "1",
+         "lh": "4",
          "rh": "m"
         }
        ],
@@ -7005,8 +7201,85 @@
        "strum": ""
       },
       {
-       "id": "g1e104",
-       "den": 4,
+       "id": "g1e111",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e112",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e113",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e114",
+       "den": 16,
        "dots": 0,
        "ratio": [
         1,
@@ -7020,9 +7293,9 @@
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 98,
          "tone": "",
-         "rh": "i"
+         "rh": "m"
         }
        ],
        "above": "",
@@ -7030,7 +7303,7 @@
        "strum": ""
       },
       {
-       "id": "g1e105",
+       "id": "g1e115",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -7047,9 +7320,7 @@
          "grace": null,
          "velocity": 82,
          "tone": "",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e104"
+         "rh": "i"
         }
        ],
        "above": "",
@@ -7057,22 +7328,48 @@
        "strum": ""
       },
       {
-       "id": "g1e106",
-       "den": 8,
-       "dots": 1,
+       "id": "g1e116",
+       "den": 16,
+       "dots": 0,
        "ratio": [
         1,
         1
        ],
        "notes": [
         {
-         "string": 2,
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e117",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
          "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 63,
          "tone": "",
          "rh": "m"
         }
@@ -7082,8 +7379,8 @@
        "strum": ""
       },
       {
-       "id": "g1e107",
-       "den": 4,
+       "id": "g1e118",
+       "den": 16,
        "dots": 0,
        "ratio": [
         1,
@@ -7091,15 +7388,92 @@
        ],
        "notes": [
         {
-         "string": 2,
+         "string": 1,
          "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 115,
          "tone": "",
          "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e119",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e120",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 63,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e121",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
         }
        ],
        "above": "",
@@ -7118,7 +7492,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e108",
+       "id": "g1e122",
        "den": 4,
        "dots": 0,
        "ratio": [
@@ -7127,17 +7501,16 @@
        ],
        "notes": [
         {
-         "string": 2,
-         "fret": 0,
+         "string": 3,
+         "fret": 5,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 75,
          "tone": "",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e107"
+         "lh": "4",
+         "rh": "i"
         }
        ],
        "above": "",
@@ -7146,7 +7519,7 @@
        "chord": "C"
       },
       {
-       "id": "g1e109",
+       "id": "g1e123",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -7163,6 +7536,86 @@
          "grace": null,
          "velocity": 63,
          "tone": "",
+         "lh": "4",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e124",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 97,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e125",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 97,
+         "tone": "",
+         "lh": "1",
+         "rh": "i",
+         "tie": true,
+         "tieFrom": "g1e124"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e126",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 97,
+         "tone": "",
          "lh": "1",
          "rh": "m"
         }
@@ -7172,61 +7625,7 @@
        "strum": ""
       },
       {
-       "id": "g1e110",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 8,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 82,
-         "tone": "",
-         "lh": "4",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e111",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 8,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 82,
-         "tone": "",
-         "lh": "4",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e110"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e112",
+       "id": "g1e127",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -7236,15 +7635,15 @@
        "notes": [
         {
          "string": 3,
-         "fret": 9,
+         "fret": 5,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
          "velocity": 63,
          "tone": "",
-         "lh": "3",
-         "rh": "m"
+         "lh": "4",
+         "rh": "i"
         }
        ],
        "above": "",
@@ -7252,33 +7651,7 @@
        "strum": ""
       },
       {
-       "id": "g1e113",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 4,
-         "fret": 10,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 44,
-         "tone": "",
-         "lh": "2",
-         "rh": "p"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e114",
+       "id": "g1e128",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -7295,8 +7668,8 @@
          "grace": null,
          "velocity": 82,
          "tone": "",
-         "lh": "3",
-         "rh": "i"
+         "lh": "4",
+         "rh": "m"
         }
        ],
        "above": "",
@@ -7315,7 +7688,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e115",
+       "id": "g1e129",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -7332,382 +7705,16 @@
          "grace": null,
          "velocity": 82,
          "tone": "",
-         "lh": "3",
-         "rh": "i",
+         "lh": "4",
+         "rh": "m",
          "tie": true,
-         "tieFrom": "g1e114"
+         "tieFrom": "g1e128"
         }
        ],
        "above": "",
        "below": "",
        "strum": "",
        "chord": "G"
-      },
-      {
-       "id": "g1e116",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 3,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e117",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e118",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 1,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e119",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 3,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e120",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e121",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 1,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e122",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e123",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "m",
-         "tie": true,
-         "tieFrom": "g1e122"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e124",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 3,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e125",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e126",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 1,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e127",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 3,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e128",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e129",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 1,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
       },
       {
        "id": "g1e130",
@@ -7719,7 +7726,7 @@
        ],
        "notes": [
         {
-         "string": 2,
+         "string": 3,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -7734,18 +7741,7 @@
        "above": "",
        "below": "",
        "strum": ""
-      }
-     ]
-    },
-    {
-     "id": "bar14",
-     "section": "",
-     "meter": null,
-     "tempo": null,
-     "tone": "",
-     "above": "",
-     "below": "",
-     "events": [
+      },
       {
        "id": "g1e131",
        "den": 16,
@@ -7765,15 +7761,12 @@
          "velocity": 127,
          "tone": "",
          "lh": "4",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e130"
+         "rh": "m"
         }
        ],
        "above": "",
        "below": "",
-       "strum": "",
-       "chord": "D"
+       "strum": ""
       },
       {
        "id": "g1e132",
@@ -7785,16 +7778,16 @@
        ],
        "notes": [
         {
-         "string": 4,
-         "fret": 7,
+         "string": 1,
+         "fret": 12,
          "sustain": true,
          "tech": [],
          "harmonic": "natural",
          "grace": null,
          "velocity": 127,
          "tone": "",
-         "lh": "1",
-         "rh": "p"
+         "lh": "4",
+         "rh": "i"
         }
        ],
        "above": "",
@@ -7811,7 +7804,7 @@
        ],
        "notes": [
         {
-         "string": 1,
+         "string": 3,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -7838,14 +7831,14 @@
        "notes": [
         {
          "string": 2,
-         "fret": 7,
+         "fret": 12,
          "sustain": true,
          "tech": [],
          "harmonic": "natural",
          "grace": null,
          "velocity": 127,
          "tone": "",
-         "lh": "1",
+         "lh": "4",
          "rh": "i"
         }
        ],
@@ -7855,32 +7848,6 @@
       },
       {
        "id": "g1e135",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 4,
-         "fret": 7,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "1",
-         "rh": "p"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e136",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -7906,6 +7873,32 @@
        "strum": ""
       },
       {
+       "id": "g1e136",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
        "id": "g1e137",
        "den": 16,
        "dots": 0,
@@ -7916,15 +7909,17 @@
        "notes": [
         {
          "string": 2,
-         "fret": 7,
+         "fret": 12,
          "sustain": true,
          "tech": [],
          "harmonic": "natural",
          "grace": null,
          "velocity": 127,
          "tone": "",
-         "lh": "1",
-         "rh": "i"
+         "lh": "4",
+         "rh": "i",
+         "tie": true,
+         "tieFrom": "g1e136"
         }
        ],
        "above": "",
@@ -7941,7 +7936,7 @@
        ],
        "notes": [
         {
-         "string": 1,
+         "string": 3,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -7967,7 +7962,7 @@
        ],
        "notes": [
         {
-         "string": 1,
+         "string": 2,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -7976,9 +7971,7 @@
          "velocity": 127,
          "tone": "",
          "lh": "4",
-         "rh": "m",
-         "tie": true,
-         "tieFrom": "g1e138"
+         "rh": "i"
         }
        ],
        "above": "",
@@ -7995,16 +7988,16 @@
        ],
        "notes": [
         {
-         "string": 4,
-         "fret": 7,
+         "string": 1,
+         "fret": 12,
          "sustain": true,
          "tech": [],
          "harmonic": "natural",
          "grace": null,
          "velocity": 127,
          "tone": "",
-         "lh": "1",
-         "rh": "p"
+         "lh": "4",
+         "rh": "m"
         }
        ],
        "above": "",
@@ -8021,7 +8014,7 @@
        ],
        "notes": [
         {
-         "string": 1,
+         "string": 3,
          "fret": 12,
          "sustain": true,
          "tech": [],
@@ -8048,14 +8041,14 @@
        "notes": [
         {
          "string": 2,
-         "fret": 7,
+         "fret": 12,
          "sustain": true,
          "tech": [],
          "harmonic": "natural",
          "grace": null,
          "velocity": 127,
          "tone": "",
-         "lh": "1",
+         "lh": "4",
          "rh": "m"
         }
        ],
@@ -8065,6 +8058,95 @@
       },
       {
        "id": "g1e143",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e144",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      }
+     ]
+    },
+    {
+     "id": "bar14",
+     "section": "",
+     "meter": null,
+     "tempo": null,
+     "tone": "",
+     "above": "",
+     "below": "",
+     "events": [
+      {
+       "id": "g1e145",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 6,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 22,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": "",
+       "chord": "D"
+      },
+      {
+       "id": "g1e146",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8090,7 +8172,7 @@
        "strum": ""
       },
       {
-       "id": "g1e144",
+       "id": "g1e147",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8116,7 +8198,7 @@
        "strum": ""
       },
       {
-       "id": "g1e145",
+       "id": "g1e148",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8142,7 +8224,33 @@
        "strum": ""
       },
       {
-       "id": "g1e146",
+       "id": "g1e149",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e150",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8161,6 +8269,265 @@
          "tone": "",
          "lh": "4",
          "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e151",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "1",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e152",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e153",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 6,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 23,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e154",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e155",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e156",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e157",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e158",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e159",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "1",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e160",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "4",
+         "rh": "m"
         }
        ],
        "above": "",
@@ -8179,7 +8546,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e147",
+       "id": "g1e161",
        "den": 8,
        "dots": 1,
        "ratio": [
@@ -8197,9 +8564,9 @@
          "velocity": 127,
          "tone": "",
          "lh": "4",
-         "rh": "i",
+         "rh": "m",
          "tie": true,
-         "tieFrom": "g1e146"
+         "tieFrom": "g1e160"
         }
        ],
        "above": "",
@@ -8208,7 +8575,189 @@
        "chord": "Em"
       },
       {
-       "id": "g1e148",
+       "id": "g1e162",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "3",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e163",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "3",
+         "rh": "i",
+         "tie": true,
+         "tieFrom": "g1e162"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e164",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e165",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 60,
+         "tone": "",
+         "lh": "3",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e166",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e167",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "m",
+         "tie": true,
+         "tieFrom": "g1e166"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e168",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 78,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e169",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8234,7 +8783,7 @@
        "strum": ""
       },
       {
-       "id": "g1e149",
+       "id": "g1e170",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8254,7 +8803,7 @@
          "lh": "3",
          "rh": "m",
          "tie": true,
-         "tieFrom": "g1e148"
+         "tieFrom": "g1e169"
         }
        ],
        "above": "",
@@ -8262,7 +8811,7 @@
        "strum": ""
       },
       {
-       "id": "g1e150",
+       "id": "g1e171",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8287,7 +8836,7 @@
        "strum": ""
       },
       {
-       "id": "g1e151",
+       "id": "g1e172",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8296,16 +8845,16 @@
        ],
        "notes": [
         {
-         "string": 3,
+         "string": 5,
          "fret": 9,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 60,
+         "velocity": 28,
          "tone": "",
          "lh": "3",
-         "rh": "m"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -8313,59 +8862,7 @@
        "strum": ""
       },
       {
-       "id": "g1e152",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 0,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 78,
-         "tone": "",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e153",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 0,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 78,
-         "tone": "",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e152"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e154",
+       "id": "g1e173",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8383,110 +8880,6 @@
          "velocity": 78,
          "tone": "",
          "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e155",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 3,
-         "fret": 9,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 60,
-         "tone": "",
-         "lh": "3",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e156",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 3,
-         "fret": 9,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 60,
-         "tone": "",
-         "lh": "3",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e155"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e157",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 0,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 78,
-         "tone": "",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e158",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 0,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 78,
-         "tone": "",
-         "rh": "i"
         }
        ],
        "above": "",
@@ -8505,7 +8898,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e159",
+       "id": "g1e174",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -8522,9 +8915,9 @@
          "grace": null,
          "velocity": 78,
          "tone": "",
-         "rh": "i",
+         "rh": "m",
          "tie": true,
-         "tieFrom": "g1e158"
+         "tieFrom": "g1e173"
         }
        ],
        "above": "",
@@ -8533,113 +8926,7 @@
        "chord": "C"
       },
       {
-       "id": "g1e160",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 13,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 73,
-         "tone": "",
-         "lh": "4",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e161",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 3,
-         "fret": 12,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "natural",
-         "grace": null,
-         "velocity": 127,
-         "tone": "",
-         "lh": "4",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e162",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 1,
-         "fret": 14,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 85,
-         "tone": "",
-         "lh": "3",
-         "rh": "m"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e163",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 1,
-         "fret": 14,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 85,
-         "tone": "",
-         "lh": "3",
-         "rh": "m",
-         "tie": true,
-         "tieFrom": "g1e162"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e164",
+       "id": "g1e175",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -8656,7 +8943,7 @@
          "grace": null,
          "velocity": 85,
          "tone": "",
-         "lh": "2",
+         "lh": "4",
          "rh": "i"
         }
        ],
@@ -8665,7 +8952,7 @@
        "strum": ""
       },
       {
-       "id": "g1e165",
+       "id": "g1e176",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -8682,7 +8969,7 @@
          "grace": null,
          "velocity": 127,
          "tone": "",
-         "lh": "4",
+         "lh": "3",
          "rh": "m"
         }
        ],
@@ -8691,7 +8978,63 @@
        "strum": ""
       },
       {
-       "id": "g1e166",
+       "id": "g1e177",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "artificial",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "harmonicInterval": 12,
+         "lh": "3",
+         "rh": "a"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e178",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 9,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "artificial",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "harmonicInterval": 12,
+         "lh": "3",
+         "rh": "a",
+         "tie": true,
+         "tieFrom": "g1e177"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e179",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -8701,7 +9044,7 @@
        "notes": [
         {
          "string": 1,
-         "fret": 14,
+         "fret": 10,
          "sustain": true,
          "tech": [],
          "harmonic": "",
@@ -8710,6 +9053,59 @@
          "tone": "",
          "lh": "4",
          "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e180",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 12,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "natural",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "lh": "3",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e181",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 2,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "artificial",
+         "grace": null,
+         "velocity": 127,
+         "tone": "",
+         "harmonicInterval": 12,
+         "lh": "1",
+         "rh": "a"
         }
        ],
        "above": "",
@@ -8728,7 +9124,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e167",
+       "id": "g1e182",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -8738,17 +9134,24 @@
        "notes": [
         {
          "string": 1,
-         "fret": 14,
+         "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 85,
+         "velocity": 67,
+         "tone": ""
+        },
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
          "tone": "",
-         "lh": "4",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e166"
+         "rh": "i"
         }
        ],
        "above": "",
@@ -8757,7 +9160,84 @@
        "chord": "G"
       },
       {
-       "id": "g1e168",
+       "id": "g1e183",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 4,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 52,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e184",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 97,
+         "tone": "",
+         "lh": "2",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e185",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e186",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8782,7 +9262,7 @@
        "strum": ""
       },
       {
-       "id": "g1e169",
+       "id": "g1e187",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8791,15 +9271,14 @@
        ],
        "notes": [
         {
-         "string": 2,
-         "fret": 8,
+         "string": 3,
+         "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 63,
          "tone": "",
-         "lh": "1",
          "rh": "i"
         }
        ],
@@ -8808,7 +9287,7 @@
        "strum": ""
       },
       {
-       "id": "g1e170",
+       "id": "g1e188",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8817,18 +9296,15 @@
        ],
        "notes": [
         {
-         "string": 2,
-         "fret": 8,
+         "string": 1,
+         "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 97,
          "tone": "",
-         "lh": "1",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e169"
+         "rh": "m"
         }
        ],
        "above": "",
@@ -8836,7 +9312,7 @@
        "strum": ""
       },
       {
-       "id": "g1e171",
+       "id": "g1e189",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -8845,15 +9321,16 @@
        ],
        "notes": [
         {
-         "string": 1,
-         "fret": 0,
+         "string": 4,
+         "fret": 7,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 97,
+         "velocity": 52,
          "tone": "",
-         "rh": "m"
+         "lh": "4",
+         "rh": "p"
         }
        ],
        "above": "",
@@ -8861,7 +9338,7 @@
        "strum": ""
       },
       {
-       "id": "g1e172",
+       "id": "g1e190",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8886,34 +9363,7 @@
        "strum": ""
       },
       {
-       "id": "g1e173",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 1,
-         "fret": 0,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 97,
-         "tone": "",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e172"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e174",
+       "id": "g1e191",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8923,13 +9373,14 @@
        "notes": [
         {
          "string": 1,
-         "fret": 0,
+         "fret": 5,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
          "velocity": 97,
          "tone": "",
+         "lh": "2",
          "rh": "m"
         }
        ],
@@ -8938,33 +9389,7 @@
        "strum": ""
       },
       {
-       "id": "g1e175",
-       "den": 16,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 2,
-         "fret": 8,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 82,
-         "tone": "",
-         "lh": "1",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e176",
+       "id": "g1e192",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -8979,9 +9404,9 @@
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 98,
          "tone": "",
-         "rh": "m"
+         "rh": "i"
         }
        ],
        "above": "",
@@ -8989,8 +9414,8 @@
        "strum": ""
       },
       {
-       "id": "g1e177",
-       "den": 8,
+       "id": "g1e193",
+       "den": 16,
        "dots": 0,
        "ratio": [
         1,
@@ -9006,6 +9431,31 @@
          "grace": null,
          "velocity": 97,
          "tone": "",
+         "rh": "m"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e194",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 63,
+         "tone": "",
          "rh": "i"
         }
        ],
@@ -9014,7 +9464,7 @@
        "strum": ""
       },
       {
-       "id": "g1e178",
+       "id": "g1e195",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -9050,7 +9500,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e179",
+       "id": "g1e196",
        "den": 4,
        "dots": 0,
        "ratio": [
@@ -9059,17 +9509,27 @@
        ],
        "notes": [
         {
-         "string": 1,
+         "string": 4,
+         "fret": 7,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 52,
+         "tone": "",
+         "lh": "4",
+         "rh": "i"
+        },
+        {
+         "string": 6,
          "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 97,
+         "velocity": 22,
          "tone": "",
-         "rh": "m",
-         "tie": true,
-         "tieFrom": "g1e178"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -9078,9 +9538,9 @@
        "chord": "D"
       },
       {
-       "id": "g1e180",
-       "den": 4,
-       "dots": 1,
+       "id": "g1e197",
+       "den": 8,
+       "dots": 0,
        "ratio": [
         1,
         1
@@ -9103,7 +9563,58 @@
        "strum": ""
       },
       {
-       "id": "g1e181",
+       "id": "g1e198",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 4,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 52,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e199",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 6,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 23,
+         "tone": "",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e200",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -9120,7 +9631,7 @@
          "grace": null,
          "velocity": 82,
          "tone": "",
-         "lh": "1",
+         "lh": "4",
          "rh": "m"
         }
        ],
@@ -9129,7 +9640,7 @@
        "strum": ""
       },
       {
-       "id": "g1e182",
+       "id": "g1e201",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -9146,10 +9657,10 @@
          "grace": null,
          "velocity": 82,
          "tone": "",
-         "lh": "1",
+         "lh": "4",
          "rh": "m",
          "tie": true,
-         "tieFrom": "g1e181"
+         "tieFrom": "g1e200"
         }
        ],
        "above": "",
@@ -9157,7 +9668,7 @@
        "strum": ""
       },
       {
-       "id": "g1e183",
+       "id": "g1e202",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -9174,7 +9685,7 @@
          "grace": null,
          "velocity": 82,
          "tone": "",
-         "lh": "1",
+         "lh": "4",
          "rh": "i"
         }
        ],
@@ -9194,7 +9705,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e184",
+       "id": "g1e203",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -9204,17 +9715,25 @@
        "notes": [
         {
          "string": 2,
-         "fret": 7,
+         "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 57,
+         "tone": ""
+        },
+        {
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 52,
          "tone": "",
          "lh": "1",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e183"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -9223,7 +9742,7 @@
        "chord": "Em"
       },
       {
-       "id": "g1e185",
+       "id": "g1e204",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -9248,7 +9767,7 @@
        "strum": ""
       },
       {
-       "id": "g1e186",
+       "id": "g1e205",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -9257,16 +9776,16 @@
        ],
        "notes": [
         {
-         "string": 3,
-         "fret": 9,
+         "string": 4,
+         "fret": 4,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 63,
+         "velocity": 52,
          "tone": "",
          "lh": "3",
-         "rh": "i"
+         "rh": "p"
         }
        ],
        "above": "",
@@ -9274,7 +9793,7 @@
        "strum": ""
       },
       {
-       "id": "g1e187",
+       "id": "g1e206",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -9291,7 +9810,32 @@
          "grace": null,
          "velocity": 97,
          "tone": "",
-         "lh": "1",
+         "lh": "4",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e207",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 75,
+         "tone": "",
          "rh": "m"
         }
        ],
@@ -9300,8 +9844,60 @@
        "strum": ""
       },
       {
-       "id": "g1e188",
-       "den": 4,
+       "id": "g1e208",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e209",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e210",
+       "den": 16,
        "dots": 0,
        "ratio": [
         1,
@@ -9315,7 +9911,7 @@
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 98,
          "tone": "",
          "rh": "i"
         }
@@ -9325,7 +9921,7 @@
        "strum": ""
       },
       {
-       "id": "g1e189",
+       "id": "g1e211",
        "den": 16,
        "dots": 0,
        "ratio": [
@@ -9342,9 +9938,7 @@
          "grace": null,
          "velocity": 82,
          "tone": "",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e188"
+         "rh": "m"
         }
        ],
        "above": "",
@@ -9352,22 +9946,73 @@
        "strum": ""
       },
       {
-       "id": "g1e190",
-       "den": 8,
-       "dots": 1,
+       "id": "g1e212",
+       "den": 16,
+       "dots": 0,
        "ratio": [
         1,
         1
        ],
        "notes": [
         {
-         "string": 2,
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e213",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
          "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 63,
+         "tone": "",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e214",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 0,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 115,
          "tone": "",
          "rh": "m"
         }
@@ -9377,8 +10022,8 @@
        "strum": ""
       },
       {
-       "id": "g1e191",
-       "den": 4,
+       "id": "g1e215",
+       "den": 16,
        "dots": 0,
        "ratio": [
         1,
@@ -9386,15 +10031,67 @@
        ],
        "notes": [
         {
-         "string": 2,
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e216",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 3,
          "fret": 0,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 63,
          "tone": "",
          "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e217",
+       "den": 16,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 4,
+         "fret": 2,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 44,
+         "tone": "",
+         "lh": "1",
+         "rh": "p"
         }
        ],
        "above": "",
@@ -9413,7 +10110,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e192",
+       "id": "g1e218",
        "den": 4,
        "dots": 0,
        "ratio": [
@@ -9422,17 +10119,16 @@
        ],
        "notes": [
         {
-         "string": 2,
-         "fret": 0,
+         "string": 3,
+         "fret": 5,
          "sustain": true,
          "tech": [],
          "harmonic": "",
          "grace": null,
-         "velocity": 82,
+         "velocity": 75,
          "tone": "",
-         "rh": "i",
-         "tie": true,
-         "tieFrom": "g1e191"
+         "lh": "4",
+         "rh": "m"
         }
        ],
        "above": "",
@@ -9441,7 +10137,7 @@
        "chord": "C"
       },
       {
-       "id": "g1e193",
+       "id": "g1e219",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -9458,6 +10154,32 @@
          "grace": null,
          "velocity": 63,
          "tone": "",
+         "lh": "4",
+         "rh": "i"
+        }
+       ],
+       "above": "",
+       "below": "",
+       "strum": ""
+      },
+      {
+       "id": "g1e220",
+       "den": 8,
+       "dots": 0,
+       "ratio": [
+        1,
+        1
+       ],
+       "notes": [
+        {
+         "string": 1,
+         "fret": 5,
+         "sustain": true,
+         "tech": [],
+         "harmonic": "",
+         "grace": null,
+         "velocity": 97,
+         "tone": "",
          "lh": "1",
          "rh": "m"
         }
@@ -9467,7 +10189,7 @@
        "strum": ""
       },
       {
-       "id": "g1e194",
+       "id": "g1e221",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -9485,35 +10207,9 @@
          "velocity": 97,
          "tone": "",
          "lh": "1",
-         "rh": "i"
-        }
-       ],
-       "above": "",
-       "below": "",
-       "strum": ""
-      },
-      {
-       "id": "g1e195",
-       "den": 8,
-       "dots": 0,
-       "ratio": [
-        1,
-        1
-       ],
-       "notes": [
-        {
-         "string": 1,
-         "fret": 5,
-         "sustain": true,
-         "tech": [],
-         "harmonic": "",
-         "grace": null,
-         "velocity": 97,
-         "tone": "",
-         "lh": "1",
-         "rh": "i",
+         "rh": "m",
          "tie": true,
-         "tieFrom": "g1e194"
+         "tieFrom": "g1e220"
         }
        ],
        "above": "",
@@ -9521,7 +10217,7 @@
        "strum": ""
       },
       {
-       "id": "g1e196",
+       "id": "g1e222",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -9539,7 +10235,7 @@
          "velocity": 82,
          "tone": "",
          "lh": "1",
-         "rh": "m"
+         "rh": "i"
         }
        ],
        "above": "",
@@ -9547,7 +10243,7 @@
        "strum": ""
       },
       {
-       "id": "g1e197",
+       "id": "g1e223",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -9565,7 +10261,7 @@
          "velocity": 63,
          "tone": "",
          "lh": "1",
-         "rh": "i"
+         "rh": "m"
         }
        ],
        "above": "",
@@ -9573,7 +10269,7 @@
        "strum": ""
       },
       {
-       "id": "g1e198",
+       "id": "g1e224",
        "den": 8,
        "dots": 0,
        "ratio": [
@@ -9591,7 +10287,7 @@
          "velocity": 97,
          "tone": "",
          "lh": "1",
-         "rh": "m"
+         "rh": "i"
         }
        ],
        "above": "",
@@ -9610,7 +10306,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e199",
+       "id": "g1e225",
        "den": 1,
        "dots": 0,
        "ratio": [
@@ -9627,7 +10323,7 @@
          "grace": null,
          "velocity": 127,
          "tone": "",
-         "lh": "3",
+         "lh": "4",
          "rh": "i"
         },
         {
@@ -9669,7 +10365,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e200",
+       "id": "g1e226",
        "den": 1,
        "dots": 0,
        "ratio": [
@@ -9686,7 +10382,7 @@
          "grace": null,
          "velocity": 127,
          "tone": "",
-         "lh": "3",
+         "lh": "4",
          "rh": "a"
         },
         {
@@ -9728,7 +10424,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e201",
+       "id": "g1e227",
        "den": 1,
        "dots": 0,
        "ratio": [
@@ -9778,7 +10474,7 @@
      "below": "",
      "events": [
       {
-       "id": "g1e202",
+       "id": "g1e228",
        "den": 1,
        "dots": 0,
        "ratio": [
@@ -9887,7 +10583,7 @@
       "melody_octave_shift": 0
      }
     ],
-    "search_seconds": 3.9,
+    "search_seconds": 4.0,
     "screened": 304
    },
    {
@@ -9896,74 +10592,74 @@
     "tuning": "Open G",
     "tuning_pitches": "D G D G B D",
     "capo": 0,
-    "score": -0.714,
-    "cost_per_note": -0.096,
-    "notes": 156,
-    "open_strings": 37,
-    "harmonics": 81,
+    "score": -0.609,
+    "cost_per_note": -0.004,
+    "notes": 207,
+    "open_strings": 59,
+    "harmonics": 89,
     "dropped": 0,
     "melody_dropped": 0,
-    "resonance": 0.684,
-    "open_string_resonance_notes": 6,
+    "resonance": 0.67,
+    "open_string_resonance_notes": 11,
     "considered": [
      {
       "tuning": "Open G",
       "pitches": "D G D G B D",
       "capo": 0,
-      "score": -0.714,
-      "cost_per_note": -0.096,
-      "notes": 156,
-      "open_strings": 37,
-      "harmonics": 81,
+      "score": -0.609,
+      "cost_per_note": -0.004,
+      "notes": 207,
+      "open_strings": 59,
+      "harmonics": 89,
       "dropped": 0,
       "melody_dropped": 0,
-      "resonance": 0.684,
-      "open_string_resonance_notes": 6
+      "resonance": 0.67,
+      "open_string_resonance_notes": 11
      },
      {
-      "tuning": "CGDGBD",
-      "pitches": "C G D G B D",
+      "tuning": "Double Drop D",
+      "pitches": "D A D G B D",
       "capo": 0,
-      "score": -0.687,
-      "cost_per_note": -0.099,
-      "notes": 156,
-      "open_strings": 37,
+      "score": -0.588,
+      "cost_per_note": 0.026,
+      "notes": 207,
+      "open_strings": 63,
       "harmonics": 81,
       "dropped": 0,
       "melody_dropped": 0,
-      "resonance": 0.664,
-      "open_string_resonance_notes": 6
+      "resonance": 0.657,
+      "open_string_resonance_notes": 16
      },
      {
       "tuning": "Drop D",
       "pitches": "D A D G B E",
       "capo": 0,
-      "score": -0.68,
-      "cost_per_note": -0.059,
-      "notes": 157,
-      "open_strings": 31,
-      "harmonics": 85,
+      "score": -0.571,
+      "cost_per_note": 0.034,
+      "notes": 208,
+      "open_strings": 54,
+      "harmonics": 87,
       "dropped": 1,
       "melody_dropped": 0,
-      "resonance": 0.644,
-      "open_string_resonance_notes": 6
+      "resonance": 0.627,
+      "open_string_resonance_notes": 13
      },
      {
       "tuning": "Standard",
       "pitches": "E A D G B E",
       "capo": 0,
-      "score": -0.703,
-      "cost_per_note": -0.07,
-      "notes": 157,
-      "open_strings": 33,
-      "harmonics": 89,
+      "score": -0.567,
+      "cost_per_note": 0.029,
+      "notes": 198,
+      "open_strings": 45,
+      "harmonics": 91,
       "dropped": 1,
       "melody_dropped": 0,
-      "resonance": 0.633,
-      "open_string_resonance_notes": 5
+      "resonance": 0.597,
+      "open_string_resonance_notes": 7
      }
     ],
-    "search_seconds": 5.2,
+    "search_seconds": 7.4,
     "screened": 152
    }
   ],

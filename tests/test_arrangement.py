@@ -113,6 +113,29 @@ def test_guitar_two_never_doubles_guitar_one(arranged):
     assert len(busy & set(bars)) >= 0.9 * len(bars)
 
 
+def test_guitar_two_doubles_in_octaves_not_unisons(arranged):
+    """Doubling is welcome in another octave: the tune in octaves in the
+    choruses, the bass an octave lower on chord changes. Never in unison."""
+    from duet_arranger.arrange.accomp import chorus_bars
+
+    _, song, arr, _ = arranged
+    g1, g2 = arr.guitars
+    choruses = chorus_bars(song)
+    assert choruses
+    g2_attacks = {(n.start, n.pitch) for n in g2.placed if n.pitch is not None and n.fret != "x"}
+    tune = [n for n in g1.placed if n.role == "melody" and song.bar_at(n.start) in choruses]
+    octaved = [m for m in tune if (m.start, m.pitch - 12) in g2_attacks or (m.start, m.pitch + 12) in g2_attacks]
+    assert len(octaved) >= 0.7 * len(tune)
+    outside = [n for n in g2.placed if n.role == "octave" and song.bar_at(n.start) not in choruses]
+    assert outside == []
+
+
+def test_octaves_can_be_switched_off():
+    song = demo_song("ballad", bars_per_section=2)
+    arr = arrange(song, ArrangeOptions(octaves=False))
+    assert not any(n.role == "octave" for n in arr.guitars[1].placed)
+
+
 def test_six_eight_guitar_one_keeps_the_eighths_moving():
     """In 6/8 Guitar I has its bass on beats 1 and 4 and rolls chord tones on
     the eighths while the tune holds, like a solo 6/8 fingerstyle piece."""

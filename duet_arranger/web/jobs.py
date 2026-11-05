@@ -256,6 +256,7 @@ class JobManager:
                 percussion=o.get("percussion", "auto") or "auto",
                 harmonics=bool(o.get("harmonics", True)),
                 taps=bool(o.get("taps", True)),
+                octaves=bool(o.get("octaves", True)),
                 difficulty=float(o.get("difficulty", 1.0)),
             )
             arr = arrange(song, opts, progress)
@@ -372,7 +373,7 @@ def summarise(arr, result: dict) -> dict:
         guitars.append(
             {
                 "name": g.name,
-                "role": "A complete fingerstyle part: melody, its own bass, harmony, fills and harmonics" if g.role == "lead" else ("The original comping rhythm, the bass groove between Guitar I's bass notes, and percussion" if song.percussive else "The original comping rhythm and the bass groove between Guitar I's bass notes"),
+                "role": "A complete fingerstyle part: melody, its own bass, harmony, fills and harmonics" if g.role == "lead" else ("The original comping rhythm in fresh voicings, the bass groove around Guitar I's bass, the tune in octaves in the choruses, and percussion" if song.percussive else "The original comping rhythm in fresh voicings, the bass groove around Guitar I's bass and the tune in octaves in the choruses"),
                 "tuning": g.tuning.name,
                 "pitches": g.tuning.label,
                 "capo": g.capo,

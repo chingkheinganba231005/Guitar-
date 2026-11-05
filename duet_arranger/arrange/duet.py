@@ -33,6 +33,7 @@ class ArrangeOptions:
     percussion: str = "auto"  # auto | on | off
     harmonics: bool = True
     taps: bool = True
+    octaves: bool = True  # Guitar II doubles the tune an octave away in the choruses
     difficulty: float = 1.0  # 0.6 = lighter texture, 1.0 = full
     screen_top: int = 3
     beam: int = 28
@@ -68,7 +69,7 @@ def build_content(song: Song, role: str, tuning, capo: int, lead_notes: list[Not
         notes = lead_part(song, tuning, capo, opts.difficulty, shift)
         hits: list[Hit] = []
     else:
-        notes = comp_part(song, lead_notes or [], tuning, capo)
+        notes = comp_part(song, lead_notes or [], tuning, capo, opts.octaves, opts.max_fret)
         hits = percussion_hits(song, opts.difficulty)
     notes = clip_repeats(snap_notes(notes, song))
     return notes, hits

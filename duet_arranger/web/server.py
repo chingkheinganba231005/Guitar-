@@ -59,6 +59,7 @@ def _options(form: dict) -> dict:
     out["percussion"] = perc
     out["harmonics"] = str(form.get("harmonics", "true")).lower() in ("1", "true", "on", "yes")
     out["taps"] = str(form.get("taps", "true")).lower() in ("1", "true", "on", "yes")
+    out["octaves"] = str(form.get("octaves", "true")).lower() in ("1", "true", "on", "yes")
     try:
         out["max_fret"] = max(12, min(24, int(form.get("max_fret") or 20)))
         out["difficulty"] = max(0.5, min(1.0, float(form.get("difficulty") or 1.0)))

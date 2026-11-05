@@ -135,6 +135,7 @@ def cmd_arrange(args) -> int:
         percussion=args.percussion,
         harmonics=not args.no_harmonics,
         taps=not args.no_taps,
+        octaves=not args.no_octaves,
         difficulty=args.difficulty,
     )
     arr = arrange(song, opts)
@@ -211,6 +212,7 @@ def main(argv=None) -> int:
     a.add_argument("--percussion", default="auto", choices=["auto", "on", "off"])
     a.add_argument("--no-harmonics", action="store_true")
     a.add_argument("--no-taps", action="store_true")
+    a.add_argument("--no-octaves", action="store_true", help="Guitar II does not double the tune in octaves in the choruses")
     a.add_argument("--difficulty", type=float, default=1.0, help="0.6 lighter … 1.0 full texture")
     a.add_argument("--device", default=None, help="torch device for separation (cpu, cuda, mps)")
     a.set_defaults(func=cmd_arrange)

@@ -12,7 +12,7 @@ from ..quantize import Grid
 from ..theory import prefers_flats
 
 STRING_DYNAMICS = [100, 85, 65, 45, 30, 20]  # Atelier's balanced defaults, string 1..6
-ROLE_GAIN = {"melody": 1.18, "fill": 1.0, "support": 0.78, "inner": 0.72, "comp": 0.8, "bass": 1.0, "harmonic": 1.0, "perc": 1.0, "resonance": 0.7}
+ROLE_GAIN = {"melody": 1.18, "fill": 1.0, "support": 0.78, "inner": 0.72, "octave": 0.95, "comp": 0.8, "bass": 1.0, "harmonic": 1.0, "perc": 1.0, "resonance": 0.7}
 
 # (ticks, den, dots) for straight durations, longest first
 STRAIGHT = [(96, 1, 0), (72, 2, 1), (48, 2, 0), (36, 4, 1), (24, 4, 0), (18, 8, 1), (12, 8, 0), (9, 16, 1), (6, 16, 0), (3, 32, 0)]

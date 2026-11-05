@@ -9,8 +9,9 @@ sustain) it falls back to an idiomatic fingerstyle pattern. Where Guitar I
 carries the chords itself (an instrumental intro, say), Guitar II keeps to
 the bass so the two parts do not pile up. Guitar I is a complete
 fingerstyle part with its own bass, so Guitar II never doubles a note Guitar I
-actually plays: it takes the bass groove between Guitar I's bass notes and
-fills the beats Guitar I's bass covers with its pattern's chord tones.
+is striking or holding at that moment, but it may double a chord tone in
+another octave (a fuller voicing), the bass an octave below on chord
+changes, and in the choruses the tune itself an octave away.
 """
 
 from __future__ import annotations
@@ -211,7 +212,58 @@ def harp_voicing(pcs: list[int], tuning, capo: int, lo: int, hi: int, prev: list
     return best
 
 
-def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int) -> list[Note]:
+def chorus_bars(song: Song) -> set[int]:
+    """Bars of the choruses (not pre-choruses). Without section names, the
+    loudest sung bars stand in for them."""
+    out: set[int] = set()
+    secs = sorted(song.sections, key=lambda s: s.start_bar)
+    for k, sec in enumerate(secs):
+        if sec.label.lower().startswith("chorus"):
+            end = secs[k + 1].start_bar if k + 1 < len(secs) else len(song.bars)
+            out |= set(range(sec.start_bar, end))
+    if not secs and song.energy:
+        sung = {song.bar_at(n.start) for n in song.melody}
+        out = {i for i, e in enumerate(song.energy) if e >= 0.7 and i in sung}
+    return out
+
+
+def melody_octaves(song: Song, melody: list[Note], tuning, capo: int, bars: set[int], lows: list[LineIndex], max_fret: int = 20) -> list[Note]:
+    """Guitar II joins the tune an octave away in the choruses: below it where
+    the tune sits high enough, otherwise above. One octave for a whole
+    section, so the doubled line never jumps; very quick notes stay with
+    Guitar I alone."""
+    out: list[Note] = []
+    top = max(tuning) + max_fret  # highest note the top string reaches
+    by_section: dict[int, list[Note]] = {}
+    for m in melody:
+        bi = song.bar_at(m.start)
+        if bi not in bars:
+            continue
+        sec = song.section_at_bar(bi)
+        by_section.setdefault(sec.start_bar if sec else -1, []).append(m)
+    for notes in by_section.values():
+        pitches = sorted(m.pitch for m in notes)
+        med = pitches[len(pitches) // 2]
+        if med - 12 >= 55:
+            shift = -12
+        elif pitches[-1] + 12 <= min(top, 86):
+            shift = 12
+        else:
+            continue
+        for m in notes:
+            beat = song.bars[song.bar_at(m.start)].ticks_per_beat
+            on_beat = (m.start - song.bars[song.bar_at(m.start)].start) % beat == 0
+            if m.end - m.start < TPQ // 2 and not on_beat:
+                continue
+            p = m.pitch + shift
+            floor = max([48] + [b.pitch + 3 for idx in lows for b in [idx.at(m.start)] if b is not None])
+            if p < floor or p > top:
+                continue
+            out.append(Note(m.start, m.end, p, velocity=m.velocity * 0.8, role="octave", priority=9.0, source="melody", tags={"octave_line"}))
+    return out
+
+
+def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int, octaves: bool = True, max_fret: int = 20) -> list[Note]:
     melody = [n for n in lead_notes if n.role == "melody"]
     mel = LineIndex(melody)
     lead_all = LineIndex(sorted(lead_notes, key=lambda n: n.start))
@@ -224,7 +276,18 @@ def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int) -> list[Not
     lead_poly = PolyIndex(lead_notes)
     # (Where Guitar I strikes the band's chords instead, Guitar II keeps the
     # whole bass line: those bars are the chords plus Guitar II's bass and bells.)
-    bass = [n for n in bass_line(song, tuning, capo) if (n.start, n.pitch) not in lead_attacks or song.bar_at(n.start) in lead_chord_bars]
+    # Where both would strike the very same bass note, an octave below makes the
+    # chord change bigger (when the tuning reaches it); otherwise Guitar I has it.
+    lo_string = lowest_pitch(tuning, capo)
+    chord_starts = {c.start for c in song.chords}
+    bass = []
+    for n in bass_line(song, tuning, capo):
+        if (n.start, n.pitch) in lead_attacks and song.bar_at(n.start) not in lead_chord_bars:
+            if n.start in chord_starts and n.pitch - 12 >= lo_string:
+                n.pitch -= 12
+            else:
+                continue
+        bass.append(n)
     bidx = LineIndex(bass)
     src = comp_sources(song, mel)
     out: list[Note] = list(bass)
@@ -363,11 +426,25 @@ def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int) -> list[Not
                         pitches = [v[min(idx, len(v) - 1)]]
                     ring_end = seg1 if not song.percussive else min(seg1, t + bar.ticks_per_beat)
                     taken = lead_poly.pitches(t)
-                    pitches = [q for q in pitches if q not in taken]  # Guitar I already sounds it
+                    voiced = []
+                    for q in pitches:
+                        if q in taken:
+                            # Guitar I already sounds this note: the same chord tone in
+                            # another octave is a new voicing, the same pitch is not
+                            q = next((a for a in (q + 12, q - 12) if lo <= a <= hi and a not in taken and a not in voiced), None)
+                        if q is not None:
+                            voiced.append(q)
+                    pitches = voiced
                     for p in pitches:
                         tags = ({"arp"} if above else {"octave_ok", "arp"}) | ({"prefer_harmonic"} if harp or above else set())
                         vel = (0.45 if above else 0.55) + 0.2 * energy
                         out.append(Note(t, ring_end, p, velocity=vel, role="comp", priority=2.6, source="pattern", tags=tags))
+    if octaves:
+        line = melody_octaves(song, melody, tuning, capo, chorus_bars(song) - lead_chord_bars, [bidx, lead_bass], max_fret)
+        # On the tune's notes Guitar II's hands are on the octave; its pattern
+        # keeps going in between.
+        line_ticks = {n.start for n in line}
+        out = [n for n in out if not (n.role == "comp" and n.start in line_ticks)] + line
     return resolve_collisions(out, lead_all, lambda n: n.role == "bass" and song.bar_at(n.start) in lead_chord_bars)
 
 

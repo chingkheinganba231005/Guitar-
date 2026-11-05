@@ -56,8 +56,9 @@ def test_demo_job_then_rearrange(client):
     res = client.get(f"/api/jobs/{job['id']}/files/{tab['name']}?download=1")
     assert res.status_code == 200 and "attachment" in res.headers["content-disposition"]
     # arrange again with forced tunings, reusing the saved analysis
-    again = client.post(f"/api/jobs/{job['id']}/rearrange", data={"tuning1": "DADGAD", "tuning2": "Open G", "capo": "none", "percussion": "off"}).json()
+    again = client.post(f"/api/jobs/{job['id']}/rearrange", data={"tuning1": "DADGAD", "tuning2": "Open G", "capo": "none", "percussion": "off", "octaves": "false"}).json()
     assert again["parent"] == job["id"]
+    assert client.app.state.manager.get(again["id"]).options["octaves"] is False
     done2 = wait(client, again["id"])
     assert done2["state"] == "done", done2["error"]
     assert [g["tuning"] for g in done2["result"]["guitars"]] == ["DADGAD", "Open G"]
