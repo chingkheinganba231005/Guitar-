@@ -10,21 +10,33 @@ both guitars appear together in one score.
 
 ```
 song.mp3 ──► Demucs stems ──► Basic Pitch notes ──► beat / key / chords / sections
-         ──► Guitar I (melody) + Guitar II (bass, harmony, groove)
+         ──► Guitar I (complete fingerstyle part) + Guitar II (harmony, groove)
          ──► tuning & capo search ──► physical fingering search ──► Atelier duet
 ```
 
 ## What it decides for you
 
-**Who plays what.** Guitar I sings: the vocal melody (or the instrumental hook
-where nobody sings), with chord tones a third or sixth beneath important
-notes, and the original instrumental fills in the melody's rests. Where the
-band only strikes chords without singing — a piano intro of chords on every
-beat, say — Guitar I strikes those chords on the same beats and lets them
-ring. Guitar II is the band: the bass line, and an accompaniment on the
-original groove — chords where the piano or guitar strikes chords, an
-arpeggio where they arpeggiate. Only where the source holds long pads (which a
-guitar cannot sustain) does it fall back on an idiomatic fingerstyle pattern.
+**Who plays what.** Guitar I is a complete solo fingerstyle part — it would
+stand on its own. It sings the vocal melody (or the instrumental hook where
+nobody sings) on top, plays its own bass underneath (the real bass note on
+beat 1, on the bar's second strong beat — beat 3 in 4/4, beat 4 in 6/8 — and
+on every chord change), puts chord tones a third or sixth beneath important
+melody notes, keeps the harmony moving with inner chord tones while the tune
+holds (rolling eighths in 6/8, the beats in 4/4) and plays the original
+instrumental fills in the melody's rests. Where the band only strikes chords
+without singing — a piano intro of chords on every beat, say — Guitar I
+strikes those chords on the same beats and lets them ring.
+
+Guitar II makes the duet bigger than one guitar can: it plays the original
+groove — chords where the piano or guitar strikes chords, an arpeggio where
+they arpeggiate — in the register between Guitar I's inner voice and the tune,
+and the bass groove between Guitar I's bass notes. It never doubles a note
+Guitar I is playing at that moment: it picks other chord tones, and where a
+low tune leaves no room underneath, a soft soaring descant above it (in
+harmonics in soft songs). Only where the source holds long pads (which a
+guitar cannot sustain) does it fall back on an idiomatic fingerstyle pattern,
+in eighths rather than sixteenths when Guitar I's inner voice is already
+moving.
 
 **Rhythms a guitarist can play.** Transcribed timing wobbles, so notes snap to
 eighths when they are close to one and to sixteenths otherwise (never finer),
@@ -238,8 +250,8 @@ tunings. Open the `.atelier.json` with **File → Import Atelier project**.
 | `audio/drums.py` | kick/snare/hat detection, drum prominence |
 | `analysis.py` | key, chords (template + Viterbi), sections, energy |
 | `midi_input.py` | MIDI files in |
-| `arrange/lead.py` | Guitar I: melody, support notes, fills, harmonics |
-| `arrange/accomp.py` | Guitar II: bass, imitated comping, patterns |
+| `arrange/lead.py` | Guitar I: melody, its own bass, support and inner voices, fills, harmonics |
+| `arrange/accomp.py` | Guitar II: imitated comping and patterns around Guitar I, bass groove |
 | `arrange/percussion.py` | percussive layer for drum-driven songs |
 | `arrange/resonance.py` | free open strings at chord attacks |
 | `arrange/duet.py` | tuning × capo × melody-octave search |

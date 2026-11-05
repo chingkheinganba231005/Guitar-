@@ -372,7 +372,7 @@ def summarise(arr, result: dict) -> dict:
         guitars.append(
             {
                 "name": g.name,
-                "role": "Melody, harmony under it, fills and harmonics" if g.role == "lead" else ("Bass, the original comping rhythm and percussion" if song.percussive else "Bass and the original comping rhythm"),
+                "role": "A complete fingerstyle part: melody, its own bass, harmony, fills and harmonics" if g.role == "lead" else ("The original comping rhythm, the bass groove between Guitar I's bass notes, and percussion" if song.percussive else "The original comping rhythm and the bass groove between Guitar I's bass notes"),
                 "tuning": g.tuning.name,
                 "pitches": g.tuning.label,
                 "capo": g.capo,

@@ -1,9 +1,10 @@
-"""Guitar I: the singing voice of the duet.
+"""Guitar I: the singing voice of the duet, as a complete fingerstyle part.
 
-It carries the vocal melody (or the instrumental hook where nobody sings),
-answers with the original fills in the melody's rests, thickens important
-melody notes with chord tones underneath and adds harmonics where the song
-is soft and open.
+It carries the vocal melody (or the instrumental hook where nobody sings)
+the way a solo fingerstyle guitarist would: with its own bass on the strong
+beats and chord changes, chord tones under important melody notes, inner
+voices that keep the harmony moving while the tune holds, the original fills
+in the melody's rests and harmonics where the song is soft and open.
 """
 
 from __future__ import annotations
@@ -11,7 +12,7 @@ from __future__ import annotations
 from ..guitar import NATURAL_HARMONICS
 from ..model import TPQ, Note, Song
 from ..theory import chord_pcs
-from .lines import LineIndex, best_octave_shift, gaps, monophonic, notes_between
+from .lines import LineIndex, bassline, best_octave_shift, gaps, monophonic, notes_between
 
 MELODY_LO, MELODY_HI, MELODY_TARGET = 57, 86, 70
 HARMONY_PARTS = ("piano", "guitar", "other", "keys", "synth", "strings", "lead")
@@ -235,10 +236,174 @@ def lead_chords(song: Song, regions: list[tuple[int, int]], tuning, capo: int) -
     return out
 
 
-def support_notes(song: Song, melody: list[Note], density: float = 1.0) -> list[Note]:
+def bass_ticks(song: Song, bar, density: float = 1.0) -> list[tuple[int, float]]:
+    """Where a solo fingerstyle bass speaks in a bar, with its priority.
+
+    The downbeat always; the bar's second strong beat (beat 3 in 4/4, beat 4
+    in 6/8 and 12/8's third pulse) unless the texture is thinned; and every
+    chord change."""
+    out = {bar.start: 9.0}
+    tpb, pulses = bar.ticks_per_beat, bar.pulses
+    if density >= 0.8:
+        mid = None
+        if pulses in (4, 6):
+            mid = bar.start + bar.length // 2
+        elif pulses == 2 and tpb != TPQ:
+            mid = bar.start + tpb
+        if mid is not None:
+            out[mid] = 5.0
+    for c in song.chords:
+        if bar.start < c.start < bar.end:
+            out[c.start] = max(out.get(c.start, 0.0), 8.0)
+    return sorted(out.items())
+
+
+def lead_bass(song: Song, melody: list[Note], tuning, capo: int, skip_bars: set, density: float = 1.0) -> list[Note]:
+    """Guitar I's own bass, so it stands as a complete fingerstyle part.
+
+    The real bass note where it is a chord tone, else the chord's bass, on
+    the low strings; it rings until the next bass note or the chord change."""
+    from .accomp import fit_bass, lowest_pitch
+
+    if not song.bars or not song.chords:
+        return []
+    lo = lowest_pitch(tuning, capo)
+    src = LineIndex(bassline(song.bass)) if song.bass else None
+    mel = LineIndex(melody)
+    out: list[tuple[Note, int]] = []
+    for bi, bar in enumerate(song.bars):
+        if bi in skip_bars:
+            continue
+        for t, prio in bass_ticks(song, bar, density):
+            ch = song.chord_at(t)
+            if ch is None:
+                continue
+            pcs = set(chord_pcs(ch.root, ch.quality))
+            want = ch.bass if ch.bass is not None else ch.root
+            p = fit_bass(36 + want, lo)
+            if src is not None:
+                n = src.at(t)
+                if n is None or n.start < t - TPQ:
+                    nxt = src.next_after(t - 1)
+                    n = nxt if nxt is not None and nxt.start - t <= TPQ // 4 else n
+                # the real bass, in its own octave where the guitar reaches it
+                if n is not None and n.pitch % 12 in (pcs | {want}):
+                    p = fit_bass(n.pitch, lo)
+            m = mel.at(t)
+            if m is None:
+                m = mel.next_after(t)
+                m = m if m is not None and m.start - t < beat_ticks_at(song, t) else None
+            if m is not None and m.pitch - p < 7:
+                if p - 12 >= lo:
+                    p -= 12
+                else:
+                    continue
+            vel = 0.58 + 0.25 * energy_at(song, t)
+            out.append((Note(t, t + TPQ, p, velocity=vel, role="bass", priority=prio * density, source="bass"), ch.end))
+    out.sort(key=lambda x: x[0].start)
+    notes = [n for n, _ in out]
+    for k, (n, ch_end) in enumerate(out):
+        nxt = notes[k + 1].start if k + 1 < len(notes) else song.end_tick
+        bar_len = song.bars[song.bar_at(n.start)].length
+        n.end = max(n.start + 6, min(nxt, ch_end, n.start + bar_len))
+    return notes
+
+
+def inner_ticks(song: Song, bar, density: float) -> list[tuple[int, bool]]:
+    """Felt beats of the bar, plus the eighths between them where the meter
+    lives in them (6/8, 9/8, 12/8) or the beat is very slow: (tick, on_the_beat).
+
+    The finer motion of a simple-meter song is Guitar II's to add."""
+    tpb = bar.ticks_per_beat
+    sub = None
+    if density >= 0.9:
+        if tpb != TPQ:
+            sub = tpb // 3
+        elif 60.0 / max(1.0, bar.tempo) >= 1.0:
+            sub = tpb // 2
+    out = []
+    for k in range(bar.pulses):
+        b = bar.start + k * tpb
+        out.append((b, True))
+        if sub:
+            out += [(b + j * sub, False) for j in range(1, tpb // sub)]
+    return [(t, on) for t, on in out if t < bar.end]
+
+
+def lead_inner(song: Song, melody: list[Note], fill_notes: list[Note], bass: list[Note], skip_bars: set, avoid: set, density: float = 1.0) -> list[Note]:
+    """Inner chord tones where the melody holds or rests, the way a solo
+    fingerstyle guitar keeps the harmony moving under a long note."""
+    out: list[Note] = []
+    if not song.bars:
+        return out
+    mel = LineIndex(melody)
+    bidx = LineIndex(bass)
+    attacks = sorted({n.start for n in melody} | {n.start for n in fill_notes})
+    import bisect
+
+    prev: int | None = None
+    for bi, bar in enumerate(song.bars):
+        if bi in skip_bars:
+            prev = None
+            continue
+        tpb = bar.ticks_per_beat
+        ticks = inner_ticks(song, bar, density)
+        sub = min((b - a for (a, _), (b, _) in zip(ticks, ticks[1:])), default=tpb)
+        last_here: int | None = None
+        for t, on_beat in ticks:
+            if t in avoid:
+                continue
+            ch = song.chord_at(t)
+            if ch is None:
+                continue
+            # no tune note starting on this tick, nor (between beats) right around it
+            reach = 0 if on_beat else sub - 1
+            i = bisect.bisect_left(attacks, t - reach)
+            if i < len(attacks) and attacks[i] <= t + reach:
+                continue
+            m = mel.at(t)
+            if m is not None:
+                ceiling = m.pitch - 3
+            else:
+                pm = mel.prev_before(t)
+                ceiling = min(69, pm.pitch - 3) if pm is not None and t - pm.end < bar.length else 67
+                if not on_beat:
+                    continue  # in a rest only the beats speak; the fills answer in between
+            b = bidx.at(t)
+            floor = max(52, b.pitch + 5) if b is not None else 52
+            if ceiling < floor:
+                continue
+            pcs = chord_pcs(ch.root, ch.quality)
+            bass_pc = b.pitch % 12 if b is not None else (ch.bass if ch.bass is not None else ch.root)
+            best = None
+            for p in range(floor, ceiling + 1):
+                if p % 12 not in pcs:
+                    continue
+                cost = 0.12 * abs(p - prev) if prev is not None else 0.05 * abs(p - 60)
+                if p % 12 == bass_pc:
+                    cost += 0.5
+                if m is not None and p % 12 == m.pitch % 12:
+                    cost += 0.7
+                if last_here is not None and p == last_here and not on_beat:
+                    cost += 1.4  # between the beats an arpeggio moves
+                if best is None or cost < best[1]:
+                    best = (p, cost)
+            if best is None:
+                continue
+            p = best[0]
+            prev = last_here = p
+            end = min(ch.end, t + tpb, bar.end)
+            vel = 0.42 + 0.22 * energy_at(song, t)
+            prio = (2.2 if on_beat else 1.4) * density
+            out.append(Note(t, max(t + 6, end), p, velocity=vel, role="inner", priority=prio, source="harmony"))
+    return out
+
+
+def support_notes(song: Song, melody: list[Note], density: float = 1.0, bass: list[Note] | None = None) -> list[Note]:
     """Chord tones under important melody notes (3rds/6ths first)."""
     out: list[Note] = []
     mel_index = LineIndex(melody)
+    bidx = LineIndex(bass or [])
     last_support_tick = -10**9
     for m in melody:
         ch = song.chord_at(m.start)
@@ -266,11 +431,13 @@ def support_notes(song: Song, melody: list[Note], density: float = 1.0) -> list[
             end = min(end, nxt.start + beat)
         top = m.pitch
         chosen = []
+        b = bidx.at(m.start)
+        floor = max(52, b.pitch + 5) if b is not None else 52
         for _ in range(n_support):
             best = None
             for iv, cost in SUPPORT_INTERVALS.items():
                 p = top - iv
-                if p < 52 or p % 12 not in pcs or p % 12 == m.pitch % 12 and iv != 12:
+                if p < floor or p % 12 not in pcs or p % 12 == m.pitch % 12 and iv != 12:
                     continue
                 if any(abs(p - c) < 3 for c in chosen):
                     continue
@@ -386,10 +553,18 @@ def lead_part(song: Song, tuning, capo: int, density: float = 1.0, shift: int | 
     regions = chordal_regions(song, vocal)
     chord_bars = {bi for a, b in regions for bi in range(a, b)}
     notes = list(melody)
-    notes += support_notes(song, melody, density)
-    notes += fills(song, melody)
+    # A complete fingerstyle part: melody on top, its own bass below and the
+    # harmony in between, so Guitar I stands on its own and Guitar II is free
+    # to add groove and colour.
+    fl = fills(song, melody)
+    bass = lead_bass(song, melody, tuning, capo, chord_bars, density)
+    bells = [n for n in harmonic_colour(song, melody, tuning, capo) if song.bar_at(n.start) not in chord_bars]
+    notes += support_notes(song, melody, density, bass)
+    notes += fl
+    notes += bass
+    notes += lead_inner(song, melody, fl, bass, chord_bars, {n.start for n in bells}, density)
     notes += lead_chords(song, regions, tuning, capo)
-    notes += [n for n in harmonic_colour(song, melody, tuning, capo) if song.bar_at(n.start) not in chord_bars]
+    notes += bells
     return dedupe(notes)
 
 

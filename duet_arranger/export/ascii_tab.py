@@ -37,12 +37,27 @@ def _cell(n: dict) -> str:
     return s
 
 
+def _flat_key(project: dict) -> bool:
+    """Spell string names with flats in flat keys (Bb, not A#), from the subtitle's key."""
+    import re
+
+    from ..theory import FLAT_NAMES, SHARP_NAMES, prefers_flats
+
+    m = re.search(r"\b([A-G][b#]?) (major|minor)\b", project.get("subtitle", ""))
+    if not m:
+        return False
+    name = m.group(1)
+    pc = FLAT_NAMES.index(name) if name in FLAT_NAMES else SHARP_NAMES.index(name)
+    return prefers_flats(pc, m.group(2))
+
+
 def track_text(track: dict, project: dict, bars_per_line: int = 4) -> str:
     tuning = track["tuning"]
-    names = [note_name(p)[:-1].ljust(2) for p in tuning]
+    flats = _flat_key(project)
+    names = [note_name(p, flats)[:-1].ljust(2) for p in tuning]
     lines_out = []
     header = f"{track['name']} — {track.get('role', '')}".strip(" —")
-    tun = " ".join(note_name(p)[:-1] for p in reversed(tuning))
+    tun = " ".join(note_name(p, flats)[:-1] for p in reversed(tuning))
     lines_out.append(f"{header}\nTuning (low→high): {tun}{'   Capo ' + str(track['capo']) if track.get('capo') else ''}")
     bars = track["bars"]
     for start in range(0, len(bars), bars_per_line):

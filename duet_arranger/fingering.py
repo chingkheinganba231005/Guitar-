@@ -493,7 +493,7 @@ class Solver:
             if it is None:
                 continue
             remaining = max(0, it.end - sl.tick)
-            weight = {"melody": 0.6, "bass": 0.5, "comp": 0.35, "support": 0.4, "harmonic": 0.3}.get(it.role, 0.5)
+            weight = {"melody": 0.6, "bass": 0.5, "comp": 0.35, "support": 0.4, "inner": 0.35, "harmonic": 0.3}.get(it.role, 0.5)
             drop_cost = it.priority * min(1.0, remaining / (2 * TPQ)) * weight + 0.05
             hold_choices.append((it, o, drop_cost))
 

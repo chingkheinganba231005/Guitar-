@@ -22,7 +22,12 @@ def resonance_additions(
     capo: int,
     melody: LineIndex | None,
     max_strings: int = 6,
+    others: list | None = None,
 ) -> list[PlacedNote]:
+    """``others`` are the other guitar's notes: an open string never doubles
+    one of its attacks nor clashes a semitone or a tone against what it holds."""
+    other_attacks = {(n.start, n.pitch) for n in (others or [])}
+    other_sorted = sorted(others or [], key=lambda n: n.start)
     by_tick: dict[int, list[PlacedNote]] = {}
     for n in placed:
         by_tick.setdefault(n.start, []).append(n)
@@ -46,6 +51,7 @@ def resonance_additions(
         pitches = [n.pitch for n in sounding if n.pitch is not None]
         if not pitches:
             continue
+        other_here = [n.pitch for n in other_sorted if n.start <= t < n.end] if other_sorted else []
         lowest = min(pitches)
         mel = melody.at(t) if melody else None
         ceiling = (mel.pitch - 1) if mel is not None else 77
@@ -66,7 +72,9 @@ def resonance_additions(
                 continue
             if mel is not None and (mel.pitch - op) % 12 in (1, 11, 2, 10) and mel.pitch - op < 24:
                 continue
-            if any(abs(op - p) in (1, 2) for p in pitches):
+            if any(abs(op - p) in (1, 2) for p in pitches + other_here):
+                continue
+            if (t, op) in other_attacks:
                 continue
             if len(barre_strings) >= 2 and barre_strings[0] < s < barre_strings[-1]:
                 continue

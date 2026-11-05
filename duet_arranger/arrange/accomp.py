@@ -1,4 +1,4 @@
-"""Guitar II: bass, harmony and groove.
+"""Guitar II: harmony, groove and the bass in between.
 
 The accompaniment follows what the band plays, but as a groove a guitarist
 can repeat: for every section the recurring onset pattern of the piano and
@@ -7,7 +7,10 @@ strikes chords on that pattern; where they play single notes, it plays an
 arpeggio on that pattern; where they hold pads (which a guitar cannot
 sustain) it falls back to an idiomatic fingerstyle pattern. Where Guitar I
 carries the chords itself (an instrumental intro, say), Guitar II keeps to
-the bass so the two parts do not pile up.
+the bass so the two parts do not pile up. Guitar I is a complete
+fingerstyle part with its own bass, so Guitar II never doubles a note Guitar I
+actually plays: it takes the bass groove between Guitar I's bass notes and
+fills the beats Guitar I's bass covers with its pattern's chord tones.
 """
 
 from __future__ import annotations
@@ -15,7 +18,7 @@ from __future__ import annotations
 from ..model import TPQ, Bar, Chord, Note, Song
 from ..theory import chord_pcs
 from .lead import HARMONY_PARTS, energy_at, section_label
-from .lines import LineIndex, bassline
+from .lines import LineIndex, PolyIndex, bassline
 from .patterns import find_pattern, section_ranges
 
 COMP_FLOOR = 50  # D3: lowest comp voice
@@ -115,9 +118,10 @@ def place_in_range(p: int, lo: int, hi: int) -> int | None:
     return p if lo <= p <= hi else None
 
 
-def voicing(pcs: list[int], lo: int, hi: int, prev: list[int] | None, voices: int = 3, prefer_top: int | None = None) -> list[int]:
-    """Pick ``voices`` chord tones in [lo, hi], spaced, near the previous voicing."""
-    cands = sorted(p for p in range(lo, hi + 1) if p % 12 in pcs)
+def voicing(pcs: list[int], lo: int, hi: int, prev: list[int] | None, voices: int = 3, prefer_top: int | None = None, avoid: set | None = None) -> list[int]:
+    """Pick ``voices`` chord tones in [lo, hi], spaced, near the previous voicing
+    (never a pitch in ``avoid``: what the other guitar is already sounding)."""
+    cands = sorted(p for p in range(lo, hi + 1) if p % 12 in pcs and not (avoid and p in avoid))
     if not cands:
         return []
     best, best_cost = [], 1e9
@@ -183,11 +187,11 @@ def pattern_steps(bar: Bar, tempo: float, percussive: bool, energy: float) -> li
 ARP_ORDER = [0, 1, 2, 1]
 
 
-def harp_voicing(pcs: list[int], tuning, capo: int, lo: int, hi: int, prev: list[int] | None) -> list[int]:
+def harp_voicing(pcs: list[int], tuning, capo: int, lo: int, hi: int, prev: list[int] | None, avoid: set | None = None) -> list[int]:
     """Chord tones that sit on the tuning's 12th/7th-fret harmonics (bell-like arpeggios)."""
     from .lead import natural_harmonic_pitches
 
-    nh = sorted(p for p in natural_harmonic_pitches(tuning, capo, (12, 7)) if p % 12 in pcs and lo <= p <= hi + 12)
+    nh = sorted(p for p in natural_harmonic_pitches(tuning, capo, (12, 7)) if p % 12 in pcs and lo <= p <= hi + 12 and not (avoid and p in avoid))
     if len(nh) < 2:
         return []
     best, cost = [], 1e9
@@ -212,7 +216,15 @@ def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int) -> list[Not
     mel = LineIndex(melody)
     lead_all = LineIndex(sorted(lead_notes, key=lambda n: n.start))
     lead_chord_bars = {song.bar_at(n.start) for n in lead_notes if n.role == "chord"}
-    bass = bass_line(song, tuning, capo)
+    # Guitar I plays its own bass on the strong beats; where it sounds the very
+    # same bass note Guitar II leaves it to Guitar I and keeps the bass groove
+    # in between (and its pattern takes that slot with a chord tone instead).
+    lead_attacks = {(n.start, n.pitch) for n in lead_notes}
+    lead_bass = LineIndex([n for n in lead_notes if n.role == "bass"])
+    lead_poly = PolyIndex(lead_notes)
+    # (Where Guitar I strikes the band's chords instead, Guitar II keeps the
+    # whole bass line: those bars are the chords plus Guitar II's bass and bells.)
+    bass = [n for n in bass_line(song, tuning, capo) if (n.start, n.pitch) not in lead_attacks or song.bar_at(n.start) in lead_chord_bars]
     bidx = LineIndex(bass)
     src = comp_sources(song, mel)
     out: list[Note] = list(bass)
@@ -222,9 +234,35 @@ def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int) -> list[Not
         top = mel.max_between(t0, t1)
         return min(COMP_CEIL, (top - 2) if top is not None else COMP_CEIL)
 
-    def floor(t: int) -> int:
-        b = bidx.at(t)
-        return max(COMP_FLOOR, (b.pitch + 4) if b is not None else COMP_FLOOR)
+    lead_inner = PolyIndex([n for n in lead_notes if n.role == "inner"])
+
+    def floor(t: int, t1: int | None = None, pcs: list[int] | None = None) -> int:
+        lows = [b.pitch + 4 for b in (bidx.at(t), lead_bass.at(t)) if b is not None]
+        lo = max([COMP_FLOOR] + lows)
+        # Where Guitar I keeps an inner voice going, Guitar II sits above it
+        # (between it and the tune) when two chord tones fit there: four
+        # layered voices instead of two guitars in one register.
+        inner = lead_inner.pitches(t, t1)
+        if inner and t1 is not None and pcs:
+            above = max(inner) + 1
+            if sum(1 for p in range(above, ceiling(t, t1) + 1) if p % 12 in pcs) >= 2:
+                lo = max(lo, above)
+        return lo
+
+    def register(t0: int, t1: int, pcs: list[int]) -> tuple[int, int, bool]:
+        """Guitar II's range for a chord tone in [t0, t1): (lo, hi, above_the_tune)."""
+        lo, hi = floor(t0, t1, pcs), ceiling(t0, t1)
+        taken = lead_poly.pitches(t0, t1)
+        free = sum(1 for p in range(lo, hi + 1) if p % 12 in pcs and p not in taken)
+        top = mel.max_between(t0, t1)
+        if free < 2 and not song.percussive and top is not None and top <= 64:
+            # A low tune with Guitar I's bass and harmony under it leaves no
+            # room there: Guitar II rings a soft, high descant above it instead.
+            return top + 3, min(COMP_CEIL + 7, top + 15), True
+        return lo, hi, False
+
+    def inner_motion(bar: Bar) -> bool:
+        return sum(1 for n in lead_inner.notes if bar.start <= n.start < bar.end) >= 2
 
     for a, b in section_ranges(song):
         sec = [n for n in src if a <= song.bar_at(n.start) < b]
@@ -256,39 +294,44 @@ def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int) -> list[Not
                         continue
                     nxt = ticks[k + 1] if k + 1 < len(ticks) else bar.end
                     ring = min(ch.end, bar.end) if ch.end > t else bar.end
-                    lo, hi = floor(t), ceiling(t, max(nxt, t + 1))
+                    pcs = chord_pcs(ch.root, ch.quality)
+                    lo, hi, above = register(t, max(nxt, t + 1), pcs)
                     if hi - lo < 3:
                         continue
-                    pcs = chord_pcs(ch.root, ch.quality)
                     bass_here = bidx.at(t) is not None and bidx.at(t).start == t
+                    taken = lead_poly.pitches(t)  # Guitar I already sounds these: pick other chord tones
                     if pat.block:
-                        v = voicing(pcs, lo, hi, prev_voicing, 3 if energy > 0.35 else 2)
+                        v = voicing(pcs, lo, hi, prev_voicing, 3 if energy > 0.35 else 2, avoid=taken)
                         prev_voicing = v or prev_voicing
                         for j, p in enumerate(v):
                             out.append(Note(t, max(nxt, ring), p, velocity=0.5 + 0.3 * energy, role="comp", priority=3.2 - 0.3 * j, source="comp", tags={"octave_ok"}))
                     else:
                         if bass_here and k == 0:
                             continue  # the bass speaks on the first slot of the arpeggio
-                        v = (harp_voicing(pcs, tuning, capo, lo, hi, prev_voicing) if harp else []) or voicing(pcs, lo, hi, prev_voicing, 3)
+                        v = (harp_voicing(pcs, tuning, capo, lo, hi, prev_voicing, taken) if harp or above else []) or voicing(pcs, lo, hi, prev_voicing, 3, avoid=taken)
                         if not v:
                             continue
                         prev_voicing = v
+                        if len(v) < 2 and (t - bar.start) % bar.ticks_per_beat:
+                            continue  # one free chord tone is not an arpeggio: sound it on the beats only
                         p = v[min(ARP_ORDER[k_arp % len(ARP_ORDER)], len(v) - 1)]
                         k_arp += 1
-                        tags = {"octave_ok", "arp"} | ({"prefer_harmonic"} if harp else set())
-                        out.append(Note(t, ring, p, velocity=0.5 + 0.25 * energy, role="comp", priority=2.8, source="comp", tags=tags))
+                        tags = ({"arp"} if above else {"octave_ok", "arp"}) | ({"prefer_harmonic"} if harp or above else set())
+                        vel = (0.42 if above else 0.5) + 0.25 * energy
+                        out.append(Note(t, ring, p, velocity=vel, role="comp", priority=2.8, source="comp", tags=tags))
                 continue
             # Sustained source (pads/strings) or nothing: idiomatic pattern from the chords.
-            steps = pattern_steps(bar, bar.tempo, song.percussive, energy)
+            # Under Guitar I's own moving inner voice, eighths rather than sixteenths.
+            steps = pattern_steps(bar, bar.tempo, song.percussive, min(energy, 0.45) if inner_motion(bar) else energy)
             for ch in chord_segments(song, bar.start, bar.end):
                 pcs = chord_pcs(ch.root, ch.quality)
                 seg0, seg1 = max(bar.start, ch.start), min(bar.end, ch.end)
-                lo, hi = floor(seg0), ceiling(seg0, seg1)
+                lo, hi, above = register(seg0, seg1, pcs)
                 if hi - lo < 5:
                     continue
                 label = section_label(song, bar.start)
                 harp = (not song.percussive) and (energy < 0.45 or "intro" in label or "outro" in label)
-                v = (harp_voicing(pcs, tuning, capo, lo, hi, prev_voicing) if harp else []) or voicing(pcs, lo, hi, prev_voicing, 3)
+                v = (harp_voicing(pcs, tuning, capo, lo, hi, prev_voicing) if harp or above else []) or voicing(pcs, lo, hi, prev_voicing, 3)
                 if not v:
                     continue
                 prev_voicing = v
@@ -296,6 +339,8 @@ def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int) -> list[Not
                     t = bar.start + off
                     if not seg0 <= t < seg1:
                         continue
+                    if len(v) < 2 and voice not in ("B", "A") and off % bar.ticks_per_beat:
+                        continue  # one chord tone repeated is not a pattern: on the beats only
                     if voice in ("B", "A"):
                         if bidx.at(t) is not None and bidx.at(t).start == t:
                             continue  # the real bass line already speaks here
@@ -317,14 +362,19 @@ def comp_part(song: Song, lead_notes: list[Note], tuning, capo: int) -> list[Not
                         idx = {"1": 0, "2": 1, "3": 2}[voice]
                         pitches = [v[min(idx, len(v) - 1)]]
                     ring_end = seg1 if not song.percussive else min(seg1, t + bar.ticks_per_beat)
+                    taken = lead_poly.pitches(t)
+                    pitches = [q for q in pitches if q not in taken]  # Guitar I already sounds it
                     for p in pitches:
-                        tags = {"octave_ok", "arp"} | ({"prefer_harmonic"} if harp else set())
-                        out.append(Note(t, ring_end, p, velocity=0.55 + 0.2 * energy, role="comp", priority=2.6, source="pattern", tags=tags))
-    return resolve_collisions(out, lead_all)
+                        tags = ({"arp"} if above else {"octave_ok", "arp"}) | ({"prefer_harmonic"} if harp or above else set())
+                        vel = (0.45 if above else 0.55) + 0.2 * energy
+                        out.append(Note(t, ring_end, p, velocity=vel, role="comp", priority=2.6, source="pattern", tags=tags))
+    return resolve_collisions(out, lead_all, lambda n: n.role == "bass" and song.bar_at(n.start) in lead_chord_bars)
 
 
-def resolve_collisions(notes: list[Note], lead: LineIndex) -> list[Note]:
-    """Drop Guitar II notes that duplicate Guitar I's exact pitch at the same onset."""
+def resolve_collisions(notes: list[Note], lead: LineIndex, may_double=None) -> list[Note]:
+    """Drop Guitar II notes that duplicate Guitar I's exact pitch at the same onset:
+    two guitars striking one note add volume, not music (``may_double`` names
+    the exceptions)."""
     lead_attacks = {(n.start, n.pitch) for n in lead.notes}
     seen = set()
     out = []
@@ -332,7 +382,7 @@ def resolve_collisions(notes: list[Note], lead: LineIndex) -> list[Note]:
         k = (n.start, n.pitch)
         if k in seen:
             continue
-        if n.role != "bass" and k in lead_attacks:
+        if k in lead_attacks and not (may_double and may_double(n)):
             continue
         seen.add(k)
         out.append(n)

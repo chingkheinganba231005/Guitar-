@@ -93,6 +93,18 @@ def clip_repeats(notes: list[Note]) -> list[Note]:
     return sorted(out, key=lambda n: (n.start, -n.priority))
 
 
+def played_notes(sol: Solution) -> list[Note]:
+    """The notes a solved part really plays: what the solver kept, at the
+    octave it chose, for as long as it rings. Guitar II fits around these."""
+    out = []
+    for r in sol.notes:
+        n = r.item.note
+        if n is None or r.option.pitch is None:
+            continue
+        out.append(n.copy(pitch=r.option.pitch, start=r.start, end=max(r.start + 1, r.end)))
+    return sorted(out, key=lambda n: (n.start, -n.priority))
+
+
 def _fresh(notes: list[Note]) -> list[Note]:
     """Copies with new ids so repeated solves never share mutable state."""
     out = []
@@ -168,7 +180,7 @@ def tuning_penalty(t: Tuning, capo: int, opts: ArrangeOptions) -> float:
     return 0.012 * pen + 0.018 * t.changed_strings()
 
 
-def solution_score(sol: Solution, content: list[Note], t: Tuning, capo: int, song: Song, role: str, opts: ArrangeOptions, melody=None) -> tuple[float, dict]:
+def solution_score(sol: Solution, content: list[Note], t: Tuning, capo: int, song: Song, role: str, opts: ArrangeOptions, melody=None, others=None) -> tuple[float, dict]:
     n = max(1, len(content))
     per_note = sol.cost / n
     opens = sum(1 for r in sol.notes if r.option.place and r.option.place.kind == "open")
@@ -179,7 +191,7 @@ def solution_score(sol: Solution, content: list[Note], t: Tuning, capo: int, son
     added = 0
     if role == "accomp":
         bonus += 0.25 * opens / n
-        added = len(resonance_additions(placed_notes(sol, song, t.pitches, capo), song, t.pitches, capo, melody))
+        added = len(resonance_additions(placed_notes(sol, song, t.pitches, capo), song, t.pitches, capo, melody, others=others))
         bonus += (0.45 if song.percussive else 0.7) * added / n
     if not song.percussive:
         bonus += 0.4 * harmonics / n
@@ -281,7 +293,7 @@ def choose_and_solve(song: Song, role: str, name: str, opts: ArrangeOptions, lea
             sol = Solver(t.pitches, capo, cfg_fast, song.seconds_at).solve(_fresh(c), h)
         except RuntimeError:
             continue
-        sc, _ = solution_score(sol, c, t, capo, song, role, opts, mel_index)
+        sc, _ = solution_score(sol, c, t, capo, song, role, opts, mel_index, lead_notes)
         fast.append((sc, t, capo, shift))
     fast.sort(key=lambda x: x[0])
     finalists = fast[: opts.screen_top] or [(0, Tuning("Standard", STANDARD), 0, shifts[0])]
@@ -300,7 +312,7 @@ def choose_and_solve(song: Song, role: str, name: str, opts: ArrangeOptions, lea
         except RuntimeError as err:
             log.warning("%s: %s capo %s unplayable: %s", name, t.name, capo, err)
             continue
-        sc, stats = solution_score(sol, content, t, capo, song, role, opts, mel_index)
+        sc, stats = solution_score(sol, content, t, capo, song, role, opts, mel_index, lead_notes)
         if shift is not None:
             stats["melody_octave_shift"] = shift
         considered.append({"tuning": t.name, "pitches": t.label, "capo": capo, "score": round(sc, 3), **stats})
@@ -331,13 +343,22 @@ def arrange(song: Song, opts: ArrangeOptions | None = None, progress=None) -> Ar
     elif opts.percussion == "off":
         song.percussive = False
     lead = choose_and_solve(song, "lead", "Guitar I", opts, None, 0, progress)
-    lead_notes = [n for n in lead.content]
+    lead_notes = played_notes(lead.solution)
     accomp = choose_and_solve(song, "accomp", "Guitar II", opts, lead_notes, 1, progress)
     mel_index = LineIndex([n for n in lead_notes if n.role == "melody"])
     for g in (lead, accomp):
         g.placed = placed_notes(g.solution, song, g.tuning.pitches, g.capo)
         add_expression(g.placed, song)
-    accomp.placed += resonance_additions(accomp.placed, song, accomp.tuning.pitches, accomp.capo, mel_index)
+    accomp.placed += resonance_additions(accomp.placed, song, accomp.tuning.pitches, accomp.capo, mel_index, others=lead_notes)
+    # The solver may move a Guitar II voice by an octave onto a note Guitar I
+    # strikes at that moment; one guitar playing it is enough.
+    lead_attacks = {(n.start, n.pitch) for n in lead.placed if n.pitch is not None and n.fret != "x"}
+    chord_bars = {song.bar_at(n.start) for n in lead.placed if n.role == "chord"}
+    accomp.placed = [
+        n
+        for n in accomp.placed
+        if n.pitch is None or n.fret == "x" or (n.start, n.pitch) not in lead_attacks or (n.role == "bass" and song.bar_at(n.start) in chord_bars)
+    ]
     accomp.placed.sort(key=lambda n: (n.start, n.string))
     report = {
         "key": f"{song.key_tonic} {song.key_mode}",

@@ -96,6 +96,22 @@ class LineIndex:
         return best
 
 
+class PolyIndex:
+    """Which pitches sound around a tick, for a polyphonic part."""
+
+    def __init__(self, notes: list[Note]):
+        self.notes = sorted(notes, key=lambda n: n.start)
+        self.starts = [n.start for n in self.notes]
+        self.longest = max((n.end - n.start for n in self.notes), default=0)
+
+    def pitches(self, t0: int, t1: int | None = None) -> set[int]:
+        """Pitches attacked or still ringing anywhere in [t0, t1) (default: at t0)."""
+        t1 = t0 + 1 if t1 is None else t1
+        i = bisect.bisect_left(self.starts, t0 - self.longest)
+        j = bisect.bisect_left(self.starts, t1)
+        return {n.pitch for n in self.notes[i:j] if n.end > t0}
+
+
 def best_octave_shift(pitches: list[int], lo: int, hi: int, target: float) -> int:
     """Octave shift that keeps most pitches in [lo, hi] near ``target``."""
     if not pitches:
