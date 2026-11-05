@@ -35,6 +35,11 @@ every instrument in real time:
   next.
 * **Strings/synth, vocals, bass:** the notes they play (strings also get
   chord names); **drums:** kick, snare and hi-hat hits.
+* **Hear the transcription:** "♪ Synth" on any track plays its transcribed
+  notes with a synth instead of its audio (the guitar strums its chords, the
+  drums become a synth kit), and "Synthesized" plays every track that way —
+  with the same speed, loop and scrubbing as the recording, so you can hear
+  exactly what was transcribed against the real thing.
 * **Practice:** slow down (25–150%) without changing the pitch, loop any
   section (by bar numbers, or "start here" / "end here" on the beat you are
   on) at any speed, drag any note lane sideways to scrub through the song,

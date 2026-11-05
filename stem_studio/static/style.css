@@ -168,3 +168,6 @@ button { cursor: pointer; }
 .lane-now { height: 18px; }
 .lane-body canvas.roll { touch-action: pan-y; cursor: grab; }
 .lane-body canvas.roll.scrubbing { cursor: grabbing; }
+
+.lane-controls button.syn { width: auto; padding: 0 7px; white-space: nowrap; flex: none; }
+.lane-controls button.syn.on { background: #1d3550; color: #9fd3ff; border-color: #3b6a96; }

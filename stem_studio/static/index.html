@@ -92,6 +92,7 @@
             <div class="mode" role="radiogroup" aria-label="What you hear">
               <button id="mode-original" role="radio" aria-checked="true">Original</button>
               <button id="mode-stems" role="radio" aria-checked="false">Separated tracks</button>
+              <button id="mode-synth" role="radio" aria-checked="false" title="Every track played by a synth from its transcribed notes">Synthesized</button>
             </div>
             <label class="zoom" title="How many seconds the lanes show">
               <span>Zoom</span><input id="zoom" type="range" min="3" max="24" step="1" value="8" />
@@ -135,7 +136,7 @@
             <button id="picked-clear" class="chip">Clear</button>
           </div>
           <div id="lanes" class="lanes"></div>
-          <p class="muted small hint">Tap a note to hear it (tap more to collect them, then play them together) · drag a lane sideways to scrub · tap empty space or the strip above to jump · Space plays and pauses, ← → skip 5 s, L loops.</p>
+          <p class="muted small hint">Tap a note to hear it (tap more to collect them, then play them together) · drag a lane sideways to scrub · ♪ on a track plays its transcribed notes instead of its audio · tap empty space or the strip above to jump · Space plays and pauses, ← → skip 5 s, L loops.</p>
         </section>
       </main>
     </div>

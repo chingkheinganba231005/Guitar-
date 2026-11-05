@@ -272,6 +272,8 @@ class LegacyEngine {
 LegacyEngine.prototype.setSpeed = function () {};
 LegacyEngine.prototype.setLoop = function (a, b, on) { this.loop = { a, b, on }; };
 LegacyEngine.prototype.stretch = false;
+LegacyEngine.prototype.loadSynth = function () {};
+LegacyEngine.prototype.setSynthGain = function () {};
 
 class WorkletEngine {
   constructor() {
@@ -423,6 +425,10 @@ class WorkletEngine {
   }
 
   setGain(id, v) { this.send({ type: "gain", id, value: v }); }
+
+  loadSynth(id, kind, notes, hits) { this.send({ type: "synth", id, kind, notes, hits }); }
+
+  setSynthGain(id, v) { this.send({ type: "synthGain", id, value: v }); }
 
   setMaster(v) { if (this.master) this.master.gain.setTargetAtTime(v, this.ctx.currentTime, 0.015); }
 
@@ -645,6 +651,12 @@ async function openPlayer(job) {
   $("#play").disabled = false;
   engine.duration = data.duration;
   state.wave = engine.wave || wavePeaks(engine.buffers && engine.buffers.original, 800);
+  for (const t of state.tracks) {
+    if (t.silent) continue;
+    if (t.show === "hits") engine.loadSynth(t.id, "drums", null, t.hits);
+    else if (t.show === "chords") engine.loadSynth(t.id, "guitar", chordNotes(t.chords), null);
+    else engine.loadSynth(t.id, t.id, t.notes, null);
+  }
   applyMix();
   engine.setMaster(state.master);
   engine.setLoop(0, 0, false);
@@ -668,26 +680,62 @@ function wavePeaks(buf, n) {
   return out;
 }
 
+const QUALITY = { "": [0, 4, 7], m: [0, 3, 7], "7": [0, 4, 7, 10], maj7: [0, 4, 7, 11], m7: [0, 3, 7, 10], sus2: [0, 2, 7], sus4: [0, 5, 7], dim: [0, 3, 6], aug: [0, 4, 8], m7b5: [0, 3, 6, 10], "6": [0, 4, 7, 9], m6: [0, 3, 7, 9], add9: [0, 2, 4, 7], "5": [0, 7] };
+const PC = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+
+function parseChord(name) {
+  const m = /^([A-G])([b#]?)([^/]*)(?:\/([A-G])([b#]?))?$/.exec(name || "");
+  if (!m) return null;
+  const acc = (x) => (x === "#" ? 1 : x === "b" ? -1 : 0);
+  const root = (PC[m[1]] + acc(m[2]) + 12) % 12;
+  const iv = QUALITY[m[3]] || QUALITY[m[3].replace(/[()]/g, "")] || QUALITY[""];
+  const bass = m[4] ? (PC[m[4]] + acc(m[5]) + 12) % 12 : root;
+  return { root, pcs: iv.map((i) => (root + i) % 12), bass };
+}
+
+function chordNotes(chords) {
+  // strum every chord where it starts and again on each bar line it spans
+  const d = state.data;
+  const out = [];
+  for (const [a, b, name] of chords) {
+    const c = parseChord(name);
+    if (!c) continue;
+    const strums = [a, ...d.bars.filter((t) => t > a + 0.2 && t < b - 0.2)];
+    let bp = 40 + ((c.bass - 4 + 12) % 12); // E2..D#3
+    const tones = [];
+    for (let p = 52; p <= 67 && tones.length < 4; p++) if (c.pcs.includes(p % 12)) tones.push(p);
+    strums.forEach((t, k) => {
+      const end = k + 1 < strums.length ? strums[k + 1] : b;
+      [bp, ...tones].forEach((p, j) => out.push([t + j * 0.012, end, p, 0.75]));
+    });
+  }
+  return out.sort((x, y) => x[0] - y[0]);
+}
+
 function setMode(mode, quiet) {
   state.mode = mode;
   $("#mode-original").setAttribute("aria-checked", mode === "original");
   $("#mode-stems").setAttribute("aria-checked", mode === "stems");
+  $("#mode-synth").setAttribute("aria-checked", mode === "synth");
+  if (mode === "synth" && !engine.stretch) toast("The synth needs the page on https:// (as in Codespaces)");
   applyMix();
-  if (!quiet) toast(mode === "original" ? "Listening to the original recording" : "Listening to the separated tracks — use each track's fader");
+  if (!quiet) toast(mode === "original" ? "Listening to the original recording" : mode === "synth" ? "Every track played by a synth from the transcribed notes" : "Listening to the separated tracks — ♪ on a track swaps its audio for a synth");
 }
 
 function applyMix() {
   const anySolo = state.tracks.some((t) => t.solo);
   for (const t of state.tracks) {
     const on = anySolo ? t.solo : !t.mute;
-    engine.setGain(t.id, state.mode === "stems" && on ? t.vol : 0);
-    if (t.lane) t.lane.classList.toggle("dim", state.mode === "stems" && !on);
+    const synth = state.mode === "synth" || (state.mode === "stems" && t.synth);
+    engine.setGain(t.id, state.mode === "stems" && on && !t.synth ? t.vol : 0);
+    engine.setSynthGain(t.id, synth && on ? t.vol : 0);
+    if (t.lane) t.lane.classList.toggle("dim", state.mode !== "original" && !on);
   }
   engine.setGain("original", state.mode === "original" ? 1 : 0);
 }
 
 function touchMix() {
-  if (state.mode !== "stems") setMode("stems");
+  if (state.mode === "original") setMode("stems");
   else applyMix();
 }
 
@@ -708,6 +756,7 @@ function buildLanes() {
           <button class="m" title="Mute">M</button><button class="s" title="Solo">S</button>
           <input type="range" min="0" max="1.5" step="0.01" value="1" aria-label="${esc(t.label)} volume" />
           ${keysBtn}
+          ${t.silent ? "" : `<button class="syn" title="Play this track's transcribed notes with a synth instead of its audio">♪ Synth</button>`}
           <a href="${withToken(`/api/jobs/${state.current}/audio/${t.audio.split("/").pop()}?download=1`)}" title="Download this track" aria-label="Download ${esc(t.label)}">⬇</a>
         </div>
         <div class="meter"><span></span></div>
@@ -724,6 +773,14 @@ function buildLanes() {
     mBtn.onclick = () => { t.mute = !t.mute; mBtn.classList.toggle("on", t.mute); touchMix(); };
     sBtn.onclick = () => { t.solo = !t.solo; sBtn.classList.toggle("on", t.solo); touchMix(); };
     $("input", lane).oninput = (e) => { t.vol = +e.target.value; touchMix(); };
+    const syn = $("button.syn", lane);
+    if (syn) syn.onclick = () => {
+      t.synth = !t.synth;
+      syn.classList.toggle("on", t.synth);
+      if (t.synth && !engine.stretch) toast("The synth needs the page on https:// (as in Codespaces)");
+      if (state.mode === "original") setMode("stems");
+      else applyMix();
+    };
     const kb = $("button.k", lane);
     if (kb) kb.onclick = () => toggleKeys(t);
     // pitch range for the roll: where nearly all its notes are (a stray
@@ -1392,6 +1449,7 @@ function setupTransport() {
   $("#fwd").onclick = () => engine.seek(engine.position() + 5);
   $("#mode-original").onclick = () => setMode("original");
   $("#mode-stems").onclick = () => setMode("stems");
+  $("#mode-synth").onclick = () => setMode("synth");
   $("#zoom").oninput = (e) => (state.zoom = +e.target.value);
   $("#master").oninput = (e) => { state.master = +e.target.value; engine.setMaster(state.master); };
   document.addEventListener("keydown", (e) => {

@@ -2,4 +2,4 @@
 guitar, strings/synth, bass and drums, transcribe what each one plays and
 follow every instrument in real time while the song plays."""
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"

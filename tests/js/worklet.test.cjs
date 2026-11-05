@@ -118,4 +118,29 @@ function player(tracks, speed = 1) {
   const [L] = render(p, 1);
   assert(rms(L, 0, L.length) < 1e-6, "muted track sounds");
 }
+// 7. the synth plays transcribed notes at their pitch, also slowed down, and only when switched on
+{
+  const silence = new Float32Array(5 * SR);
+  const p = player([["piano", [silence], 1]], 0.5);
+  p.onMessage({ type: "synth", id: "piano", kind: "piano", notes: [[0.5, 1.5, 69, 0.9]] });
+  let [L] = render(p, 0.5);
+  assert(rms(L, 0, L.length) < 1e-6, "synth sounds while switched off");
+  p.onMessage({ type: "synthGain", id: "piano", value: 1 });
+  [L] = render(p, 2.5); // source 0.25 .. 1.5 s at half speed
+  const at = Math.round(1.0 * SR); // output 1.0 s = source 0.75 s: inside the note
+  const f = freq(L, at, at + SR / 2);
+  assert(Math.abs(f - 440) < 8, `synth pitch at 50%: ${f}`);
+  assert(rms(L, 0, Math.round(0.4 * SR)) < 1e-6, "synth sounded before its note");
+  assert(rms(L, at, at + SR / 4) > 0.01, "synth too quiet");
+  console.log("synth at 50%:", f.toFixed(1), "Hz");
+}
+// 8. drum hits make a sound
+{
+  const p = player([["drums", [new Float32Array(3 * SR)], 0]], 1);
+  p.onMessage({ type: "synth", id: "drums", kind: "drums", hits: [[0.5, "kick", 1], [1.0, "snare", 1], [1.5, "hat", 1]] });
+  p.onMessage({ type: "synthGain", id: "drums", value: 1 });
+  const [L] = render(p, 2);
+  for (const t of [0.5, 1.0, 1.5]) assert(rms(L, t * SR, t * SR + 2000) > 0.01, `no drum at ${t}`);
+  console.log("drum hits ok");
+}
 console.log("worklet ok");

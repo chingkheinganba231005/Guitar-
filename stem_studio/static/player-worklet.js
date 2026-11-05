@@ -14,6 +14,37 @@ const DELTA = 400; // alignment search, samples either way
 const WIN = new Float32Array(N);
 for (let i = 0; i < N; i++) WIN[i] = 0.5 - 0.5 * Math.cos((2 * Math.PI * i) / N);
 
+// Synthesised notes: one wavetable per instrument, envelopes in output time
+// (so a slowed-down note keeps its natural attack and decay).
+const TABLE = 2048;
+const TIMBRES = {
+  piano: { p: [1, 0.55, 0.3, 0.18, 0.1, 0.06], a: 0.004, d: 0.9, s: 0.0, r: 0.12 },
+  other: { p: [1, 0.5, 0.33, 0.25, 0.2, 0.15], a: 0.07, d: 2.5, s: 0.7, r: 0.25 },
+  vocals: { p: [1, 0.35, 0.12, 0.05], a: 0.03, d: 2.0, s: 0.8, r: 0.15 },
+  bass: { p: [1, 0.75, 0.35, 0.15], a: 0.004, d: 1.2, s: 0.25, r: 0.1 },
+  guitar: { p: [1, 0.6, 0.45, 0.3, 0.18, 0.1, 0.06], a: 0.002, d: 1.0, s: 0.0, r: 0.15 },
+};
+for (const t of Object.values(TIMBRES)) {
+  const w = new Float32Array(TABLE + 1);
+  let mx = 0;
+  for (let i = 0; i <= TABLE; i++) {
+    let v = 0;
+    t.p.forEach((a, k) => (v += a * Math.sin((2 * Math.PI * (k + 1) * i) / TABLE)));
+    w[i] = v;
+    mx = Math.max(mx, Math.abs(v));
+  }
+  for (let i = 0; i <= TABLE; i++) w[i] /= mx;
+  t.table = w;
+}
+
+function envAt(tm, age, held) {
+  // age, held: seconds since the note started / how long it is held (output time)
+  if (age < 0) return 0;
+  let e = age < tm.a ? age / tm.a : tm.s + (1 - tm.s) * Math.exp(-(age - tm.a) / (tm.d / 3));
+  if (age > held) e *= Math.exp(-(age - held) / tm.r);
+  return e;
+}
+
 class StemPlayer extends AudioWorkletProcessor {
   constructor() {
     super();
@@ -35,7 +66,87 @@ class StemPlayer extends AudioWorkletProcessor {
     this.ended = false;
     this.natMix = new Float32Array(HS);
     this.regMix = new Float32Array(HS + 2 * DELTA);
+    this.synths = new Map(); // id -> { notes, hits, kind, gain, maxDur, phases }
+    this.noise = 12345;
     this.port.onmessage = (e) => this.onMessage(e.data);
+  }
+
+  rand() {
+    this.noise = (this.noise * 1664525 + 1013904223) >>> 0;
+    return this.noise / 2147483648 - 1;
+  }
+
+  synthBlock(L, R, B, p0) {
+    // add every synth track's notes sounding in this block; p0 = source time (s)
+    const sp = this.speed;
+    const dt = sp / sampleRate; // source seconds per output sample
+    for (const sy of this.synths.values()) {
+      if (sy.gain < 1e-4) continue;
+      const g = sy.gain;
+      if (sy.notes) {
+        const tm = TIMBRES[sy.kind] || TIMBRES.piano;
+        const ns = sy.notes;
+        const pEnd = p0 + B * dt;
+        // notes are sorted by start: walk back from the last one started
+        let lo = 0, hi = ns.length;
+        while (lo < hi) { const m = (lo + hi) >> 1; if (ns[m][0] <= pEnd) lo = m + 1; else hi = m; }
+        const keep = new Set();
+        let voices = 0;
+        for (let i = lo - 1; i >= 0 && voices < 24; i--) {
+          const [st, en, pitch, vel] = ns[i];
+          if (st < p0 - sy.maxDur - tm.r * 6 * sp) break;
+          const held = (en - st) / sp;
+          const age0 = (p0 - st) / sp;
+          if (age0 > held + tm.r * 6) continue;
+          voices++;
+          keep.add(i);
+          let ph = sy.phases.get(i) || 0;
+          const inc = (440 * Math.pow(2, (pitch - 69) / 12) * TABLE) / sampleRate;
+          const amp = g * 0.15 * (0.45 + 0.55 * Math.min(1, vel));
+          const e0 = envAt(tm, age0, held), e1 = envAt(tm, age0 + B / sampleRate, held);
+          const tab = tm.table;
+          for (let n = 0; n < B; n++) {
+            const age = age0 + n / sampleRate;
+            if (age < 0) { continue; }
+            const e = age < tm.a ? envAt(tm, age, held) : e0 + ((e1 - e0) * n) / B;
+            const k = ph | 0, f = ph - k;
+            const v = (tab[k] + (tab[k + 1] - tab[k]) * f) * e * amp;
+            L[n] += v; R[n] += v;
+            ph += inc;
+            if (ph >= TABLE) ph -= TABLE;
+          }
+          sy.phases.set(i, ph);
+        }
+        for (const k of sy.phases.keys()) if (!keep.has(k)) sy.phases.delete(k);
+      }
+      if (sy.hits) {
+        const hs = sy.hits;
+        const pEnd = p0 + B * dt;
+        let lo = 0, hi = hs.length;
+        while (lo < hi) { const m = (lo + hi) >> 1; if (hs[m][0] <= pEnd) lo = m + 1; else hi = m; }
+        for (let i = lo - 1; i >= 0; i--) {
+          const [ht, kind, str] = hs[i];
+          const age0 = (p0 - ht) / sp;
+          if (age0 > 0.4) break;
+          const amp = g * 0.35 * (0.4 + 0.6 * Math.min(1, str));
+          for (let n = 0; n < B; n++) {
+            const a = age0 + n / sampleRate;
+            if (a < 0) continue;
+            let v;
+            if (kind === "kick") {
+              const f = 45 + 90 * Math.exp(-a / 0.03);
+              v = Math.sin(2 * Math.PI * (45 * a + 90 * 0.03 * (1 - Math.exp(-a / 0.03)))) * Math.exp(-a / 0.12) * (f > 0 ? 1 : 0);
+            } else if (kind === "snare") {
+              v = (0.7 * this.rand() + 0.4 * Math.sin(2 * Math.PI * 190 * a)) * Math.exp(-a / 0.06) * 0.7;
+            } else {
+              v = this.rand() * Math.exp(-a / 0.018) * 0.35;
+            }
+            v *= amp;
+            L[n] += v; R[n] += v;
+          }
+        }
+      }
+    }
   }
 
   onMessage(m) {
@@ -43,6 +154,12 @@ class StemPlayer extends AudioWorkletProcessor {
     if (m.type === "track") {
       this.tracks.set(m.id, { ch: m.channels, gain: m.gain ?? 0, level: 0 });
       this.len = Math.max(this.len, m.channels[0].length);
+    } else if (m.type === "synth") {
+      const maxDur = (m.notes || []).reduce((a, n) => Math.max(a, n[1] - n[0]), 0);
+      this.synths.set(m.id, { notes: m.notes || null, hits: m.hits || null, kind: m.kind, gain: 0, maxDur, phases: new Map() });
+    } else if (m.type === "synthGain") {
+      const t = this.synths.get(m.id);
+      if (t) t.gain = m.value;
     } else if (m.type === "gain") {
       const t = this.tracks.get(m.id);
       if (t) t.gain = m.value;
@@ -70,6 +187,7 @@ class StemPlayer extends AudioWorkletProcessor {
       }
     } else if (m.type === "clear") {
       this.tracks.clear();
+      this.synths.clear();
       this.len = 0;
       this.playing = false;
     }
@@ -206,6 +324,7 @@ class StemPlayer extends AudioWorkletProcessor {
     }
     while (this.avail < B) this.synthFrame();
     const L = this.acc[0], R = this.acc[1];
+    if (this.synths.size) this.synthBlock(L, R, B, this.nominalAt(0) / sampleRate);
     for (let i = 0; i < B; i++) {
       let g = 1;
       if (this.fade > 0) g = Math.max(0, (this.fade - i) / 256);
