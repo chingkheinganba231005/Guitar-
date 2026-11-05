@@ -5254,7 +5254,7 @@
       "melody_octave_shift": 0
      }
     ],
-    "search_seconds": 3.7,
+    "search_seconds": 3.8,
     "screened": 352
    },
    {
@@ -5334,6 +5334,8 @@
     "screened": 176
    }
   ],
+  "version": "0.3.0",
+  "analysis_version": 4,
   "playability_issues": []
  }
 }

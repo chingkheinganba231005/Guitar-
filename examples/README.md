@@ -13,3 +13,6 @@ read the `.tab.txt` in any text editor.
 * `demo-waltz.*` — a 3/4 ballad in Bb: Guitar I strikes the piano intro's
   chords on every beat, Guitar II rings bass, open strings and harmonics under
   them, then an eighth-note arpeggio under the sung melody.
+* `demo-sixeight.*` — a 6/8 ballad in Bb (dotted quarter = 50): chords on
+  each dotted quarter in the intro, then an eighth-note arpeggio under the
+  melody, the texture of many triple-time pop ballads.

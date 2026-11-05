@@ -30,7 +30,11 @@ guitar cannot sustain) does it fall back on an idiomatic fingerstyle pattern.
 eighths when they are close to one and to sixteenths otherwise (never finer),
 and every section's accompaniment is distilled into the onset pattern the band
 repeats in most of its bars, then played the same way in every bar. The tempo
-stays steady unless the song really changes speed.
+stays steady unless the song really changes speed. Triple-time ballads, which
+beat trackers follow at the eighth note, are written in 6/8 (or 3/4) at their
+real tempo with the bar line on beat 1; leakage between separated stems (a
+"guitar" stem in a song without guitar, bass bleeding into the piano) is
+cleaned out before any rhythm is read.
 
 **Let ring.** As on a real fingerstyle guitar, every note rings until its
 string is played again; only notes before a real silence (a bar or more) are

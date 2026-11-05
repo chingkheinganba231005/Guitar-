@@ -142,6 +142,15 @@ def estimate_sections(song: Song) -> None:
         return
     feats = []
     mel_bars = set(song.bar_at(n.start) for n in song.melody)
+    # Rhythm texture: where in the bar the accompaniment strikes (12 bins of
+    # the bar). Chords on the beats turning into running arpeggios is a
+    # section change even when the harmony stays the same.
+    harm = [x for name, ns in song.parts.items() if name not in ("vocals", "drums") for x in ns if x.velocity >= 0.35]
+    texture = np.zeros((nb, 12))
+    for x in harm:
+        bi = song.bar_at(x.start)
+        b = song.bars[bi]
+        texture[bi, min(11, int(12 * (x.start - b.start) / max(1, b.length)))] += 1
     for bi, b in enumerate(song.bars):
         v = np.zeros(12)
         for c in song.chords:
@@ -153,7 +162,8 @@ def estimate_sections(song: Song) -> None:
         for n in song.melody:
             if b.start <= n.start < b.end:
                 m[n.pitch % 12] += n.end - n.start
-        f = np.concatenate([v / (np.linalg.norm(v) + 1e-9), 0.7 * m / (np.linalg.norm(m) + 1e-9), [song.energy[bi] if song.energy else 0.5]])
+        tex = texture[bi] / (np.linalg.norm(texture[bi]) + 1e-9)
+        f = np.concatenate([v / (np.linalg.norm(v) + 1e-9), 0.7 * m / (np.linalg.norm(m) + 1e-9), 0.8 * tex, [song.energy[bi] if song.energy else 0.5]])
         feats.append(f)
     F = np.array(feats)
     # novelty across 4-bar windows, boundaries on multiples of 4 bars where possible
@@ -220,11 +230,42 @@ def drum_prominence_from_hits(song: Song) -> float:
     return float(min(1.0, per_bar / 4.0))
 
 
+def refine_key(song: Song) -> None:
+    """Choose between a major key and its relative minor from the chords.
+
+    Both share one scale, so pitch statistics alone cannot tell Bb major from
+    G minor; the tonic chord's share of the song, and the chords that open
+    and close it, can."""
+    if not song.chords:
+        return
+    if song.key_mode == "major":
+        major, minor = song.key_tonic, (song.key_tonic + 9) % 12
+    else:
+        minor, major = song.key_tonic, (song.key_tonic + 3) % 12
+
+    def weight(root: int, quals: tuple) -> float:
+        w = sum(c.end - c.start for c in song.chords if c.root == root and c.quality in quals)
+        total = sum(c.end - c.start for c in song.chords) or 1
+        w = w / total
+        for c in (song.chords[0], song.chords[-1]):
+            if c.root == root and c.quality in quals:
+                w += 0.15
+        return w
+
+    wmaj = weight(major, ("maj", "maj7", "6", "add9", "sus2", "sus4"))
+    wmin = weight(minor, ("min", "m7", "m6"))
+    if wmaj > wmin * 1.1:
+        song.key_tonic, song.key_mode = major, "major"
+    elif wmin > wmaj * 1.1:
+        song.key_tonic, song.key_mode = minor, "minor"
+
+
 def finish_analysis(song: Song, per_bar_rms: list[float] | None = None, extra_chroma=None, prominence: float | None = None) -> Song:
     estimate_key(song)
     estimate_energy(song, per_bar_rms)
     if not song.chords:
         estimate_chords(song, extra_chroma)
+    refine_key(song)
     if not song.sections:
         estimate_sections(song)
     if prominence is None:

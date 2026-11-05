@@ -104,6 +104,43 @@ def find_pattern(song: Song, notes: list[Note], bars: range, min_share: float = 
     return Pattern(sorted(slots), unit, avg_voices, len(active) / len(use), L, per_slot)
 
 
+def texture_runs(song: Song, notes: list[Note], a: int, b: int) -> list[tuple[int, int]]:
+    """Split bars [a, b) where the accompaniment's strike positions change.
+
+    Each bar's set of struck eighth-note slots is compared with the running
+    group's; a different set in two consecutive bars starts a new group (one
+    odd bar is noise). Grooves are then found per group, whatever the section
+    labels say."""
+    def slots(bi: int) -> frozenset:
+        bar = song.bars[bi]
+        unit = slot_unit(song, bi)
+        return frozenset(
+            int(round((n.start - bar.start) / unit))
+            for n in notes
+            if bar.start <= n.start < bar.end and not (n.end - n.start <= 6 and n.velocity < 0.7)
+        )
+
+    def similar(x: frozenset, y: frozenset) -> bool:
+        if not x or not y:
+            return x == y
+        return len(x & y) / len(x | y) >= 0.6
+
+    runs = []
+    start = a
+    ref = slots(a)
+    bi = a + 1
+    while bi < b:
+        cur = slots(bi)
+        if not similar(cur, ref) and bi + 1 < b and not similar(slots(bi + 1), ref):
+            runs.append((start, bi))
+            start, ref = bi, cur
+        elif not similar(cur, ref) and bi + 1 == b:
+            pass  # a different last bar alone stays with its group
+        bi += 1
+    runs.append((start, b))
+    return runs
+
+
 def chordal(song: Song, notes: list[Note], bars: range) -> bool:
     """True when the part strikes chords rather than playing a line.
 

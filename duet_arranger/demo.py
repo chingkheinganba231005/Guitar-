@@ -30,6 +30,8 @@ CHORUS = [
 def demo_song(style: str = "pop", bars_per_section: int = 4) -> Song:
     if style == "waltz":
         return waltz_song(bars_per_section)
+    if style in ("sixeight", "6/8"):
+        return sixeight_song(bars_per_section)
     pop = style == "pop"
     tempo = 96.0 if pop else 68.0
     song = Song(title=f"Demo {style}", artist="Duet Arranger", key_tonic=7, key_mode="major")
@@ -139,6 +141,63 @@ def waltz_song(bars_per_section: int = 4) -> Song:
                     s0 = t + off * TPQ // 2
                     melody.append(Note(s0, s0 + length * TPQ // 2, p, velocity=0.75, source="vocals"))
             t += bar_len
+    song.melody = melody
+    song.bass = bass
+    song.parts = {"vocals": list(melody), "bass": list(bass), "piano": piano}
+    song.energy = energy
+    song.percussive = False
+    return song
+
+
+# An original 6/8 ballad in Bb (dotted quarter = 50): piano chords on each
+# dotted quarter in the intro, then eighth-note left-hand arpeggios under a
+# sung melody — the texture of many slow triple-time pop ballads.
+SIX8_INTRO = [(10, "maj"), (10, "maj"), (7, "min"), (7, "min"), (3, "maj"), (3, "maj"), (10, "maj"), (5, "maj")]
+SIX8_VERSE = [(3, "maj"), (10, "maj"), (7, "min"), (5, "maj")]
+SIX8_TUNE = [  # (offset in eighths, length in eighths, pitch), six eighths per bar
+    [(0, 3, 70), (3, 2, 70), (5, 1, 72)],
+    [(0, 3, 74), (3, 3, 72)],
+    [(0, 2, 70), (2, 1, 69), (3, 3, 67)],
+    [(0, 6, 65)],
+]
+
+
+def sixeight_song(bars_per_section: int = 4) -> Song:
+    tempo = 75.0  # quarter-note BPM: dotted quarter = 50
+    song = Song(title="Demo six-eight", artist="Duet Arranger", key_tonic=10, key_mode="major")
+    L = 72
+    t = 0
+    melody, bass, piano, energy = [], [], [], []
+    plan = [("Intro", c, False) for c in SIX8_INTRO]
+    plan += [("Verse", SIX8_VERSE[k % 4], True) for k in range(2 * bars_per_section)]
+    plan += [("Outro", c, False) for c in SIX8_INTRO[:4]]
+    verse_k = 0
+    for label, (root, q), sung in plan:
+        if not song.sections or song.sections[-1].label != label:
+            song.sections.append(Section(len(song.bars), label))
+        song.bars.append(Bar(t, 6, 8, tempo, 36))
+        song.chords.append(Chord(t, t + L, root, q))
+        pcs = chord_pcs(root, q)
+        energy.append(0.6 if sung else 0.35)
+        broot = 34 + ((root - 10) % 12)
+        if broot > 41:
+            broot -= 12
+        voicing = sorted(62 + ((pc - 2) % 12) for pc in pcs)
+        if not sung:
+            for h in (0, 36):  # a chord and a bass note on each dotted quarter
+                for p in voicing:
+                    piano.append(Note(t + h, t + h + 36, p, velocity=0.6, source="piano"))
+                bass.append(Note(t + h, t + h + 36, broot + 12, velocity=0.6, source="bass"))
+        else:
+            third = [p for p in range(broot + 12, broot + 30) if p % 12 == pcs[1]][0]
+            arp = [broot, broot + 7, broot + 12, third, broot + 12, broot + 7]
+            for e8, p in enumerate(arp):
+                piano.append(Note(t + 12 * e8, t + 12 * e8 + 12, p + 12, velocity=0.5, source="piano"))
+            bass.append(Note(t, t + L, broot, velocity=0.6, source="bass"))
+            for off, length, p in SIX8_TUNE[verse_k % 4]:
+                melody.append(Note(t + 12 * off, t + 12 * (off + length), p, velocity=0.75, source="vocals"))
+            verse_k += 1
+        t += L
     song.melody = melody
     song.bass = bass
     song.parts = {"vocals": list(melody), "bass": list(bass), "piano": piano}

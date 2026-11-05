@@ -52,7 +52,7 @@ def resonance_additions(
         fretted = [n for n in sounding if isinstance(n.fret, (int, float)) and n.fret > 0 and not n.harmonic]
         min_fret = min((n.fret for n in fretted), default=None)
         barre_strings = sorted(n.string for n in fretted if n.fret == min_fret)
-        attacked_strings = {n.string for n in pitched}
+        attacked_strings = {n.string for n in attacks if n.fret != "x"}  # harmonics are plucked too
         added = []
         for s in range(1, 7):
             if s in used:

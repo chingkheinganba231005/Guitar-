@@ -215,7 +215,7 @@ def main(argv=None) -> int:
     a.add_argument("--device", default=None, help="torch device for separation (cpu, cuda, mps)")
     a.set_defaults(func=cmd_arrange)
     d = sub.add_parser("demo", help="arrange the built-in demo song")
-    d.add_argument("style", nargs="?", default="pop", choices=["pop", "ballad", "waltz"])
+    d.add_argument("style", nargs="?", default="pop", choices=["pop", "ballad", "waltz", "sixeight"])
     d.add_argument("-o", "--output", default="output")
     d.add_argument("--tuning", default="auto")
     d.add_argument("--capo", default="auto")

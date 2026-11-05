@@ -161,8 +161,8 @@ def create_app(jobs_root: str = "duet-jobs", atelier_dir: Optional[str] = None, 
     async def demo(request: Request):
         form = dict(await request.form())
         style = form.get("style", "pop")
-        if style not in ("pop", "ballad", "waltz"):
-            raise HTTPException(400, "Demo style is pop, ballad or waltz")
+        if style not in ("pop", "ballad", "waltz", "sixeight"):
+            raise HTTPException(400, "Demo style is pop, ballad, waltz or sixeight")
         opts = _options(form)
         opts["style"] = style
         job = manager.create("demo", title=f"Demo {style}", artist="Duet Arranger", options=opts)

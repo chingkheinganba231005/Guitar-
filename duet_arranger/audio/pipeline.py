@@ -21,8 +21,9 @@ log = logging.getLogger(__name__)
 TRANSCRIBE = ("vocals", "bass", "piano", "guitar", "other")
 # Bump when the analysis changes in ways a saved Song should not skip
 # (2: eighth-note grid, steady tempo, vocal-bleed removal; 3: beat-snapped
-# chord changes, stronger start-on-beat-1 downbeat prior).
-ANALYSIS_VERSION = 3
+# chord changes, stronger start-on-beat-1 downbeat prior; 4: 6/8 and 3/4 read
+# from eighth-note pulses, leakage cleaning, chord-based key choice).
+ANALYSIS_VERSION = 4
 
 
 def _mono(path: str) -> np.ndarray:
@@ -168,7 +169,7 @@ def drop_vocal_bleed(song: Song, vocals: np.ndarray, beatmap: BeatMap, floor: fl
 
 
 def _tick_seconds(bm: BeatMap, tick: float) -> float:
-    tpb = bm.ticks_per_beat
+    tpb = bm.pulse_ticks
     i = tick / tpb
     j = int(np.floor(i))
     b = bm.beats
@@ -201,11 +202,27 @@ def _chroma_frames(y: np.ndarray, bm: BeatMap, song: Song) -> np.ndarray | None:
 
 
 def trim_silence(song: Song) -> None:
-    """Drop empty bars before the music starts and after it ends."""
+    """Drop empty bars before the music starts and after it ends.
+
+    "Empty" means no real music: reverb tails, stray drum-stem blips and
+    faint notes do not count. A short pickup bar is kept only when it holds
+    a fair share of what the next bar holds (a real anacrusis)."""
     used = [n.start for ns in song.parts.values() for n in ns] + [h.start for h in song.hits]
     if not used or not song.bars:
         return
-    first = song.bar_at(min(used))
+    activity = [0.0] * len(song.bars)
+    for name, ns in song.parts.items():
+        for n in ns:
+            if n.velocity >= 0.35:
+                activity[song.bar_at(n.start)] += n.velocity
+    for h in song.hits:
+        if h.velocity >= 0.4:
+            activity[song.bar_at(h.start)] += 0.5 * h.velocity
+    busy = sorted(a for a in activity if a > 0)
+    floor = 0.15 * busy[len(busy) // 2] if busy else 0.0
+    first = next((i for i, a in enumerate(activity) if a > floor), song.bar_at(min(used)))
+    if first + 1 < len(song.bars) and song.bars[first].length < song.bars[first + 1].length and activity[first] < 0.35 * activity[first + 1]:
+        first += 1
     last_tick = max([n.end for ns in song.parts.values() for n in ns] + [h.start + 1 for h in song.hits])
     last = song.bar_at(max(0, last_tick - 1))
     if first == 0 and last == len(song.bars) - 1:

@@ -192,12 +192,14 @@ def lead_chords(song: Song, regions: list[tuple[int, int]], tuning, capo: int) -
     lo_string = lowest_pitch(tuning, capo)
     from .patterns import section_ranges
 
-    pieces = []  # regions cut at section boundaries: one groove per section
+    from .patterns import texture_runs
+
+    pieces = []  # one groove per section, and per run of bars that strike alike
     for a, b in regions:
         for s0, s1 in section_ranges(song):
             lo, hi = max(a, s0), min(b, s1)
             if hi > lo:
-                pieces.append((lo, hi))
+                pieces += texture_runs(song, harm, lo, hi)
     for a, b in pieces:
         notes = [n for n in harm if song.bars[a].start <= n.start < song.bars[b - 1].end]
         pat = find_pattern(song, notes, range(a, b))

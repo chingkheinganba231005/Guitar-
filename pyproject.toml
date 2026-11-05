@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "duet-arranger"
-version = "0.2.0"
+version = "0.3.0"
 description = "Turn a song into a playable two-guitar fingerstyle duet with tabs for Atelier"
 readme = "README.md"
 requires-python = ">=3.10"

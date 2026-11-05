@@ -16,28 +16,49 @@ HOP = 512
 
 @dataclass
 class BeatMap:
-    beats: np.ndarray  # seconds of every felt beat
-    beats_per_bar: int
+    beats: np.ndarray  # seconds of every tracked pulse
+    beats_per_bar: int  # pulses per bar
     downbeat_phase: int
-    compound: bool
+    compound: bool  # pulses are dotted quarters (6/8, 12/8 felt in two/four)
+    eighths: str = ""  # "6/8" or "3/4" when the pulses are eighth notes, six to a bar
 
     @property
     def ticks_per_beat(self) -> int:
+        """Ticks of the felt beat of the written meter."""
+        if self.eighths == "6/8":
+            return int(TPQ * 1.5)
+        if self.eighths == "3/4":
+            return TPQ
         return int(TPQ * 1.5) if self.compound else TPQ
+
+    @property
+    def pulse_ticks(self) -> int:
+        """Ticks between two tracked pulses."""
+        return TPQ // 2 if self.eighths else self.ticks_per_beat
 
     def bars(self) -> list[Bar]:
         """Bars on the tick grid; beat 0 is tick 0, a pickup bar covers beats before the first downbeat."""
         tpb = self.ticks_per_beat
+        pt = self.pulse_ticks
         b = self.beats
         m = self.beats_per_bar
         out: list[Bar] = []
+        per_quarter = 0.5 if self.eighths else (1.5 if self.compound else 1.0)
 
         def tempo_of(i0: int, i1: int) -> float:
             seg = b[i0 : min(i1 + 1, len(b))]
             ibi = float(np.median(np.diff(seg))) if len(seg) >= 2 else float(np.median(np.diff(b)))
-            return float(np.clip(60.0 / ibi * (1.5 if self.compound else 1.0), 20, 300))
+            return float(np.clip(60.0 / ibi * per_quarter, 20, 300))
 
         ph = self.downbeat_phase
+        if self.eighths:
+            beats, unit = (6, 8) if self.eighths == "6/8" else (3, 4)
+            if ph > 0:
+                out.append(Bar(0, ph, 8, tempo_of(0, ph), TPQ // 2))
+            for k in range(ph, len(b) - 1, m):
+                out.append(Bar(k * pt, beats, unit, tempo_of(k, k + m), tpb))
+            smooth_tempos(out)
+            return out
         if ph > 0:
             if self.compound:
                 out.append(Bar(0, 3 * ph, 8, tempo_of(0, ph), tpb))
@@ -55,7 +76,7 @@ class BeatMap:
     def to_ticks(self, t: float) -> float:
         """Map seconds to ticks by linear interpolation between beats (beat i = tick i*tpb)."""
         b = self.beats
-        tpb = self.ticks_per_beat
+        tpb = self.pulse_ticks
         if t <= b[0]:
             return 0.0
         if t >= b[-1]:
@@ -178,13 +199,37 @@ def track_beats(mix: np.ndarray, drums: np.ndarray | None, bass: np.ndarray | No
     else:
         times = librosa.frames_to_time(beats, sr=SR, hop_length=HOP)
     low_env = onset_envelope(drums, fmax=160) if drums is not None else (onset_envelope(bass, fmax=300) if bass is not None else env)
-    times = fix_tempo_octave(np.asarray(times, dtype=float), low_env)
-    if notes:
-        times = harmonic_rhythm_octave(times, notes)
-    times = _extend(times, len(mix) / SR)
-    # accent features per beat
-    frames = librosa.time_to_frames(times, sr=SR, hop_length=HOP)
-    frames = np.clip(frames, 0, len(env) - 1)
+    times0 = fix_tempo_octave(np.asarray(times, dtype=float), low_env, env=onset_envelope(mix, detrend=False))
+    duration = len(mix) / SR
+    first_onset = None
+    if len(env):
+        idx = np.nonzero(env > 0.3 * env.max())[0]
+        if len(idx):
+            first_onset = float(librosa.frames_to_time(idx[0], sr=SR, hop_length=HOP))
+    sources = (env, drums, bass, harmonic, notes)
+    cand = _extend(times0, duration)
+    best = choose_meter(mix, cand, sources, first_onset)
+    if not best.eighths and notes:
+        halved = harmonic_rhythm_octave(times0, notes)
+        if len(halved) != len(times0):
+            cand = _extend(halved, duration)
+            best = choose_meter(mix, cand, sources, first_onset)
+    log.info(
+        "Beats: %d, %s, %d per bar, phase %d",
+        len(best.beats),
+        f"eighth pulses in {best.eighths}" if best.eighths else ("compound" if best.compound else "simple"),
+        best.beats_per_bar,
+        best.downbeat_phase,
+    )
+    return best
+
+
+def accent_features(times: np.ndarray, sources) -> tuple[np.ndarray, np.ndarray]:
+    """Per-pulse downbeat evidence (kick, bass onsets, chord changes) and plain onset strength."""
+    import librosa
+
+    env, drums, bass, harmonic, notes = sources
+    frames = np.clip(librosa.time_to_frames(times, sr=SR, hop_length=HOP), 0, len(env) - 1)
 
     def at_beats(e):
         if e is None:
@@ -192,8 +237,8 @@ def track_beats(mix: np.ndarray, drums: np.ndarray | None, bass: np.ndarray | No
         out = np.zeros(len(times))
         for k, f in enumerate(frames):
             out[k] = e[max(0, f - 2) : f + 3].max() if len(e) else 0.0
-        s = out.std()
-        return (out - out.mean()) / s if s > 0 else out * 0
+        sd = out.std()
+        return (out - out.mean()) / sd if sd > 0 else out * 0
 
     def z(v):
         v = np.log1p(v / (np.median(v) + 1e-9)) if v.max() > 0 else v
@@ -217,17 +262,28 @@ def track_beats(mix: np.ndarray, drums: np.ndarray | None, bass: np.ndarray | No
     if notes:
         harm_change, bass_change = note_change_features(times, notes)
         accent = accent + 1.6 * harm_change + 0.5 * bass_change
-    # the first clearly audible onset usually falls on a downbeat
-    first_beat = None
-    if len(env):
-        thr = 0.3 * env.max()
-        idx = np.nonzero(env > thr)[0]
-        if len(idx):
-            t_first = librosa.frames_to_time(idx[0], sr=SR, hop_length=HOP)
-            first_beat = int(np.argmin(np.abs(times - t_first)))
+    onset = at_beats(onset_envelope(harmonic, detrend=False) if harmonic is not None else env) + 0.5 * bass_acc
+    return accent, onset
+
+
+def choose_meter(mix: np.ndarray, times: np.ndarray, sources, first_onset: float | None) -> BeatMap:
+    """Pick pulses per bar and the downbeat.
+
+    Tried: 2, 3 or 4 pulses per bar, and — when the pulses are fast (100+
+    per minute) — six pulses per bar read as eighth notes. Triple-time
+    ballads (6/8 at a dotted quarter of ~50) are tracked at the eighth note
+    (~150); grouping those in threes makes every bar half as long as written
+    and pairs the harmony with the wrong beats. Chord and bass changes every
+    six pulses make the six-pulse reading win; where the secondary accent
+    then falls (pulse 4: 6/8, pulses 3 and 5: 3/4) names the meter.
+    """
+    accent, onset = accent_features(times, sources)
+    first_beat = int(np.argmin(np.abs(times - first_onset))) if first_onset is not None else None
+    bpm = 60.0 / float(np.median(np.diff(times))) if len(times) > 2 else 90.0
     compound = _is_compound(mix, times)
-    best = (-1e9, 4, 0)
-    for m in (4, 3, 2):
+    per_size: dict[int, tuple] = {}
+    sizes = [4, 3, 2] + ([6] if bpm >= 100 and not compound else [])
+    for m in sizes:
         for ph in range(m):
             sel = accent[ph::m]
             rest = np.delete(accent, np.arange(ph, len(accent), m))
@@ -240,19 +296,33 @@ def track_beats(mix: np.ndarray, drums: np.ndarray | None, bass: np.ndarray | No
                 score -= 0.15
             if first_beat is not None and (first_beat - ph) % m == 0:
                 score += 0.45  # songs start on beat 1 far more often than with a pickup
-            if score > best[0]:
-                best = (score, m, ph)
-    _, m, ph = best
+            if m not in per_size or score > per_size[m][0]:
+                per_size[m] = (score, m, ph)
+    log.info("Meter scores (pulses per bar: score, phase): %s", {k: (round(float(v[0]), 3), v[2]) for k, v in sorted(per_size.items())})
+    # Six pulses only when they explain the accents clearly better than three:
+    # the harmony moves every six pulses, not every three (a fast 3/4 waltz).
+    if 6 in per_size and 3 in per_size:
+        s6, s3 = per_size[6][0], per_size[3][0]
+        if not (s6 >= 1.2 * s3 and s6 - s3 >= 0.3):
+            del per_size[6]
+    _, m, ph = max(per_size.values(), key=lambda x: x[0])
+    if m == 6:
+        pos = (np.arange(len(onset)) - ph) % 6
+        mean = lambda ks: float(np.mean([onset[pos == k].mean() for k in ks if np.any(pos == k)])) if any(np.any(pos == k) for k in ks) else 0.0
+        six8 = mean([3]) - mean([1, 2, 4, 5])
+        three4 = mean([2, 4]) - mean([1, 3, 5])
+        return BeatMap(np.asarray(times), 6, ph, False, "6/8" if six8 >= three4 else "3/4")
     if compound and m == 3:
         m = 2
-    log.info("Beats: %d, %s, %d per bar, phase %d", len(times), "compound" if compound else "simple", m, ph)
     return BeatMap(np.asarray(times), m, ph, compound)
 
 
-def fix_tempo_octave(times: np.ndarray, low_env: np.ndarray, lo: float = 62.0, hi: float = 150.0) -> np.ndarray:
+def fix_tempo_octave(times: np.ndarray, low_env: np.ndarray, lo: float = 62.0, hi: float = 170.0, env: np.ndarray | None = None) -> np.ndarray:
     """Undo double/half-time beat tracking: keep the tempo in [lo, hi] BPM.
 
-    When halving, keep the beat phase where kick/bass onsets land."""
+    When halving, keep the beat phase where kick/bass onsets land. A slow
+    beat is split in three (its eighth notes) when the music divides it in
+    three — a 6/8 ballad tracked at the dotted quarter — and in two otherwise."""
     import librosa
 
     if len(times) < 4:
@@ -265,11 +335,32 @@ def fix_tempo_octave(times: np.ndarray, low_env: np.ndarray, lo: float = 62.0, h
             ph = 0 if strength[0::2].mean() >= strength[1::2].mean() else 1
             times = times[ph::2]
         elif bpm < lo:
-            mids = (times[:-1] + times[1:]) / 2
-            times = np.sort(np.concatenate([times, mids]))
+            if env is not None and _divides_in_three(env, times):
+                a, b = times[:-1], times[1:]
+                times = np.sort(np.concatenate([times, a + (b - a) / 3, a + 2 * (b - a) / 3]))
+            else:
+                mids = (times[:-1] + times[1:]) / 2
+                times = np.sort(np.concatenate([times, mids]))
         else:
             break
     return times
+
+
+def _divides_in_three(env: np.ndarray, times: np.ndarray) -> bool:
+    """Do onsets fall at thirds of the beat more than at its middle?"""
+    import librosa
+
+    frame_t = librosa.frames_to_time(np.arange(len(env)), sr=SR, hop_length=HOP)
+
+    def strength(t):
+        i = int(np.searchsorted(frame_t, t))
+        return float(env[max(0, i - 2) : i + 3].max()) if i < len(env) else 0.0
+
+    s2 = s3 = 0.0
+    for a, b in zip(times[:-1], times[1:]):
+        s2 += strength(a + (b - a) / 2)
+        s3 += (strength(a + (b - a) / 3) + strength(a + 2 * (b - a) / 3)) / 2
+    return s3 > 1.2 * s2
 
 
 def harmonic_rhythm_octave(times: np.ndarray, notes: list) -> np.ndarray:

@@ -300,7 +300,7 @@ def to_atelier(arr: Arrangement, title: str | None = None, artist: str | None = 
         "activeTrack": 0,
         "view": "score",
         "tracks": tracks,
-        "arranger": arr.report,
+        "arranger": {**arr.report, "version": _version(), "analysis_version": _analysis_version()},
     }
 
 
@@ -309,3 +309,15 @@ def write_atelier(arr: Arrangement, path: str, **kw) -> dict:
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
     return data
+
+
+def _version() -> str:
+    from .. import __version__
+
+    return __version__
+
+
+def _analysis_version() -> int:
+    from ..audio.pipeline import ANALYSIS_VERSION
+
+    return ANALYSIS_VERSION
